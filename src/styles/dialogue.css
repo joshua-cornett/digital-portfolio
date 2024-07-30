@@ -1,0 +1,27 @@
+.profile-dialogue--wrapper {
+  display: flex;
+  margin-bottom: 10px;
+  flex-direction: row;
+  align-items: center;
+}
+
+/* Dialogue box styling */
+.dialogue-box {
+  flex-basis: 40%;
+  position: relative;
+  background-color: #000;
+  border: 3px #00ff00 double;
+  padding: 15px;
+  border-radius: 5px;
+  overflow: hidden;
+  font-family: sans-serif;
+  margin-left: 20px;
+  float: left;
+  font-family: 'Press Start 2P';
+}
+
+.dialogue-box p {
+  color: #00ff00;
+  line-height: 1rem;
+  font-size: 0.75rem;
+}

@@ -1,0 +1,16 @@
+.footer {
+  /* background-color: #00ff00; */
+  padding: 1rem 0;
+  border-top: 3px #00ff00;
+  border-style: double;
+}
+
+.social-links {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.social-icon {
+  font-size: 2rem;
+  color: #00ff00;
+}
