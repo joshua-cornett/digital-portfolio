@@ -20,7 +20,7 @@
       "jsx": true
     }
   },
-  "plugins": ["react", "jsx-a11y", "import", "unused-imports"],
+  "plugins": ["react", "jsx-a11y", "import"],
   "rules": {
     "react/function-component-definition": ["error", { "namedComponents": "arrow-function" }],
     "react/prop-types": "off",
