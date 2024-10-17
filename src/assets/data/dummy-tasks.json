@@ -1,0 +1,58 @@
+{
+  "tasks": [
+    {
+      "id": "1",
+      "task": "Rescuing cats from trees.",
+      "skills": ["1", "2"],
+      "experienceId": "1"
+    },
+    {
+      "id": "2",
+      "task": "Stopping runaway trains.",
+      "skills": ["1"],
+      "experienceId": "1"
+    },
+    {
+      "id": "3",
+      "task": "Infiltrating enemy bases.",
+      "skills": ["3"],
+      "experienceId": "2"
+    },
+    {
+      "id": "4",
+      "task": "Teaching Defense Against the Dark Arts.",
+      "skills": ["4"],
+      "experienceId": "3"
+    },
+    {
+      "id": "5",
+      "task": "Brewing complex potions.",
+      "skills": ["5"],
+      "experienceId": "3"
+    },
+    {
+      "id": "6",
+      "task": "Teleporting to hidden locations.",
+      "skills": ["6"],
+      "experienceId": "4"
+    },
+    {
+      "id": "7",
+      "task": "Sneaking into guarded facilities.",
+      "skills": ["7"],
+      "experienceId": "5"
+    },
+    {
+      "id": "8",
+      "task": "Perfecting shuriken accuracy.",
+      "skills": ["8"],
+      "experienceId": "5"
+    },
+    {
+      "id": "9",
+      "task": "Running up skyscrapers.",
+      "skills": ["9"],
+      "experienceId": "6"
+    }
+  ]
+}

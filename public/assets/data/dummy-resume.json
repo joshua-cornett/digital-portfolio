@@ -1,0 +1,196 @@
+{
+  "skillTypes": [
+    {
+      "id": "1",
+      "type": "Superpowers",
+      "skills": ["1", "2", "3"]
+    },
+    {
+      "id": "2",
+      "type": "Wizardry",
+      "skills": ["4", "5", "6"]
+    },
+    {
+      "id": "3",
+      "type": "Ninja Skills",
+      "skills": ["7", "8", "9"]
+    }
+  ],
+  "skills": [
+    {
+      "id": "1",
+      "skill": "Flying",
+      "proficiency": "Expert",
+      "yearsExperience": 5,
+      "experiences": ["1"]
+    },
+    {
+      "id": "2",
+      "skill": "Super Strength",
+      "proficiency": "Advanced",
+      "yearsExperience": 4,
+      "experiences": ["1"]
+    },
+    {
+      "id": "3",
+      "skill": "Invisibility",
+      "proficiency": "Intermediate",
+      "yearsExperience": 3,
+      "experiences": ["2"]
+    },
+    {
+      "id": "4",
+      "skill": "Spell Casting",
+      "proficiency": "Expert",
+      "yearsExperience": 7,
+      "experiences": ["3"]
+    },
+    {
+      "id": "5",
+      "skill": "Potion Making",
+      "proficiency": "Advanced",
+      "yearsExperience": 6,
+      "experiences": ["3"]
+    },
+    {
+      "id": "6",
+      "skill": "Teleportation",
+      "proficiency": "Intermediate",
+      "yearsExperience": 2,
+      "experiences": ["4"]
+    },
+    {
+      "id": "7",
+      "skill": "Stealth",
+      "proficiency": "Expert",
+      "yearsExperience": 8,
+      "experiences": ["5"]
+    },
+    {
+      "id": "8",
+      "skill": "Shuriken Throwing",
+      "proficiency": "Advanced",
+      "yearsExperience": 5,
+      "experiences": ["5"]
+    },
+    {
+      "id": "9",
+      "skill": "Wall Running",
+      "proficiency": "Intermediate",
+      "yearsExperience": 4,
+      "experiences": ["6"]
+    }
+  ],
+  "experiences": [
+    {
+      "id": "1",
+      "jobTitle": "Superhero",
+      "company": "Justice League",
+      "startDate": "Present",
+      "endDate": "",
+      "summary": "Saving the world from villains and natural disasters.",
+      "tasks": ["1", "2"]
+    },
+    {
+      "id": "2",
+      "jobTitle": "Invisible Spy",
+      "company": "Secret Agency",
+      "startDate": "",
+      "endDate": "",
+      "summary": "Gathering intelligence without being seen.",
+      "tasks": ["3"]
+    },
+    {
+      "id": "3",
+      "jobTitle": "Wizard",
+      "company": "Hogwarts",
+      "startDate": "",
+      "endDate": "",
+      "summary": "Teaching and practicing advanced magic.",
+      "tasks": ["4", "5"]
+    },
+    {
+      "id": "4",
+      "jobTitle": "Apprentice Sorcerer",
+      "company": "Mystic Arts Academy",
+      "startDate": "",
+      "endDate": "",
+      "summary": "Learning the ways of magic.",
+      "tasks": ["6"]
+    },
+    {
+      "id": "5",
+      "jobTitle": "Ninja Warrior",
+      "company": "Shadow Clan",
+      "startDate": "08/2017",
+      "endDate": "05/2023",
+      "summary": "Undertaking covert missions.",
+      "tasks": ["7", "8"]
+    },
+    {
+      "id": "6",
+      "jobTitle": "Ninja Trainee",
+      "company": "Hidden Dojo",
+      "startDate": "07/2015",
+      "endDate": "08/2016",
+      "summary": "Training in advanced ninja techniques.",
+      "tasks": ["9"]
+    }
+  ],
+  "tasks": [
+    {
+      "id": "1",
+      "task": "Rescuing cats from trees.",
+      "skills": ["1", "2"],
+      "experienceId": "1"
+    },
+    {
+      "id": "2",
+      "task": "Stopping runaway trains.",
+      "skills": ["1"],
+      "experienceId": "1"
+    },
+    {
+      "id": "3",
+      "task": "Infiltrating enemy bases.",
+      "skills": ["3"],
+      "experienceId": "2"
+    },
+    {
+      "id": "4",
+      "task": "Teaching Defense Against the Dark Arts.",
+      "skills": ["4"],
+      "experienceId": "3"
+    },
+    {
+      "id": "5",
+      "task": "Brewing complex potions.",
+      "skills": ["5"],
+      "experienceId": "3"
+    },
+    {
+      "id": "6",
+      "task": "Teleporting to hidden locations.",
+      "skills": ["6"],
+      "experienceId": "4"
+    },
+    {
+      "id": "7",
+      "task": "Sneaking into guarded facilities.",
+      "skills": ["7"],
+      "experienceId": "5"
+    },
+    {
+      "id": "8",
+      "task": "Perfecting shuriken accuracy.",
+      "skills": ["8"],
+      "experienceId": "5"
+    },
+    {
+      "id": "9",
+      "task": "Running up skyscrapers.",
+      "skills": ["9"],
+      "experienceId": "6"
+    }
+  ]
+}

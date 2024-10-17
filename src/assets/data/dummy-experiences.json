@@ -1,0 +1,58 @@
+{
+  "experiences": [
+    {
+      "id": "1",
+      "jobTitle": "Superhero",
+      "company": "Justice League",
+      "startDate": "Present",
+      "endDate": "",
+      "summary": "Saving the world from villains and natural disasters.",
+      "tasks": ["1", "2"]
+    },
+    {
+      "id": "2",
+      "jobTitle": "Invisible Spy",
+      "company": "Secret Agency",
+      "startDate": "",
+      "endDate": "",
+      "summary": "Gathering intelligence without being seen.",
+      "tasks": ["3"]
+    },
+    {
+      "id": "3",
+      "jobTitle": "Wizard",
+      "company": "Hogwarts",
+      "startDate": "",
+      "endDate": "",
+      "summary": "Teaching and practicing advanced magic.",
+      "tasks": ["4", "5"]
+    },
+    {
+      "id": "4",
+      "jobTitle": "Apprentice Sorcerer",
+      "company": "Mystic Arts Academy",
+      "startDate": "",
+      "endDate": "",
+      "summary": "Learning the ways of magic.",
+      "tasks": ["6"]
+    },
+    {
+      "id": "5",
+      "jobTitle": "Ninja Warrior",
+      "company": "Shadow Clan",
+      "startDate": "08/2017",
+      "endDate": "05/2023",
+      "summary": "Undertaking covert missions.",
+      "tasks": ["7", "8"]
+    },
+    {
+      "id": "6",
+      "jobTitle": "Ninja Trainee",
+      "company": "Hidden Dojo",
+      "startDate": "07/2015",
+      "endDate": "08/2016",
+      "summary": "Training in advanced ninja techniques.",
+      "tasks": ["9"]
+    }
+  ]
+}

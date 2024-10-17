@@ -28,7 +28,15 @@
     "no-alert": "off",
     "react/react-in-jsx-scope": "off",
     "unused-imports/no-unused-imports": "warn",
-    "no-unused-vars": ["warn", { "vars": "all", "args": "after-used", "ignoreRestSiblings": false }]
+    "unused-imports/no-unused-vars": [
+      "warn",
+      { "vars": "all", "varsIgnorePattern": "^_", "args": "after-used", "argsIgnorePattern": "^_" }
+    ],
+    "no-unused-vars": [
+      "warn",
+      { "vars": "all", "args": "after-used", "ignoreRestSiblings": false }
+    ],
+    "no-warning-comments": "off"
   },
   "settings": {
     "react": {
