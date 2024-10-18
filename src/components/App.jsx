@@ -1,5 +1,3 @@
-// App.jsx
-
 import profilePic from '../assets/me-pixelicious (2).png';
 import { Header, TabViewer, Footer } from '../components/shared/index';
 

@@ -1,3 +1,10 @@
+/* For Universal use */
+@import './App.css';
+@import './header.css';
+@import './content.css';
+@import './footer.css';
+@import './dialogue.css';
+
 *,
 *::before,
 *::after {
@@ -21,10 +28,3 @@ body {
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
 }
-
-/* For Universal use */
-@import './App.css';
-@import './header.css';
-@import './content.css';
-@import './footer.css';
-@import './dialogue.css';

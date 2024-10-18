@@ -1,4 +1,3 @@
-// locationContext.js
 import { createContext, useContext } from 'react';
 import { useLocation } from 'react-router-dom';
 
