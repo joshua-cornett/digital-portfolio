@@ -1,8 +1,14 @@
-// DialogueHelper.js
+// src/utils/DialogueHelper.js
 
 // Cache to store dialogues by location
 const dialogueCache = {};
 
+/**
+ * Retrieves dialogue text based on the current location.
+ *
+ * @param {string} location - The current location (route).
+ * @returns {string} Dialogue text specific to the location.
+ */
 export const getLocationDialogue = (location) => {
   // Check if the dialogue is already in the cache
   if (dialogueCache[location]) {

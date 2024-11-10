@@ -1,6 +1,19 @@
+// src/components/shared/Dialogue.jsx
+
+// React imports
 import { useState, useEffect } from 'react';
 import { useDialogueContext } from '../../contexts';
 
+
+/**
+ * Dialogue component that displays typing animation text based on the provided dialogue.
+ * 
+ * @component
+ * @param {Object} props - Component properties.
+ * @param {string} props.id - Unique identifier for the dialogue instance.
+ * @param {string} props.dialogue - Text to display in the dialogue.
+ * @returns {JSX.Element} The rendered dialogue component with typing animation.
+ */
 const Dialogue = ({ id, dialogue }) => {
   const [displayedText, setDisplayedText] = useState('');
   const [index, setIndex] = useState(0);

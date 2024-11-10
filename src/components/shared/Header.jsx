@@ -1,15 +1,21 @@
-// Header.jsx
+// src/components/shared/Header.jsx
 
 // React imports
 import { useId } from 'react';
 import { Link } from 'react-router-dom';
-
 // Context imports
-
 import { useLocationDialogue } from '../../utils/hooks/useLocationDialogue';
-
+// Component imports
 import Dialogue from './Dialogue';
 
+/**
+ * Header component that displays a profile picture, dialogue box, and navigation links.
+ *
+ * @component
+ * @param {Object} props - Component properties.
+ * @param {string} props.profilePic - The URL or path to the profile picture.
+ * @returns {JSX.Element} The rendered header component.
+ */
 const Header = ({ profilePic }) => {
   const id = useId();
 
