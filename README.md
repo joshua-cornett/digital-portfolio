@@ -1,3 +1,10 @@
+# Digital Portfolio
+This is a project dedicated to showcasing my skills, experience, and a few of my recent projects.
+
+## Documentation
+
+The JSDoc-generated documentation can be viewed from the root directory, in the docs folder.
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
