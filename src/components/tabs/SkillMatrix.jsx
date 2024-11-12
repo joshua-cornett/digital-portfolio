@@ -5,7 +5,6 @@ import { useEffect, useRef, useState } from 'react';
 
 // Three.js imports
 import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
 
 /**
  * SkillMatrix component creates a 3D radial selection UI for navigating skills and experiences.
@@ -15,185 +14,173 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
  */
 const SkillMatrix = () => {
   const mountRef = useRef(null);
+  const sceneRef = useRef(null);
+  const cameraGroupRef = useRef(null);
+  const rendererRef = useRef(null);
+  const skillsGroupRef = useRef(null);
+  const rotationVelocity = useRef({ x: 0, y: 0 });
+  const keysPressed = useRef(new Set());
+  const isDragging = useRef(false);
+  const previousMousePosition = useRef({ x: 0, y: 0 });
 
-  // Constants
-  const rotationSpeed = 0.0005;
-  const dampingFactor = 0.98;
+  // Constants for keyboard and mouse controls
+  const keyboardRotationSpeed = 0.001;
+  const keyboardDampingFactor = 0.98;
+  const mouseRotationSpeed = 0.0003;
+  const mouseDampingFactor = 0.95;
   const distance = 10;
 
-  // State to toggle between keyboard and mouse control modes
-  const [controlMode, setControlMode] = useState('keyboard'); // 'keyboard' or 'mouse'
+  // Track current control mode
+  const [controlMode, setControlMode] = useState('keyboard');
 
   useEffect(() => {
-    const scene = new THREE.Scene();
+    if (!sceneRef.current) {
+      // Initialize scene, camera, renderer, and skills
+      sceneRef.current = new THREE.Scene();
+      cameraGroupRef.current = new THREE.Group();
+      sceneRef.current.add(cameraGroupRef.current);
 
-    const cameraGroup = new THREE.Group();
-    scene.add(cameraGroup);
+      const camera = new THREE.PerspectiveCamera(
+        95,
+        window.innerWidth / window.innerHeight,
+        0.1,
+        1000
+      );
+      camera.position.set(0, 0, distance);
+      cameraGroupRef.current.add(camera);
 
-    // Create a perspective camera
-    const camera = new THREE.PerspectiveCamera(
-      95,
-      window.innerWidth / window.innerHeight,
-      0.1,
-      1000
-    );
-    camera.position.set(0, 0, distance);
-    camera.lookAt(0, 0, 0);
-    cameraGroup.add(camera);
+      rendererRef.current = new THREE.WebGLRenderer();
+      rendererRef.current.setSize(window.innerWidth, window.innerHeight);
+      mountRef.current.appendChild(rendererRef.current.domElement);
 
-    // Initialization
-    const renderer = new THREE.WebGLRenderer();
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    mountRef.current.appendChild(renderer.domElement);
+      skillsGroupRef.current = new THREE.Group();
+      sceneRef.current.add(skillsGroupRef.current);
 
-    // Create a group to contain the skill nodes and connecting lines
-    const skillsGroup = new THREE.Group();
-    scene.add(skillsGroup);
+      // Populate items in a spherical layout
+      const radius = 5;
+      const numItems = 12;
+      for (let i = 0; i < numItems; i++) {
+        const theta = Math.acos(1 - (2 * (i + 1)) / numItems);
+        const phi = Math.sqrt(numItems * Math.PI) * theta;
+        const x = radius * Math.sin(theta) * Math.cos(phi);
+        const y = radius * Math.sin(theta) * Math.sin(phi);
+        const z = radius * Math.cos(theta);
 
-    // Configure the spherical layout for skill nodes
-    const radius = 5;
-    const numItems = 12;
-    const items = [];
+        const geometry = new THREE.SphereGeometry(0.2, 16, 16);
+        const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+        const itemMesh = new THREE.Mesh(geometry, material);
+        itemMesh.position.set(x, y, z);
+        skillsGroupRef.current.add(itemMesh);
 
-    // Position skill items on a spherical surface
-    for (let i = 0; i < numItems; i++) {
-      const theta = Math.acos(1 - (2 * (i + 1)) / numItems); // Calculate polar angle
-      const phi = Math.sqrt(numItems * Math.PI) * theta; // Calculate azimuthal angle
-
-      const x = radius * Math.sin(theta) * Math.cos(phi);
-      const y = radius * Math.sin(theta) * Math.sin(phi);
-      const z = radius * Math.cos(theta);
-
-      // Create a small sphere to represent each skill item
-      const geometry = new THREE.SphereGeometry(0.2, 16, 16);
-      const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-      const itemMesh = new THREE.Mesh(geometry, material);
-
-      itemMesh.position.set(x, y, z);
-      skillsGroup.add(itemMesh);
-      items.push(itemMesh);
+        const lineGeometry = new THREE.BufferGeometry().setFromPoints([
+          new THREE.Vector3(0, 0, 0),
+          itemMesh.position
+        ]);
+        const lineMaterial = new THREE.LineBasicMaterial({ color: 0x00ff00 });
+        const line = new THREE.Line(lineGeometry, lineMaterial);
+        skillsGroupRef.current.add(line);
+      }
     }
 
-    // Draw lines connecting each item to the center
-    for (const item of items) {
-      const lineGeometry = new THREE.BufferGeometry().setFromPoints([
-        new THREE.Vector3(0, 0, 0),
-        item.position
-      ]);
+    // Mouse control functions
+    const handleMouseDown = (event) => {
+      setControlMode('mouse');
+      isDragging.current = true;
+      previousMousePosition.current = { x: event.clientX, y: event.clientY };
+      rendererRef.current.domElement.style.cursor = 'none'; // Hide cursor on drag
+    };
 
-      const lineMaterial = new THREE.LineBasicMaterial({ color: 0x00ff00 });
-      const line = new THREE.Line(lineGeometry, lineMaterial);
+    const handleMouseMove = (event) => {
+      if (isDragging.current) {
+        const deltaX = event.clientX - previousMousePosition.current.x;
+        const deltaY = event.clientY - previousMousePosition.current.y;
 
-      skillsGroup.add(line);
-    }
+        rotationVelocity.current.y += deltaX * mouseRotationSpeed;
+        rotationVelocity.current.x += deltaY * mouseRotationSpeed;
 
-    // State and velocity for keyboard rotation control
-    const keysPressed = new Set();
-    const rotationVelocity = { x: 0, y: 0 };
+        previousMousePosition.current = { x: event.clientX, y: event.clientY };
+      }
+    };
 
-    // Handle keydown and keyup events to track keyboard inputs
+    const handleMouseUp = () => {
+      isDragging.current = false;
+      rendererRef.current.domElement.style.cursor = 'default'; // Show cursor after drag
+    };
+
+    // Keyboard control functions
     const handleKeyDown = (event) => {
-      keysPressed.add(event.key.toLowerCase());
+      setControlMode('keyboard');
+      keysPressed.current.add(event.key.toLowerCase());
+      event.preventDefault();
     };
 
     const handleKeyUp = (event) => {
-      keysPressed.delete(event.key.toLowerCase());
+      keysPressed.current.delete(event.key.toLowerCase());
     };
 
-    // Function: Apply keyboard rotations with momentum
     const applyKeyboardRotations = () => {
-      if (keysPressed.has('w') || keysPressed.has('arrowup')) {
-        rotationVelocity.x += rotationSpeed;
+      if (keysPressed.current.has('w') || keysPressed.current.has('arrowup')) {
+        rotationVelocity.current.x += keyboardRotationSpeed;
       }
-      if (keysPressed.has('s') || keysPressed.has('arrowdown')) {
-        rotationVelocity.x -= rotationSpeed;
+      if (keysPressed.current.has('s') || keysPressed.current.has('arrowdown')) {
+        rotationVelocity.current.x -= keyboardRotationSpeed;
       }
-      if (keysPressed.has('a') || keysPressed.has('arrowleft')) {
-        rotationVelocity.y += rotationSpeed;
+      if (keysPressed.current.has('a') || keysPressed.current.has('arrowleft')) {
+        rotationVelocity.current.y += keyboardRotationSpeed;
       }
-      if (keysPressed.has('d') || keysPressed.has('arrowright')) {
-        rotationVelocity.y -= rotationSpeed;
+      if (keysPressed.current.has('d') || keysPressed.current.has('arrowright')) {
+        rotationVelocity.current.y -= keyboardRotationSpeed;
       }
-
-      // Apply the rotation to the camera group
-      cameraGroup.rotateOnAxis(new THREE.Vector3(1, 0, 0), rotationVelocity.x);
-      cameraGroup.rotateOnAxis(new THREE.Vector3(0, 1, 0), rotationVelocity.y);
-
-      // Apply damping to gradually reduce velocity
-      rotationVelocity.x *= dampingFactor;
-      rotationVelocity.y *= dampingFactor;
     };
-
-    // Configure mouse controls (OrbitControls) if in mouse control mode
-    let orbitControls;
-    if (controlMode === 'mouse') {
-      orbitControls = new OrbitControls(camera, renderer.domElement);
-      orbitControls.enableDamping = true; // Smooth dragging
-      orbitControls.dampingFactor = 0.01;
-      orbitControls.rotateSpeed = 1; // Set rotate speed for smoother control
-      orbitControls.enableZoom = false;
-      orbitControls.enablePan = false;
-    }
-
-    // Event listeners for keyboard controls
-    if (controlMode === 'keyboard') {
-      window.addEventListener('keydown', handleKeyDown);
-      window.addEventListener('keyup', handleKeyUp);
-    }
 
     // Animation loop
     const animate = () => {
       if (controlMode === 'keyboard') {
         applyKeyboardRotations();
-      } else if (orbitControls) {
-        orbitControls.update();
       }
-      renderer.render(scene, camera);
+
+      const damping = controlMode === 'keyboard' ? keyboardDampingFactor : mouseDampingFactor;
+
+      cameraGroupRef.current.rotateOnAxis(new THREE.Vector3(1, 0, 0), rotationVelocity.current.x);
+      cameraGroupRef.current.rotateOnAxis(new THREE.Vector3(0, 1, 0), rotationVelocity.current.y);
+
+      rotationVelocity.current.x *= damping;
+      rotationVelocity.current.y *= damping;
+
+      rendererRef.current.render(sceneRef.current, cameraGroupRef.current.children[0]);
       requestAnimationFrame(animate);
     };
     animate();
 
-    // Cleanup on component unmount
+    // Attach event listeners only once
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keyup', handleKeyUp);
+    rendererRef.current.domElement.addEventListener('mousedown', handleMouseDown);
+    rendererRef.current.domElement.addEventListener('mousemove', handleMouseMove);
+    rendererRef.current.domElement.addEventListener('mouseup', handleMouseUp);
+
+    // Cleanup on unmount
     return () => {
       window.removeEventListener('keydown', handleKeyDown);
       window.removeEventListener('keyup', handleKeyUp);
+      rendererRef.current.domElement.removeEventListener('mousedown', handleMouseDown);
+      rendererRef.current.domElement.removeEventListener('mousemove', handleMouseMove);
+      rendererRef.current.domElement.removeEventListener('mouseup', handleMouseUp);
 
-      if (orbitControls) orbitControls.dispose();
-      renderer.dispose();
+      rendererRef.current.dispose();
 
-      if (mountRef.current && renderer.domElement) {
-        mountRef.current.removeChild(renderer.domElement);
+      if (mountRef.current && rendererRef.current.domElement) {
+        mountRef.current.removeChild(rendererRef.current.domElement);
       }
 
-      scene.traverse((object) => {
+      sceneRef.current.traverse((object) => {
         if (object.geometry) object.geometry.dispose();
         if (object.material) object.material.dispose();
       });
     };
-  }, [controlMode]);
+  }, []);
 
-  return (
-    <div>
-      <div ref={mountRef} style={{ width: '100%', height: '100vh' }} />
-      {/* Controls toggle */}
-      <button
-        onClick={() => setControlMode(controlMode === 'keyboard' ? 'mouse' : 'keyboard')}
-        style={{
-          position: 'absolute',
-          top: '300px',
-          left: '10px',
-          padding: '10px',
-          background: '#00ff00',
-          color: '#000',
-          border: 'none',
-          borderRadius: '4px',
-          cursor: 'pointer'
-        }}
-      >
-        Switch to {controlMode === 'keyboard' ? 'Mouse' : 'Keyboard'} Controls
-      </button>
-    </div>
-  );
+  return <div ref={mountRef} style={{ width: '100%', height: '100vh' }} />;
 };
 
 export default SkillMatrix;
