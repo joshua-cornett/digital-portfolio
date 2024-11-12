@@ -1,7 +1,16 @@
+// src/components/shared/TabViewer
+
+// React imports
 import { Routes, Route } from 'react-router-dom';
 // Page imports
 import { About, Projects } from '../tabs';
 
+/**
+ * TabViewer component that renders different content tabs based on the route.
+ *
+ * @component
+ * @returns {JSX.Element} The rendered tab viewer component with route-based content.
+ */
 const TabViewer = () => {
   return (
     <main className="content">

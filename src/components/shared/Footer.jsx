@@ -1,6 +1,15 @@
+// src/components/shared/Footer.jsx
+
+// react-icons imports
 import { FaGithub, FaLinkedin } from 'react-icons/fa';
 import { HiOutlineMail } from 'react-icons/hi';
 
+/**
+ * Footer component displaying social media links for GitHub, LinkedIn, and email.
+ * 
+ * @component
+ * @returns {JSX.Element} The rendered footer component with social media links.
+ */
 const Footer = () => {
   return (
     <footer className="footer">
