@@ -1,7 +1,7 @@
 // src/components/SkillMatrix.jsx
 
 // React imports
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 // Three.js imports
 import * as THREE from 'three';
@@ -14,99 +14,186 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls';
  * @returns {JSX.Element} The rendered SkillMatrix component.
  */
 const SkillMatrix = () => {
-  // Reference to the canvas element
   const mountRef = useRef(null);
+
+  // Constants
+  const rotationSpeed = 0.0005;
+  const dampingFactor = 0.98;
+  const distance = 10;
+
+  // State to toggle between keyboard and mouse control modes
+  const [controlMode, setControlMode] = useState('keyboard'); // 'keyboard' or 'mouse'
 
   useEffect(() => {
     const scene = new THREE.Scene();
 
-    const camera = new THREE.PerspectiveCamera(
-      75, // Field of view
-      window.innerWidth / window.innerHeight, // Aspect ratio
-      0.1, // near clipping
-      1000 // far clipping
-    );
-    camera.position.z = 10; // default view distance
+    const cameraGroup = new THREE.Group();
+    scene.add(cameraGroup);
 
+    // Create a perspective camera
+    const camera = new THREE.PerspectiveCamera(
+      95,
+      window.innerWidth / window.innerHeight,
+      0.1,
+      1000
+    );
+    camera.position.set(0, 0, distance);
+    camera.lookAt(0, 0, 0);
+    cameraGroup.add(camera);
+
+    // Initialization
     const renderer = new THREE.WebGLRenderer();
     renderer.setSize(window.innerWidth, window.innerHeight);
     mountRef.current.appendChild(renderer.domElement);
 
-    const controls = new OrbitControls(camera, renderer.domElement);
-    controls.enableDamping = true; // Smooth motion
-    controls.dampingFactor = 0.1;
-    controls.rotateSpeed = 0.5;
-
-    // Set the target of the camera's orbit to the origin
-    controls.target.set(0, 0, 0);
-
-    // Disable panning and enable right-click drag for orbiting
-    controls.enablePan = false;
-    controls.mouseButtons = {
-      LEFT: null,
-      RIGHT: THREE.MOUSE.ROTATE // Set right-click for orbiting
-    };
-
-    // Add a group for skill items
+    // Create a group to contain the skill nodes and connecting lines
     const skillsGroup = new THREE.Group();
     scene.add(skillsGroup);
 
-    // Position items on a sphere
-    const radius = 5; // Radius of the sphere
-    const numItems = 12; // Total number of items
-    const items = []; // Array to store item meshes
+    // Configure the spherical layout for skill nodes
+    const radius = 5;
+    const numItems = 12;
+    const items = [];
 
+    // Position skill items on a spherical surface
     for (let i = 0; i < numItems; i++) {
-      // Calculate spherical coordinates
-      const theta = Math.acos(1 - (2 * (i + 1)) / numItems); // Polar angle
-      const phi = Math.sqrt(numItems * Math.PI) * theta; // Azimuthal angle
+      const theta = Math.acos(1 - (2 * (i + 1)) / numItems); // Calculate polar angle
+      const phi = Math.sqrt(numItems * Math.PI) * theta; // Calculate azimuthal angle
 
-      // Convert spherical coordinates to Cartesian (x, y, z)
       const x = radius * Math.sin(theta) * Math.cos(phi);
       const y = radius * Math.sin(theta) * Math.sin(phi);
       const z = radius * Math.cos(theta);
 
-      // Create the item mesh
+      // Create a small sphere to represent each skill item
       const geometry = new THREE.SphereGeometry(0.2, 16, 16);
       const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
       const itemMesh = new THREE.Mesh(geometry, material);
 
-      // Set the item's position and add to the group
       itemMesh.position.set(x, y, z);
       skillsGroup.add(itemMesh);
       items.push(itemMesh);
     }
 
+    // Draw lines connecting each item to the center
     for (const item of items) {
-      // Create geometry for the line
       const lineGeometry = new THREE.BufferGeometry().setFromPoints([
-        new THREE.Vector3(0, 0, 0), // Start at center
-        item.position // End at item position
+        new THREE.Vector3(0, 0, 0),
+        item.position
       ]);
 
-      // Create material and line mesh
       const lineMaterial = new THREE.LineBasicMaterial({ color: 0x00ff00 });
       const line = new THREE.Line(lineGeometry, lineMaterial);
 
-      // Add line to scene
       skillsGroup.add(line);
     }
 
-    // Create an animation loop
+    // State and velocity for keyboard rotation control
+    const keysPressed = new Set();
+    const rotationVelocity = { x: 0, y: 0 };
+
+    // Handle keydown and keyup events to track keyboard inputs
+    const handleKeyDown = (event) => {
+      keysPressed.add(event.key.toLowerCase());
+    };
+
+    const handleKeyUp = (event) => {
+      keysPressed.delete(event.key.toLowerCase());
+    };
+
+    // Function: Apply keyboard rotations with momentum
+    const applyKeyboardRotations = () => {
+      if (keysPressed.has('w') || keysPressed.has('arrowup')) {
+        rotationVelocity.x += rotationSpeed;
+      }
+      if (keysPressed.has('s') || keysPressed.has('arrowdown')) {
+        rotationVelocity.x -= rotationSpeed;
+      }
+      if (keysPressed.has('a') || keysPressed.has('arrowleft')) {
+        rotationVelocity.y += rotationSpeed;
+      }
+      if (keysPressed.has('d') || keysPressed.has('arrowright')) {
+        rotationVelocity.y -= rotationSpeed;
+      }
+
+      // Apply the rotation to the camera group
+      cameraGroup.rotateOnAxis(new THREE.Vector3(1, 0, 0), rotationVelocity.x);
+      cameraGroup.rotateOnAxis(new THREE.Vector3(0, 1, 0), rotationVelocity.y);
+
+      // Apply damping to gradually reduce velocity
+      rotationVelocity.x *= dampingFactor;
+      rotationVelocity.y *= dampingFactor;
+    };
+
+    // Configure mouse controls (OrbitControls) if in mouse control mode
+    let orbitControls;
+    if (controlMode === 'mouse') {
+      orbitControls = new OrbitControls(camera, renderer.domElement);
+      orbitControls.enableDamping = true; // Smooth dragging
+      orbitControls.dampingFactor = 0.01;
+      orbitControls.rotateSpeed = 1; // Set rotate speed for smoother control
+      orbitControls.enableZoom = false;
+      orbitControls.enablePan = false;
+    }
+
+    // Event listeners for keyboard controls
+    if (controlMode === 'keyboard') {
+      window.addEventListener('keydown', handleKeyDown);
+      window.addEventListener('keyup', handleKeyUp);
+    }
+
+    // Animation loop
     const animate = () => {
+      if (controlMode === 'keyboard') {
+        applyKeyboardRotations();
+      } else if (orbitControls) {
+        orbitControls.update();
+      }
+      renderer.render(scene, camera);
       requestAnimationFrame(animate);
-      controls.update(); // Update controls each frame
-      renderer.render(scene, camera); // Render the scene with the camera
     };
     animate();
 
-    // Cleanup on unmount
+    // Cleanup on component unmount
     return () => {
-      mountRef.current.removeChild(renderer.domElement);
-    };
-  }, []);
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keyup', handleKeyUp);
 
-  return <div ref={mountRef} style={{ width: '100%', height: '100vh' }} />;
+      if (orbitControls) orbitControls.dispose();
+      renderer.dispose();
+
+      if (mountRef.current && renderer.domElement) {
+        mountRef.current.removeChild(renderer.domElement);
+      }
+
+      scene.traverse((object) => {
+        if (object.geometry) object.geometry.dispose();
+        if (object.material) object.material.dispose();
+      });
+    };
+  }, [controlMode]);
+
+  return (
+    <div>
+      <div ref={mountRef} style={{ width: '100%', height: '100vh' }} />
+      {/* Controls toggle */}
+      <button
+        onClick={() => setControlMode(controlMode === 'keyboard' ? 'mouse' : 'keyboard')}
+        style={{
+          position: 'absolute',
+          top: '300px',
+          left: '10px',
+          padding: '10px',
+          background: '#00ff00',
+          color: '#000',
+          border: 'none',
+          borderRadius: '4px',
+          cursor: 'pointer'
+        }}
+      >
+        Switch to {controlMode === 'keyboard' ? 'Mouse' : 'Keyboard'} Controls
+      </button>
+    </div>
+  );
 };
 
 export default SkillMatrix;
