@@ -44,6 +44,9 @@ const Header = ({ profilePic }) => {
           <li>
             <Link to="/projects">Projects</Link>
           </li>
+          <li>
+            <Link to="/matrix">SkillMatrix</Link>
+          </li>
         </ul>
       </nav>
     </header>

@@ -3,7 +3,7 @@
 // React imports
 import { Routes, Route } from 'react-router-dom';
 // Page imports
-import { About, Projects } from '../tabs';
+import { About, Projects, SkillMatrix } from '../tabs';
 
 /**
  * TabViewer component that renders different content tabs based on the route.
@@ -17,6 +17,7 @@ const TabViewer = () => {
       <Routes>
         <Route path="/about" element={<About />} />
         <Route path="/projects" element={<Projects />} />
+        <Route path="/matrix" element={<SkillMatrix />} />
       </Routes>
     </main>
   );

@@ -3,6 +3,7 @@
 // Tab imports
 import About from './About';
 import Projects from './Projects';
+import SkillMatrix from './SkillMatrix';
 
 // Tab exports
-export { About, Projects };
+export { About, Projects, SkillMatrix };
