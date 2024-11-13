@@ -22,12 +22,13 @@ const SkillMatrix = () => {
   const keysPressed = useRef(new Set());
   const isDragging = useRef(false);
   const previousMousePosition = useRef({ x: 0, y: 0 });
+  const previousTouchPosition = useRef({ x: 0, y: 0 });
 
-  // Constants for keyboard and mouse controls
+  // Constants for keyboard and mouse/touch controls
   const keyboardRotationSpeed = 0.001;
   const keyboardDampingFactor = 0.98;
-  const mouseRotationSpeed = 0.0003;
-  const mouseDampingFactor = 0.95;
+  const mouseTouchRotationSpeed = 0.0003;
+  const mouseTouchDampingFactor = 0.95;
   const distance = 10;
 
   // Track current control mode
@@ -95,8 +96,8 @@ const SkillMatrix = () => {
         const deltaX = event.clientX - previousMousePosition.current.x;
         const deltaY = event.clientY - previousMousePosition.current.y;
 
-        rotationVelocity.current.y += deltaX * mouseRotationSpeed;
-        rotationVelocity.current.x += deltaY * mouseRotationSpeed;
+        rotationVelocity.current.y += deltaX * mouseTouchRotationSpeed;
+        rotationVelocity.current.x += deltaY * mouseTouchRotationSpeed;
 
         previousMousePosition.current = { x: event.clientX, y: event.clientY };
       }
@@ -105,6 +106,41 @@ const SkillMatrix = () => {
     const handleMouseUp = () => {
       isDragging.current = false;
       rendererRef.current.domElement.style.cursor = 'default'; // Show cursor after drag
+    };
+
+    // Touch control functions
+    const handleTouchStart = (event) => {
+      setControlMode('touch');
+      if (event.touches.length === 1) {
+        // Only track single-finger touches
+        previousTouchPosition.current = { x: event.touches[0].pageX, y: event.touches[0].pageY };
+        event.preventDefault(); // Prevents scroll behavior on touch devices
+      }
+    };
+
+    const handleTouchMove = (event) => {
+      if (event.touches.length === 1) {
+        const deltaX = (event.touches[0].pageX - previousTouchPosition.current.x) * -1;
+        const deltaY = (event.touches[0].pageY - previousTouchPosition.current.y) * -1;
+
+        rotationVelocity.current.y += deltaX * mouseTouchRotationSpeed;
+        rotationVelocity.current.x += deltaY * mouseTouchRotationSpeed;
+
+        previousTouchPosition.current = { x: event.touches[0].pageX, y: event.touches[0].pageY };
+        event.preventDefault(); // Prevent scrolling during one-finger rotation
+      } else if (event.touches.length === 2) {
+        // Allow native scrolling and zooming for two-finger touches by not calling event.preventDefault()
+      }
+    };
+
+    const handleTouchEnd = (event) => {
+      // Momentum for touch
+      rotationVelocity.current.x *= mouseTouchDampingFactor;
+      rotationVelocity.current.y *= mouseTouchDampingFactor;
+      if (event.touches.length === 0) {
+        // No fingers left on screen
+        isDragging.current = false;
+      }
     };
 
     // Keyboard control functions
@@ -139,7 +175,7 @@ const SkillMatrix = () => {
         applyKeyboardRotations();
       }
 
-      const damping = controlMode === 'keyboard' ? keyboardDampingFactor : mouseDampingFactor;
+      const damping = controlMode === 'keyboard' ? keyboardDampingFactor : mouseTouchDampingFactor;
 
       cameraGroupRef.current.rotateOnAxis(new THREE.Vector3(1, 0, 0), rotationVelocity.current.x);
       cameraGroupRef.current.rotateOnAxis(new THREE.Vector3(0, 1, 0), rotationVelocity.current.y);
@@ -152,12 +188,19 @@ const SkillMatrix = () => {
     };
     animate();
 
-    // Attach event listeners only once
+    // Attach event listeners
     window.addEventListener('keydown', handleKeyDown);
     window.addEventListener('keyup', handleKeyUp);
     rendererRef.current.domElement.addEventListener('mousedown', handleMouseDown);
     rendererRef.current.domElement.addEventListener('mousemove', handleMouseMove);
     rendererRef.current.domElement.addEventListener('mouseup', handleMouseUp);
+    rendererRef.current.domElement.addEventListener('touchstart', handleTouchStart, {
+      passive: false
+    });
+    rendererRef.current.domElement.addEventListener('touchmove', handleTouchMove, {
+      passive: false
+    });
+    rendererRef.current.domElement.addEventListener('touchend', handleTouchEnd);
 
     // Cleanup on unmount
     return () => {
@@ -166,6 +209,9 @@ const SkillMatrix = () => {
       rendererRef.current.domElement.removeEventListener('mousedown', handleMouseDown);
       rendererRef.current.domElement.removeEventListener('mousemove', handleMouseMove);
       rendererRef.current.domElement.removeEventListener('mouseup', handleMouseUp);
+      rendererRef.current.domElement.removeEventListener('touchstart', handleTouchStart);
+      rendererRef.current.domElement.removeEventListener('touchmove', handleTouchMove);
+      rendererRef.current.domElement.removeEventListener('touchend', handleTouchEnd);
 
       rendererRef.current.dispose();
 
