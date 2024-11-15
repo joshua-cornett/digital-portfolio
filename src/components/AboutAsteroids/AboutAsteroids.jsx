@@ -1,9 +1,9 @@
 // React imports
-import { useState } from 'react';
+import { useState, useEffect, useRef } from 'react';
 // AboutAsteroids imports
 import Ship from './Ship';
 // Pixi imports
-import { Stage, Container } from '@pixi/react';
+import { Stage } from '@pixi/react';
 
 /**
  * AboutAsteroids component renders an Asteroids-like game interface.
@@ -20,73 +20,77 @@ const AboutAsteroids = () => {
     velocity: { x: 0, y: 0 } // Initial velocity
   });
 
-  /**
-   * Updates the ship's position, rotation, and velocity based on user actions.
-   * Handles thrust, rotation, and friction effects.
-   *
-   * @param {string} action - The action to perform ('thrust', 'rotateLeft', 'rotateRight').
-   */
-  const updateShipState = (action) => {
-    setShipState((prev) => {
-      const { position, rotation, velocity } = prev;
+  const gameLoopRef = useRef();
 
-      // Game physics constants
-      const thrust = 0.1; // Thrust strength
-      const rotationSpeed = 0.1; // Rotation speed in radians
-      const friction = 0.98; // Friction factor to simulate inertia
+  const thrust = 0.1; // Thrust strength
+  const rotationSpeed = 0.1; // Rotation speed
+  const friction = 0.99; // Friction factor for inertia
+  const canvasWidth = 800;
+  const canvasHeight = 600;
 
-      let newRotation = rotation;
-      let newVelocity = { ...velocity };
-      let newPosition = { ...position };
+  // Helper function to calculate the new state
+  const calculateNewState = ({ position, velocity, rotation }, action) => {
+    let newRotation = rotation;
+    let newVelocity = { ...velocity };
+    let newPosition = { ...position };
 
-      switch (action) {
-        case 'thrust':
-          console.log('Thrusting forward');
-          newVelocity = {
-            x: velocity.x + Math.cos(rotation) * thrust,
-            y: velocity.y + Math.sin(rotation) * thrust
-          };
-          break;
-        case 'rotateLeft':
-          console.log('Rotating left');
-          newRotation -= rotationSpeed;
-          break;
-        case 'rotateRight':
-          console.log('Rotating right');
-          newRotation += rotationSpeed;
-          break;
-        default:
-          console.log('Unknown action:', action);
-          break;
-      }
+    // Apply action-based updates
+    switch (action) {
+      case 'thrust':
+        newVelocity.x += Math.cos(rotation) * thrust;
+        newVelocity.y += Math.sin(rotation) * thrust;
+        break;
+      case 'rotateLeft':
+        newRotation -= rotationSpeed;
+        break;
+      case 'rotateRight':
+        newRotation += rotationSpeed;
+        break;
+      default:
+        break;
+    }
 
-      // Apply movement and wrapping logic
-      newPosition = {
-        x: (newPosition.x + newVelocity.x + 800) % 800, // Wrap horizontally
-        y: (newPosition.y + newVelocity.y + 600) % 600 // Wrap vertically
-      };
+    // Update position based on velocity
+    newPosition = {
+      x: (newPosition.x + newVelocity.x + canvasWidth) % canvasWidth,
+      y: (newPosition.y + newVelocity.y + canvasHeight) % canvasHeight
+    };
 
-      // Apply friction to velocity
-      newVelocity.x *= friction;
-      newVelocity.y *= friction;
+    // Apply friction to velocity
+    newVelocity = {
+      x: newVelocity.x * friction,
+      y: newVelocity.y * friction
+    };
 
-      return {
-        position: newPosition,
-        rotation: newRotation,
-        velocity: newVelocity
-      };
-    });
+    return { position: newPosition, rotation: newRotation, velocity: newVelocity };
   };
 
+  // Callback to handle input and update the ship's state
+  const handleInput = (action) => {
+    setShipState((prev) => calculateNewState(prev, action));
+  };
+
+  /**
+   * Game loop for continuous updates
+   */
+  const update = () => {
+    setShipState((prev) => calculateNewState(prev, null)); // Apply inertia and movement
+    gameLoopRef.current = requestAnimationFrame(update); // Schedule the next frame
+  };
+
+  useEffect(() => {
+    // Start the game loop
+    gameLoopRef.current = requestAnimationFrame(update);
+
+    // Cleanup the game loop on unmount
+    return () => {
+      cancelAnimationFrame(gameLoopRef.current);
+    };
+  }, []);
+
   return (
-    <Stage width={800} height={600} interactive={'auto'}>
-      <Container>
-        <Ship
-          position={shipState.position}
-          rotation={shipState.rotation}
-          onUpdate={updateShipState}
-        />
-      </Container>
+    <Stage width={canvasWidth} height={canvasHeight}>
+      <Ship position={shipState.position} rotation={shipState.rotation} onUpdate={handleInput} />
     </Stage>
   );
 };
