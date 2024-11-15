@@ -1,9 +1,8 @@
-// React imports
+// src/components/AboutAsteroids.jsx
+
 import { useState, useEffect, useRef } from 'react';
-// AboutAsteroids imports
 import Ship from './Ship';
-// Pixi imports
-import { Stage } from '@pixi/react';
+import { Stage, Container } from '@pixi/react';
 
 /**
  * AboutAsteroids component renders an Asteroids-like game interface.
@@ -13,84 +12,117 @@ import { Stage } from '@pixi/react';
  * @returns {JSX.Element} The rendered AboutAsteroids game component.
  */
 const AboutAsteroids = () => {
-  // State to manage the ship's position, rotation, and velocity
+  /**
+   * State to manage the ship's position, rotation, and velocity.
+   * @typedef {Object} ShipState
+   * @property {Object} position - The current position of the ship.
+   * @property {number} position.x - X-coordinate of the ship's position.
+   * @property {number} position.y - Y-coordinate of the ship's position.
+   * @property {number} rotation - The current rotation of the ship in radians.
+   * @property {Object} velocity - The current velocity of the ship.
+   * @property {number} velocity.x - X-component of the ship's velocity.
+   * @property {number} velocity.y - Y-component of the ship's velocity.
+   */
   const [shipState, setShipState] = useState({
-    position: { x: 400, y: 300 }, // Initial position
-    rotation: 0, // Initial rotation in radians
-    velocity: { x: 0, y: 0 } // Initial velocity
+    position: { x: 400, y: 300 },
+    rotation: 0,
+    velocity: { x: 0, y: 0 }
   });
 
-  const gameLoopRef = useRef();
+  // Ref to track currently active keys
+  const activeKeys = useRef(new Set());
 
-  const thrust = 0.1; // Thrust strength
-  const rotationSpeed = 0.1; // Rotation speed
-  const friction = 0.99; // Friction factor for inertia
-  const canvasWidth = 800;
-  const canvasHeight = 600;
+  /**
+   * Updates the ship's state based on active input, velocity, and friction.
+   * @param {number} delta - Time difference normalized to ~60 FPS.
+   */
+  const updateShipState = (delta) => {
+    setShipState((prev) => {
+      const { position, rotation, velocity } = prev;
 
-  // Helper function to calculate the new state
-  const calculateNewState = ({ position, velocity, rotation }, action) => {
-    let newRotation = rotation;
-    let newVelocity = { ...velocity };
-    let newPosition = { ...position };
+      // Constants for ship physics
+      const thrust = 0.1;
+      const rotationSpeed = 0.05;
+      const friction = 0.99;
 
-    // Apply action-based updates
-    switch (action) {
-      case 'thrust':
+      let newRotation = rotation;
+      let newVelocity = { ...velocity };
+
+      // Process active keys for movement and rotation
+      if (activeKeys.current.has('ArrowUp')) {
         newVelocity.x += Math.cos(rotation) * thrust;
         newVelocity.y += Math.sin(rotation) * thrust;
-        break;
-      case 'rotateLeft':
+      }
+      if (activeKeys.current.has('ArrowLeft')) {
         newRotation -= rotationSpeed;
-        break;
-      case 'rotateRight':
+      }
+      if (activeKeys.current.has('ArrowRight')) {
         newRotation += rotationSpeed;
-        break;
-      default:
-        break;
-    }
+      }
 
-    // Update position based on velocity
-    newPosition = {
-      x: (newPosition.x + newVelocity.x + canvasWidth) % canvasWidth,
-      y: (newPosition.y + newVelocity.y + canvasHeight) % canvasHeight
-    };
+      // Apply velocity to position
+      const newPosition = {
+        x: position.x + newVelocity.x * delta,
+        y: position.y + newVelocity.y * delta
+      };
 
-    // Apply friction to velocity
-    newVelocity = {
-      x: newVelocity.x * friction,
-      y: newVelocity.y * friction
-    };
+      // Apply screen wrapping
+      newPosition.x = (newPosition.x + 800) % 800; // Canvas width: 800
+      newPosition.y = (newPosition.y + 600) % 600; // Canvas height: 600
 
-    return { position: newPosition, rotation: newRotation, velocity: newVelocity };
-  };
+      // Apply friction to velocity
+      newVelocity.x *= friction;
+      newVelocity.y *= friction;
 
-  // Callback to handle input and update the ship's state
-  const handleInput = (action) => {
-    setShipState((prev) => calculateNewState(prev, action));
+      return {
+        position: newPosition,
+        rotation: newRotation,
+        velocity: newVelocity
+      };
+    });
   };
 
   /**
-   * Game loop for continuous updates
+   * Main game loop for continuous updates.
    */
-  const update = () => {
-    setShipState((prev) => calculateNewState(prev, null)); // Apply inertia and movement
-    gameLoopRef.current = requestAnimationFrame(update); // Schedule the next frame
-  };
-
   useEffect(() => {
-    // Start the game loop
-    gameLoopRef.current = requestAnimationFrame(update);
+    let lastTime = performance.now();
 
-    // Cleanup the game loop on unmount
+    const gameLoop = () => {
+      const now = performance.now();
+      const delta = (now - lastTime) / 16.67; // Normalize to ~60 FPS
+      lastTime = now;
+
+      updateShipState(delta);
+      requestAnimationFrame(gameLoop);
+    };
+
+    gameLoop();
+
+    return () => cancelAnimationFrame(gameLoop);
+  }, []);
+
+  /**
+   * Handles keydown and keyup events to track active keys.
+   */
+  useEffect(() => {
+    const handleKeyDown = (e) => activeKeys.current.add(e.key);
+    const handleKeyUp = (e) => activeKeys.current.delete(e.key);
+
+    window.addEventListener('keydown', handleKeyDown);
+    window.addEventListener('keyup', handleKeyUp);
+
     return () => {
-      cancelAnimationFrame(gameLoopRef.current);
+      window.removeEventListener('keydown', handleKeyDown);
+      window.removeEventListener('keyup', handleKeyUp);
     };
   }, []);
 
   return (
-    <Stage width={canvasWidth} height={canvasHeight}>
-      <Ship position={shipState.position} rotation={shipState.rotation} onUpdate={handleInput} />
+    <Stage width={800} height={600}>
+      <Container position={[0, 0]}>
+        <Ship position={shipState.position} rotation={shipState.rotation} />
+      </Container>
     </Stage>
   );
 };
