@@ -2,6 +2,8 @@
 
 // React imports
 import { Routes, Route } from 'react-router-dom';
+// Style imports
+import styles from './TabViewer.module.css';
 // Page imports
 import { About, Projects } from '../../pages';
 
@@ -13,7 +15,7 @@ import { About, Projects } from '../../pages';
  */
 const TabViewer = () => {
   return (
-    <main className="content">
+    <main className={styles.tab}>
       <Routes>
         <Route path="/" element={<About />} />
         <Route path="/about" element={<About />} />

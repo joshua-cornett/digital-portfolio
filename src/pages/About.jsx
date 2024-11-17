@@ -1,9 +1,11 @@
-import AboutAsteroids from '../components/AboutAsteroids/AboutAsteroids';
+// import Storyfall from '../components/Storyfall/Storyfall';
+
+import Storyfall from '../components/Storyfall/Storyfall';
 
 const About = () => {
   return (
     <div>
-      <AboutAsteroids />
+      <Storyfall />
     </div>
   );
 };

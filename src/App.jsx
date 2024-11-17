@@ -2,6 +2,8 @@
 
 // Asset imports
 import profilePic from './assets/me-pixelicious (2).png';
+// Style imports
+import styles from './styles/App.module.css';
 // Component imports
 import { Header, TabViewer, Footer } from './components/shared/index';
 
@@ -13,7 +15,7 @@ import { Header, TabViewer, Footer } from './components/shared/index';
  */
 const App = () => {
   return (
-    <div className="App">
+    <div className={styles.App}>
       <Header profilePic={profilePic}></Header>
       <TabViewer></TabViewer>
       <Footer></Footer>

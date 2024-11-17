@@ -1,13 +1,11 @@
-// src/components/shared/Dialogue.jsx
-
 // React imports
 import { useState, useEffect } from 'react';
 import { useDialogueContext } from '../../contexts';
-
+import styles from './Dialogue.module.css'; // Import CSS module
 
 /**
  * Dialogue component that displays typing animation text based on the provided dialogue.
- * 
+ *
  * @component
  * @param {Object} props - Component properties.
  * @param {string} props.id - Unique identifier for the dialogue instance.
@@ -38,7 +36,11 @@ const Dialogue = ({ id, dialogue }) => {
     return () => clearTimeout(timer);
   }, [index, dialogue]);
 
-  return <p>{displayedText}</p>;
+  return (
+    <div className={styles.dialogueBox}>
+      <p className={styles.dialogueText}>{displayedText}</p>
+    </div>
+  );
 };
 
 export default Dialogue;

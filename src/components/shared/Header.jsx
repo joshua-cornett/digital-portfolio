@@ -3,6 +3,9 @@
 // React imports
 import { useId } from 'react';
 import { Link } from 'react-router-dom';
+// Style imports
+import classNames from 'classnames';
+import styles from './Header.module.css';
 // Context imports
 import { useLocationDialogue } from '../../utils/hooks/useLocationDialogue';
 // Component imports
@@ -23,17 +26,15 @@ const Header = ({ profilePic }) => {
 
   return (
     <header>
-      <div className="profile-dialogue--wrapper">
-        <div className="pixel-corners--wrapper">
+      <div className={styles.profileWrapper}>
+        <div className={styles.pixelCornersWrapper}>
           <img
             src={profilePic}
             alt="Profile Pic for Joshua Cornett"
-            className="profile-pic pixel-corners"
+            className={classNames(styles.profilePic, styles.pixelCorners)}
           />
         </div>
-        <div className="dialogue-box">
-          <Dialogue id={id} dialogue={headerDialogue} className="dialogue"></Dialogue>
-        </div>
+        <Dialogue id={id} dialogue={headerDialogue}></Dialogue>
       </div>
       {/**TODO: Atomize this */}
       <nav className="nav-bar">

@@ -3,16 +3,16 @@
 .footer {
   /* background-color: #00ff00; */
   padding: 1rem 0;
-  border-top: 3px #00ff00;
+  border-top: 3px var(--primary-color);
   border-style: double;
 }
 
-.social-links {
+.socialLinks {
   display: flex;
   justify-content: space-evenly;
 }
 
-.social-icon {
+.socialIcon {
   font-size: 2rem;
-  color: #00ff00;
+  color: var(--primary-color);
 }
