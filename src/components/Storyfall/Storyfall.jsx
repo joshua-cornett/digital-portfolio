@@ -2,8 +2,8 @@
 import React, { useState, useCallback } from 'react';
 import { Stage, Container } from '@pixi/react';
 import useGameLoop from '../../utils/hooks/useGameLoop';
+import useInputHandler from '../../utils/hooks/useInputHandler';
 import Player from './Player';
-
 /**
  * Storyfall game component.
  * Sets up the main game loop and player positioning.
@@ -20,6 +20,35 @@ const Storyfall = () => {
     position: { x: canvasWidth / 2, y: canvasHeight - 50 },
     velocity: { x: 0, y: 0 }
   });
+
+  const speed = 5;
+
+  // Handle keyboard input
+  const handleKeyDown = useCallback(
+    (key) => {
+      if (key === 'ArrowLeft') {
+        setPlayer((prev) => ({
+          ...prev,
+          velocity: { x: -speed, y: 0 }
+        }));
+      } else if (key === 'ArrowRight') {
+        setPlayer((prev) => ({
+          ...prev,
+          velocity: { x: speed, y: 0 }
+        }));
+      }
+    },
+    [speed]
+  );
+
+  const handleKeyUp = useCallback(() => {
+    setPlayer((prev) => ({
+      ...prev,
+      velocity: { x: 0, y: 0 }
+    }));
+  }, []);
+
+  useInputHandler(handleKeyDown, handleKeyUp);
 
   // Update function for game loop
   const update = useCallback(() => {
