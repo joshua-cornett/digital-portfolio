@@ -1,10 +1,6 @@
-// src/components/Storyfall/Player.jsx
-
-// React imports
+// Player.jsx
 import React from 'react';
-// Pixi imports
 import { Sprite } from '@pixi/react';
-// Asset imports
 import playerImage from '../../assets/Storyfall/ship.png';
 
 /**
