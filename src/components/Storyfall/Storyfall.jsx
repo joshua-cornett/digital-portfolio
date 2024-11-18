@@ -22,7 +22,7 @@ const Storyfall = () => {
   // State for rendering dimensions
   const [canvasSize, setCanvasSize] = useState({
     width: window.innerWidth,
-    height: window.innerHeight - 400
+    height: window.innerHeight - 320
   });
 
   // Ref for maintaining dimensions in logic
