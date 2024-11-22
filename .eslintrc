@@ -53,7 +53,8 @@
           ["@contexts", "./src/contexts"],
           ["@utils", "./src/utils"],
           ["@components", "./src/components"],
-          ["@constants", "./src/constants"]
+          ["@constants", "./src/constants"],
+          ["@helpers", "./src/helpers"]
         ]
       }
     }
