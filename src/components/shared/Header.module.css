@@ -11,16 +11,24 @@ header {
   align-content: space-around;
 }
 
+.profileWrapper {
+  display: flex;
+  margin-bottom: 10px;
+  flex-direction: row;
+  align-items: center;
+}
+
 /* Profile picture styling */
-.profile-pic {
+.profilePic {
   width: 150px;
   height: 150px;
   position: relative;
   image-rendering: pixelated;
   object-fit: cover; /* Ensures the image fills the circle without distorting */
 }
-.pixel-corners,
-.pixel-corners--wrapper {
+
+.pixelCorners,
+.pixelCornersWrapper {
   clip-path: polygon(
     0px calc(100% - 64px),
     4px calc(100% - 64px),
@@ -133,14 +141,14 @@ header {
   );
   position: relative;
 }
-.pixel-corners {
+.pixelCorners {
   border: 4px solid transparent;
 }
-.pixel-corners--wrapper {
+.pixelCornersWwrapper {
   width: fit-content;
   height: fit-content;
 }
-.pixel-corners--wrapper .pixel-corners {
+.pixelCornersWrapper .pixelCorners {
   display: block;
   clip-path: polygon(
     4px 64px,
@@ -245,8 +253,8 @@ header {
     4px calc(100% - 64px)
   );
 }
-.pixel-corners::after,
-.pixel-corners--wrapper::after {
+.pixelCorners::after,
+.pixelCornersWrapper::after {
   content: '';
   position: absolute;
   clip-path: polygon(
@@ -471,7 +479,7 @@ header {
   display: block;
   pointer-events: none;
 }
-.pixel-corners::after {
+.pixelCorners::after {
   margin: -4px;
 }
 

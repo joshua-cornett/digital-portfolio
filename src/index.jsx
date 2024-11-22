@@ -9,7 +9,7 @@ import './styles/index.css';
 // Context imports
 import { ContextWrapper, LocationProvider, DialogueProvider } from './contexts';
 // Component imports
-import App from './components/App';
+import App from './App';
 
 const providers = [LocationProvider, DialogueProvider]; // Add or remove universal providers here ...
 
