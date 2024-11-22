@@ -1,4 +1,4 @@
-// src/components/shared/Footer.jsx
+// src/components/common/Footer.jsx
 
 import styles from './Footer.module.css'; // Import CSS module
 

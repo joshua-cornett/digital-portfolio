@@ -1,8 +1,9 @@
-/* src/styles/dialogue.css */
+/* src/components/shared/Dialogue.module.css */
 
 /* Dialogue box styling */
 .dialogueBox {
-  flex-basis: 40%;
+  flex-basis: 100%;
+  width: 100%;
   position: relative;
   border: 3px var(--primary-color) double;
   padding: 15px;
@@ -10,11 +11,13 @@
   overflow: hidden;
   font-family: sans-serif;
   margin-left: 20px;
-  float: left;
+  background: var(--primary-background);
+  display: block;
+  z-index: 100;
 }
 
 .dialogueBox p {
   font-family: var(--primary-font);
   line-height: 1rem;
-  font-size: 0.75rem;
+  font-size: 0.5rem;
 }

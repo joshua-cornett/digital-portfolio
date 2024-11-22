@@ -1,0 +1,74 @@
+/* src/components/commmon/Narrator.module.css */
+
+.narrator {
+  display: flex;
+  margin-top: 2dvh;
+  width: 100%;
+  align-content: center;
+  flex-direction: column;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.profileWrapper {
+  display: flex;
+  min-width: 300px;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Profile picture styling */
+.portrait {
+  display: flex;
+  flex-basis: 100%;
+  width: 75%;
+  justify-content: flex-end;
+  position: relative;
+  image-rendering: pixelated;
+  object-fit: cover; /* Ensures the image fills the circle without distorting */
+  z-index: 100;
+}
+
+.dialogue {
+  display: flex;
+  width: 75%;
+  flex-basis: 75%;
+  position: relative;
+  background: var(--primary-background);
+}
+
+.pixelCorners {
+  z-index: 100;
+  clip-path: polygon(
+    0px calc(100% - 16px),
+    4px calc(100% - 16px),
+    4px calc(100% - 8px),
+    8px calc(100% - 8px),
+    8px calc(100% - 4px),
+    16px calc(100% - 4px),
+    16px 100%,
+    calc(100% - 16px) 100%,
+    calc(100% - 16px) calc(100% - 4px),
+    calc(100% - 8px) calc(100% - 4px),
+    calc(100% - 8px) calc(100% - 8px),
+    calc(100% - 4px) calc(100% - 8px),
+    calc(100% - 4px) calc(100% - 16px),
+    100% calc(100% - 16px),
+    100% 16px,
+    calc(100% - 4px) 16px,
+    calc(100% - 4px) 8px,
+    calc(100% - 8px) 8px,
+    calc(100% - 8px) 4px,
+    calc(100% - 16px) 4px,
+    calc(100% - 16px) 0px,
+    16px 0px,
+    16px 4px,
+    8px 4px,
+    8px 8px,
+    4px 8px,
+    4px 16px,
+    0px 16px
+  );
+}

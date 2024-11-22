@@ -1,0 +1,4 @@
+.starfield {
+  display: flex;
+  z-index: -1; /* Ensure it's a background element */
+}

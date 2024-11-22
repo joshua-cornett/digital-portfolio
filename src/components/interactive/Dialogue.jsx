@@ -1,7 +1,9 @@
 // React imports
 import { useState, useEffect } from 'react';
-import { useDialogueContext } from '../../contexts';
-import styles from './Dialogue.module.css'; // Import CSS module
+// Context imports
+import { useDialogueContext } from '@contexts';
+// Style imports
+import styles from './Dialogue.module.css';
 
 /**
  * Dialogue component that displays typing animation text based on the provided dialogue.
@@ -18,9 +20,10 @@ const Dialogue = ({ id, dialogue }) => {
 
   const { updateDialogue } = useDialogueContext();
 
+  // Effect to add it's dialogue to context for future updates
   useEffect(() => {
     updateDialogue(id, dialogue);
-  }, [id, dialogue]);
+  }, []);
 
   // Effect to handle typing animation
   useEffect(() => {
