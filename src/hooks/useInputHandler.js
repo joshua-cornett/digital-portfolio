@@ -1,12 +1,13 @@
-// src/utils/hooks/useInputHandler.js
+// src/hooks/useInputHandler.js
 
 import { useEffect, useRef } from 'react';
 
 /**
- * Hook to handle keyboard inputs.
+ * Hook to handle keyboard inputs and maintain a record of active keys.
  *
  * @param {Function} onKeyDown - Callback for key down events.
  * @param {Function} onKeyUp - Callback for key up events.
+ * @returns {Set<string>} A set of currently active keys.
  */
 const useInputHandler = (onKeyDown, onKeyUp) => {
   const activeKeys = useRef(new Set());

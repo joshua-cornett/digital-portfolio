@@ -1,5 +1,6 @@
 // src/hooks/useTypingAnimation.js
 
+// React imports
 import { useState, useEffect } from 'react';
 
 /**

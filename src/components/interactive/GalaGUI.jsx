@@ -1,232 +1,157 @@
-// src/components/GalaGUI.jsx
-
-// React imports
-import { useEffect, useRef, useState } from 'react';
-
-// Three.js imports
+import React, { useRef, useEffect } from 'react';
+import { useFrame } from '@react-three/fiber';
 import * as THREE from 'three';
+import { useSynchronizedRenderLoop } from '@hooks';
+import useInputHandler from '@hooks/useInputHandler';
 
 /**
- * GalaGUI component creates a 3D radial selection UI for navigation
+ * GalaGUI component creates a 3D radial selection UI with enhanced controls.
  *
  * @component
  * @returns {JSX.Element} The rendered GalaGUI component.
  */
 const GalaGUI = () => {
-  const mountRef = useRef(null);
-  const sceneRef = useRef(null);
-  const cameraGroupRef = useRef(null);
-  const rendererRef = useRef(null);
-  const skillsGroupRef = useRef(null);
-  const rotationVelocity = useRef({ x: 0, y: 0 });
-  const keysPressed = useRef(new Set());
-  const isDragging = useRef(false);
-  const previousMousePosition = useRef({ x: 0, y: 0 });
-  const previousTouchPosition = useRef({ x: 0, y: 0 });
+  const groupRef = useRef();
+  const rotationVelocity = useRef(new THREE.Vector3(0, 0, 0)); // Velocity for rotations
+  const quaternion = useRef(new THREE.Quaternion()); // Maintain consistent rotation using quaternions
+  const dragMomentum = useRef(new THREE.Vector3(0, 0, 0)); // Momentum for smooth drag transitions
+  const isDragging = useRef(false); // Whether dragging is active
+  const initialPointerLock = useRef(false); // Track initial pointer lock
 
-  // Constants for keyboard and mouse/touch controls
-  const keyboardRotationSpeed = 0.001;
-  const keyboardDampingFactor = 0.98;
-  const mouseTouchRotationSpeed = 0.0003;
-  const mouseTouchDampingFactor = 0.95;
-  const distance = 10;
+  // Constants for controls
+  const keyboardRotationSpeed = 0.03; // Strength for keyboard input
+  const pointerRotationSpeed = 0.002; // Strength for drag
+  const dampingFactor = 0.9; // Smooth momentum decay
 
-  // Track current control mode
-  const [controlMode, setControlMode] = useState('keyboard');
+  // Handle simultaneous key presses
+  const activeKeys = useInputHandler(
+    (key) => {}, // No specific action needed on key down
+    (key) => {} // No specific action needed on key up
+  );
 
+  // Populate items in a spherical layout
   useEffect(() => {
-    if (!sceneRef.current) {
-      // Initialize scene, camera, renderer, and skills
-      sceneRef.current = new THREE.Scene();
-      cameraGroupRef.current = new THREE.Group();
-      sceneRef.current.add(cameraGroupRef.current);
+    if (!groupRef.current) return;
 
-      const camera = new THREE.PerspectiveCamera(
-        95,
-        window.innerWidth / window.innerHeight,
-        0.1,
-        1000
-      );
-      camera.position.set(0, 0, distance);
-      cameraGroupRef.current.add(camera);
+    const radius = 2.5;
+    const numItems = 12;
 
-      rendererRef.current = new THREE.WebGLRenderer();
-      rendererRef.current.setSize(window.innerWidth, window.innerHeight);
-      mountRef.current.appendChild(rendererRef.current.domElement);
+    for (let i = 0; i < numItems; i++) {
+      const theta = Math.acos(1 - (2 * (i + 1)) / numItems);
+      const phi = Math.sqrt(numItems * Math.PI) * theta;
+      const x = radius * Math.sin(theta) * Math.cos(phi);
+      const y = radius * Math.sin(theta) * Math.sin(phi);
+      const z = radius * Math.cos(theta);
 
-      skillsGroupRef.current = new THREE.Group();
-      sceneRef.current.add(skillsGroupRef.current);
+      const geometry = new THREE.SphereGeometry(0.2, 16, 16);
+      const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
+      const sphere = new THREE.Mesh(geometry, material);
+      sphere.position.set(x, y, z);
 
-      // Populate items in a spherical layout
-      const radius = 5;
-      const numItems = 12;
-      for (let i = 0; i < numItems; i++) {
-        const theta = Math.acos(1 - (2 * (i + 1)) / numItems);
-        const phi = Math.sqrt(numItems * Math.PI) * theta;
-        const x = radius * Math.sin(theta) * Math.cos(phi);
-        const y = radius * Math.sin(theta) * Math.sin(phi);
-        const z = radius * Math.cos(theta);
+      const lineGeometry = new THREE.BufferGeometry().setFromPoints([
+        new THREE.Vector3(0, 0, 0),
+        sphere.position
+      ]);
+      const lineMaterial = new THREE.LineBasicMaterial({ color: 0x00ff00 });
+      const line = new THREE.Line(lineGeometry, lineMaterial);
 
-        const geometry = new THREE.SphereGeometry(0.2, 16, 16);
-        const material = new THREE.MeshBasicMaterial({ color: 0x00ff00 });
-        const itemMesh = new THREE.Mesh(geometry, material);
-        itemMesh.position.set(x, y, z);
-        skillsGroupRef.current.add(itemMesh);
-
-        const lineGeometry = new THREE.BufferGeometry().setFromPoints([
-          new THREE.Vector3(0, 0, 0),
-          itemMesh.position
-        ]);
-        const lineMaterial = new THREE.LineBasicMaterial({ color: 0x00ff00 });
-        const line = new THREE.Line(lineGeometry, lineMaterial);
-        skillsGroupRef.current.add(line);
-      }
+      groupRef.current.add(sphere);
+      groupRef.current.add(line);
     }
-
-    // Mouse control functions
-    const handleMouseDown = (event) => {
-      setControlMode('mouse');
-      isDragging.current = true;
-      previousMousePosition.current = { x: event.clientX, y: event.clientY };
-      rendererRef.current.domElement.style.cursor = 'none'; // Hide cursor on drag
-    };
-
-    const handleMouseMove = (event) => {
-      if (isDragging.current) {
-        const deltaX = event.clientX - previousMousePosition.current.x;
-        const deltaY = event.clientY - previousMousePosition.current.y;
-
-        rotationVelocity.current.y += deltaX * mouseTouchRotationSpeed;
-        rotationVelocity.current.x += deltaY * mouseTouchRotationSpeed;
-
-        previousMousePosition.current = { x: event.clientX, y: event.clientY };
-      }
-    };
-
-    const handleMouseUp = () => {
-      isDragging.current = false;
-      rendererRef.current.domElement.style.cursor = 'default'; // Show cursor after drag
-    };
-
-    // Touch control functions
-    const handleTouchStart = (event) => {
-      setControlMode('touch');
-      if (event.touches.length === 1) {
-        // Only track single-finger touches
-        previousTouchPosition.current = { x: event.touches[0].pageX, y: event.touches[0].pageY };
-        event.preventDefault(); // Prevents scroll behavior on touch devices
-      }
-    };
-
-    const handleTouchMove = (event) => {
-      if (event.touches.length === 1) {
-        const deltaX = (event.touches[0].pageX - previousTouchPosition.current.x) * -1;
-        const deltaY = (event.touches[0].pageY - previousTouchPosition.current.y) * -1;
-
-        rotationVelocity.current.y += deltaX * mouseTouchRotationSpeed;
-        rotationVelocity.current.x += deltaY * mouseTouchRotationSpeed;
-
-        previousTouchPosition.current = { x: event.touches[0].pageX, y: event.touches[0].pageY };
-        event.preventDefault(); // Prevent scrolling during one-finger rotation
-      } else if (event.touches.length === 2) {
-        // Allow native scrolling and zooming for two-finger touches by not calling event.preventDefault()
-      }
-    };
-
-    const handleTouchEnd = (event) => {
-      // Momentum for touch
-      rotationVelocity.current.x *= mouseTouchDampingFactor;
-      rotationVelocity.current.y *= mouseTouchDampingFactor;
-      if (event.touches.length === 0) {
-        // No fingers left on screen
-        isDragging.current = false;
-      }
-    };
-
-    // Keyboard control functions
-    const handleKeyDown = (event) => {
-      setControlMode('keyboard');
-      keysPressed.current.add(event.key.toLowerCase());
-      event.preventDefault();
-    };
-
-    const handleKeyUp = (event) => {
-      keysPressed.current.delete(event.key.toLowerCase());
-    };
-
-    const applyKeyboardRotations = () => {
-      if (keysPressed.current.has('w') || keysPressed.current.has('arrowup')) {
-        rotationVelocity.current.x += keyboardRotationSpeed;
-      }
-      if (keysPressed.current.has('s') || keysPressed.current.has('arrowdown')) {
-        rotationVelocity.current.x -= keyboardRotationSpeed;
-      }
-      if (keysPressed.current.has('a') || keysPressed.current.has('arrowleft')) {
-        rotationVelocity.current.y += keyboardRotationSpeed;
-      }
-      if (keysPressed.current.has('d') || keysPressed.current.has('arrowright')) {
-        rotationVelocity.current.y -= keyboardRotationSpeed;
-      }
-    };
-
-    // Animation loop
-    const animate = () => {
-      if (controlMode === 'keyboard') {
-        applyKeyboardRotations();
-      }
-
-      const damping = controlMode === 'keyboard' ? keyboardDampingFactor : mouseTouchDampingFactor;
-
-      cameraGroupRef.current.rotateOnAxis(new THREE.Vector3(1, 0, 0), rotationVelocity.current.x);
-      cameraGroupRef.current.rotateOnAxis(new THREE.Vector3(0, 1, 0), rotationVelocity.current.y);
-
-      rotationVelocity.current.x *= damping;
-      rotationVelocity.current.y *= damping;
-
-      rendererRef.current.render(sceneRef.current, cameraGroupRef.current.children[0]);
-      requestAnimationFrame(animate);
-    };
-    animate();
-
-    // Attach event listeners
-    window.addEventListener('keydown', handleKeyDown);
-    window.addEventListener('keyup', handleKeyUp);
-    rendererRef.current.domElement.addEventListener('mousedown', handleMouseDown);
-    rendererRef.current.domElement.addEventListener('mousemove', handleMouseMove);
-    rendererRef.current.domElement.addEventListener('mouseup', handleMouseUp);
-    rendererRef.current.domElement.addEventListener('touchstart', handleTouchStart, {
-      passive: false
-    });
-    rendererRef.current.domElement.addEventListener('touchmove', handleTouchMove, {
-      passive: false
-    });
-    rendererRef.current.domElement.addEventListener('touchend', handleTouchEnd);
-
-    // Cleanup on unmount
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-      window.removeEventListener('keyup', handleKeyUp);
-      rendererRef.current.domElement.removeEventListener('mousedown', handleMouseDown);
-      rendererRef.current.domElement.removeEventListener('mousemove', handleMouseMove);
-      rendererRef.current.domElement.removeEventListener('mouseup', handleMouseUp);
-      rendererRef.current.domElement.removeEventListener('touchstart', handleTouchStart);
-      rendererRef.current.domElement.removeEventListener('touchmove', handleTouchMove);
-      rendererRef.current.domElement.removeEventListener('touchend', handleTouchEnd);
-
-      rendererRef.current.dispose();
-
-      if (mountRef.current && rendererRef.current.domElement) {
-        mountRef.current.removeChild(rendererRef.current.domElement);
-      }
-
-      sceneRef.current.traverse((object) => {
-        if (object.geometry) object.geometry.dispose();
-        if (object.material) object.material.dispose();
-      });
-    };
   }, []);
 
-  return <div ref={mountRef} style={{ width: '100%', height: '100vh' }} />;
+  // Handle pointer down (start drag)
+  const handlePointerDown = () => {
+    isDragging.current = true;
+    document.body.style.cursor = 'none';
+    initialPointerLock.current = true;
+
+    // Lock the pointer for the drag
+    document.addEventListener('mousemove', handlePointerMove, { passive: false });
+    document.addEventListener('mouseup', handlePointerUp, { passive: false });
+  };
+
+  // Handle pointer move (dragging)
+  const handlePointerMove = (event) => {
+    if (isDragging.current) {
+      const deltaX = event.movementX || 0; // Relative movement from pointer lock
+      const deltaY = event.movementY || 0;
+
+      rotationVelocity.current.y += deltaX * pointerRotationSpeed;
+      rotationVelocity.current.x += deltaY * pointerRotationSpeed;
+
+      dragMomentum.current.set(
+        deltaY * pointerRotationSpeed,
+        deltaX * pointerRotationSpeed,
+        0 // No Z-axis drag rotation
+      );
+
+      event.preventDefault();
+    }
+  };
+
+  // Handle pointer up (end drag)
+  const handlePointerUp = () => {
+    isDragging.current = false;
+    document.body.style.cursor = 'default';
+
+    // Unlock the pointer and remove event listeners
+    document.removeEventListener('mousemove', handlePointerMove);
+    document.removeEventListener('mouseup', handlePointerUp);
+  };
+
+  // Register GalaGUI's render function with the synchronized render loop
+  useSynchronizedRenderLoop(() => {
+    groupRef.current?.updateMatrixWorld();
+  });
+
+  // Animation loop for rotation, inertia, and damping
+  useFrame(() => {
+    if (!groupRef.current) return;
+
+    // Apply key presses to rotation velocity
+    if (activeKeys.has('w') || activeKeys.has('arrowup')) {
+      rotationVelocity.current.x -= keyboardRotationSpeed;
+    }
+    if (activeKeys.has('s') || activeKeys.has('arrowdown')) {
+      rotationVelocity.current.x += keyboardRotationSpeed;
+    }
+    if (activeKeys.has('a') || activeKeys.has('arrowleft')) {
+      rotationVelocity.current.y -= keyboardRotationSpeed;
+    }
+    if (activeKeys.has('d') || activeKeys.has('arrowright')) {
+      rotationVelocity.current.y += keyboardRotationSpeed;
+    }
+    if (activeKeys.has('q')) {
+      rotationVelocity.current.z -= keyboardRotationSpeed;
+    }
+    if (activeKeys.has('e')) {
+      rotationVelocity.current.z += keyboardRotationSpeed;
+    }
+
+    // Apply drag momentum and keyboard velocities
+    quaternion.current.setFromEuler(
+      new THREE.Euler(
+        rotationVelocity.current.x,
+        rotationVelocity.current.y,
+        rotationVelocity.current.z
+      )
+    );
+    groupRef.current.quaternion.multiplyQuaternions(
+      quaternion.current,
+      groupRef.current.quaternion
+    );
+
+    // Decay rotation velocity smoothly
+    rotationVelocity.current.multiplyScalar(dampingFactor);
+
+    // Apply drag momentum
+    if (!isDragging.current) {
+      dragMomentum.current.multiplyScalar(dampingFactor);
+    }
+  });
+
+  return <group ref={groupRef} position={[0, 0, 0]} onPointerDown={handlePointerDown} />;
 };
 
 export default GalaGUI;

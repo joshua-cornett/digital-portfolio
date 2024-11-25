@@ -26,4 +26,3 @@ export const generateStarPositions = (width, height, density = 0.0001) => {
 
   return positions; // Array of [x, y, z, x, y, z, ...]
 };
-

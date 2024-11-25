@@ -1,19 +1,16 @@
-// src/components/common/PlayerShip.jsx
+import React from 'react';
+import styles from './PlayerShip.module.scss';
 
 /**
- * PlayerShip component, the player's ship
+ * PlayerShip component, representing the player's ship.
  *
- * It can move and stuff
+ * The ship can move and interact with the game environment.
  *
  * @component
- * @returns {JSX.Element} The rendered PlayerShip component
+ * @returns {JSX.Element} The rendered PlayerShip component.
  */
 const PlayerShip = () => {
-  return (
-    <mesh>
-      <p>PlayerShip</p>
-    </mesh>
-  );
+  return <div className={styles.playerShip} />;
 };
 
 export default PlayerShip;

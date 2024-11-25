@@ -1,8 +1,0 @@
-.playArea {
-  background-color: var(--primary-background);
-  border: 2px solid var(--primary-color);
-  overflow: hidden;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}

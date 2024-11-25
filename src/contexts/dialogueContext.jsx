@@ -29,18 +29,8 @@ export const DialogueProvider = ({ children }) => {
     }));
   };
 
-  /**
-   * Retrieves the dialogue for a given component ID.
-   *
-   * @param {string} id - The ID of the component.
-   * @returns {string} The dialogue text associated with the component ID.
-   */
-  const getDialogue = (id) => {
-    return dialogues[id] || '';
-  };
-
   return (
-    <DialogueContext.Provider value={{ dialogues, updateDialogue, getDialogue }}>
+    <DialogueContext.Provider value={{ dialogues, updateDialogue }}>
       {children}
     </DialogueContext.Provider>
   );

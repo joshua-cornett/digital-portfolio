@@ -3,44 +3,51 @@ import { useState, useEffect } from 'react';
 // Context imports
 import { useDialogueContext } from '@contexts';
 // Style imports
-import styles from './Dialogue.module.css';
+import styles from './Dialogue.module.scss';
 
 /**
- * Dialogue component that displays typing animation text based on the provided dialogue.
+ * Dialogue component that displays text with a typing animation.
  *
  * @component
  * @param {Object} props - Component properties.
  * @param {string} props.id - Unique identifier for the dialogue instance.
  * @param {string} props.dialogue - Text to display in the dialogue.
- * @returns {JSX.Element} The rendered dialogue component with typing animation.
+ * @returns {JSX.Element} The rendered dialogue component.
  */
 const Dialogue = ({ id, dialogue }) => {
   const [displayedText, setDisplayedText] = useState('');
   const [index, setIndex] = useState(0);
 
+  // Dialogue context for optional updates
   const { updateDialogue } = useDialogueContext();
 
-  // Effect to add it's dialogue to context for future updates
+  // Add dialogue to the global context if available
   useEffect(() => {
-    updateDialogue(id, dialogue);
-  }, []);
+    if (updateDialogue) {
+      updateDialogue(id, dialogue);
+    }
+  }, [id, dialogue]);
 
-  // Effect to handle typing animation
+  // Reset displayed text and index when the dialogue changes
   useEffect(() => {
-    setIndex(0); // Reset index when dialogue changes
+    setDisplayedText('');
+    setIndex(0);
   }, [dialogue]);
 
+  // Typing animation effect
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setDisplayedText(dialogue.slice(0, index + 1));
-      setIndex((prevIndex) => prevIndex + 1);
-    }, 50); // Adjust typing speed here
+    if (index < dialogue.length) {
+      const timer = setTimeout(() => {
+        setDisplayedText((prev) => prev + dialogue[index]);
+        setIndex((prevIndex) => prevIndex + 1);
+      }, 50); // Typing speed in milliseconds
 
-    return () => clearTimeout(timer);
+      return () => clearTimeout(timer);
+    }
   }, [index, dialogue]);
 
   return (
-    <div className={styles.dialogueBox}>
+    <div className={styles.dialogue}>
       <p className={styles.dialogueText}>{displayedText}</p>
     </div>
   );

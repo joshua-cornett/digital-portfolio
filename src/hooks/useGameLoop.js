@@ -1,3 +1,4 @@
+// React imports
 import { useEffect } from 'react';
 
 /**

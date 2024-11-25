@@ -1,0 +1,18 @@
+.narrator {
+  display: flex;
+  align-items: center;
+  column-gap: 20px;
+  .portrait {
+  }
+  .dialogue {
+    display: flex;
+    flex-basis: 75%;
+    min-width: 200px;
+    /* max-width: min-content; */
+    flex-shrink: 1;
+    flex-grow: 1;
+    p {
+      font-size: 11px;
+    }
+  }
+}
