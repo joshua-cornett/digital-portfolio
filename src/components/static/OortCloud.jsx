@@ -51,7 +51,7 @@ const OortCloud = () => {
             itemSize={3}
           />
         </bufferGeometry>
-        <pointsMaterial color="white" size={0.2} sizeAttenuation={true} />
+        <pointsMaterial toneMapped={false} color="#0f0" size={0.1} sizeAttenuation={true} />
         {/**Consider removing 'transparent' and 'opacity' properties */}
       </points>
     </group>

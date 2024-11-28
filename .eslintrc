@@ -59,7 +59,8 @@
           ["@data", "./src/assets/data"],
           ["@static", "./src/components/static"],
           ["@interactive", "./src/components/interactive"],
-          ["@stores", "./src/stores"]
+          ["@stores", "./src/stores"],
+          ["@reducers", "/src/reducers"]
         ]
       }
     }

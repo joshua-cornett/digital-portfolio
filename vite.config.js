@@ -19,7 +19,8 @@ export default defineConfig(({ mode }) => ({
       '@helpers': '/src/helpers',
       '@hooks': '/src/hooks',
       '@utils': '/src/utils',
-      '@stores': '/src/stores'
+      '@stores': '/src/stores',
+      '@reducers': '/src/reducers'
     }
   }
 }));
