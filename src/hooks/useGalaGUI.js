@@ -4,7 +4,7 @@ import { useRef, useEffect, useReducer, useCallback } from 'react';
 import * as THREE from 'three';
 import { inputReducer, initialInputState } from '@reducers';
 import { applyRotationAndDamping, generateGalaGUI } from '@helpers';
-import { useGalaGUIStore, useDragStore } from '@stores';
+import { useGalaGUIStore } from '@stores';
 
 /**
  * Custom hook to manage the state and behavior for the GalaGUI component.
@@ -14,7 +14,7 @@ import { useGalaGUIStore, useDragStore } from '@stores';
  * @param {number} dampingFactor - Factor for smoothing out the momentum.
  * @returns {Object} - Contains the group reference and pointer event handlers.
  */
-const useGalaGUI = (pointerRotationSpeed, keyboardRotationSpeed, dampingFactor) => {
+const useGalaGUI = ({ pointerRotationSpeed, keyboardRotationSpeed, dampingFactor }) => {
   const groupRef = useRef();
   const rotationVelocity = useRef(new THREE.Vector3(0, 0, 0));
   const quaternion = useRef(new THREE.Quaternion());
@@ -26,28 +26,30 @@ const useGalaGUI = (pointerRotationSpeed, keyboardRotationSpeed, dampingFactor) 
 
   // Zustand store actions and state
   const { setSelectedItem, setHoveredItem, triggerHyperspeed } = useGalaGUIStore();
-  const { startDrag, stopDrag, isComponentDragging } = useDragStore();
+
+  // Arrow helper to visualize drag influence (rotating radially)
+  const arrowRef = useRef(null);
 
   // Pointer down event handler (start dragging)
-  const handlePointerDown = useCallback(
-    (event) => {
-      dispatch({ type: 'START_DRAG', payload: { x: event.clientX, y: event.clientY } });
-      isDraggingRef.current = true;
-      startDrag('GalaGUI'); // Mark the GalaGUI as the active drag component globally
-      document.body.style.cursor = 'none';
-    },
-    [startDrag]
-  );
+  const handlePointerDown = useCallback((event) => {
+    dispatch({ type: 'START_DRAG', payload: { x: event.clientX, y: event.clientY } });
+    isDraggingRef.current = true;
+    document.body.style.cursor = 'none';
+
+    // Initialize arrowhead-only helper if it doesn't already exist
+    if (!arrowRef.current && groupRef.current) {
+      const arrowHelper = createArrowHeadOnly(); // Use custom function
+      groupRef.current.parent.add(arrowHelper); // Add to scene, not GalaGUI
+      arrowRef.current = arrowHelper;
+    }
+  }, []);
 
   // Pointer move event handler (dragging)
   const handlePointerMove = useCallback((event) => {
     if (isDraggingRef.current) {
       dispatch({
         type: 'UPDATE_DRAG',
-        payload: {
-          deltaX: event.movementX || 0,
-          deltaY: event.movementY || 0
-        }
+        payload: { x: event.clientX, y: event.clientY }
       });
     }
   }, []);
@@ -56,28 +58,145 @@ const useGalaGUI = (pointerRotationSpeed, keyboardRotationSpeed, dampingFactor) 
   const handlePointerUp = useCallback(() => {
     dispatch({ type: 'STOP_DRAG' });
     isDraggingRef.current = false;
-    stopDrag(); // Stop dragging in the global state
     document.body.style.cursor = 'default';
-  }, [stopDrag]);
 
-  // Manage event listeners for dragging
+    // Remove the arrow from the scene
+    if (arrowRef.current && groupRef.current.parent) {
+      groupRef.current.parent.remove(arrowRef.current);
+      arrowRef.current = null;
+    }
+  }, []);
+
+  // Update arrow position and appearance dynamically
+  const updateArrow = useCallback(() => {
+    if (!arrowRef.current || !groupRef.current) return;
+
+    const { startPosition, currentPosition } = inputState;
+
+    if (!startPosition || !currentPosition) return;
+
+    // Calculate drag vector
+    const deltaX = currentPosition.x - startPosition.x;
+    const deltaY = currentPosition.y - startPosition.y;
+
+    // Convert to polar coordinates for radial placement
+    const radius = 2.5; // Radius around GalaGUI
+    const angle = Math.atan2(-deltaY, deltaX);
+
+    // Calculate arrow position
+    const arrowX = Math.cos(angle) * radius;
+    const arrowY = Math.sin(angle) * radius;
+
+    // Update arrow position
+    arrowRef.current.position.set(arrowX, arrowY, 0);
+
+    // Update arrow direction (normalize the drag vector)
+    const direction = new THREE.Vector3(deltaX, -deltaY, 0).normalize();
+    arrowRef.current.setDirection(direction);
+
+    // Calculate arrow length and width based on drag magnitude
+    const magnitude = Math.sqrt(deltaX * deltaX + deltaY * deltaY);
+    const magnitudeFactor = magnitude > 20 ? magnitude - 20 : 0;
+    const length = Math.min(magnitudeFactor * 0.01, 1); // Scale length
+    const width = Math.max(1 - length * 0.5, 0.2); // Scale width (thinner as length increases)
+    const emissiveIntensity = Math.min(magnitudeFactor * 0.01, 1); // Scale glow intensity (max 1)
+
+    // Update arrowhead proportions
+    arrowRef.current.setLength(length, length * width, length * width); // Adjust based on length and width
+
+    // Update arrowhead color and glow
+    arrowRef.current.cone.material.color.set(0x00ff00); // Fixed green color
+    arrowRef.current.cone.material.emissive = new THREE.Color(0x00ff00).multiplyScalar(
+      emissiveIntensity
+    ); // Dynamic glow
+  }, [inputState]);
+
+  // Create an arrowhead-only helper
+  const createArrowHeadOnly = () => {
+    const arrowDirection = new THREE.Vector3(1, 0, 0); // Initial direction
+    const arrowOrigin = new THREE.Vector3(0, 0, 0); // Center of GalaGUI
+    const arrowLength = 0.1;
+    const arrowColor = 0x00ff00;
+
+    const arrowHelper = new THREE.ArrowHelper(arrowDirection, arrowOrigin, arrowLength, arrowColor);
+
+    // Remove the line (shaft) of the arrow
+    if (arrowHelper.line) {
+      arrowHelper.line.visible = false; // Hide the line
+    }
+
+    // Customize the material of the cone for dynamic appearance
+    arrowHelper.cone.material = new THREE.MeshStandardMaterial({
+      toneMapped: false,
+      color: arrowColor,
+      emissive: new THREE.Color(0x00ff00), // Add slight glow
+      emissiveIntensity: 1
+    });
+
+    return arrowHelper;
+  };
+
+  // Touch start event handler (begin dragging)
+  const handleTouchStart = useCallback((event) => {
+    const touch = event.touches[0]; // Get the first touch point
+    dispatch({ type: 'START_DRAG', payload: { x: touch.clientX, y: touch.clientY } });
+    isDraggingRef.current = true;
+
+    // Initialize arrowhead-only helper if it doesn't already exist
+    if (!arrowRef.current && groupRef.current) {
+      const arrowHelper = createArrowHeadOnly(); // Use custom function
+      groupRef.current.parent.add(arrowHelper); // Add to scene, not GalaGUI
+      arrowRef.current = arrowHelper;
+    }
+  }, []);
+
+  // Touch move event handler (update drag position)
+  const handleTouchMove = useCallback((event) => {
+    if (isDraggingRef.current) {
+      const touch = event.touches[0]; // Get the first touch point
+      dispatch({
+        type: 'UPDATE_DRAG',
+        payload: { x: touch.clientX, y: touch.clientY }
+      });
+    }
+  }, []);
+
+  // Touch end event handler (stop dragging)
+  const handleTouchEnd = useCallback(() => {
+    dispatch({ type: 'STOP_DRAG' });
+    isDraggingRef.current = false;
+
+    // Remove the arrow from the scene
+    if (arrowRef.current && groupRef.current.parent) {
+      groupRef.current.parent.remove(arrowRef.current);
+      arrowRef.current = null;
+    }
+  }, []);
+
+  // Manage event listeners for dragging and touch interactions
   useEffect(() => {
     if (isDraggingRef.current) {
-      // Add mousemove and mouseup listeners for dragging
+      // Add mouse and touch listeners
       document.addEventListener('mousemove', handlePointerMove);
       document.addEventListener('mouseup', handlePointerUp);
+      document.addEventListener('touchmove', handleTouchMove);
+      document.addEventListener('touchend', handleTouchEnd);
     } else {
-      // Remove listeners when not dragging
+      // Remove mouse and touch listeners
       document.removeEventListener('mousemove', handlePointerMove);
       document.removeEventListener('mouseup', handlePointerUp);
+      document.removeEventListener('touchmove', handleTouchMove);
+      document.removeEventListener('touchend', handleTouchEnd);
     }
 
     // Cleanup function
     return () => {
       document.removeEventListener('mousemove', handlePointerMove);
       document.removeEventListener('mouseup', handlePointerUp);
+      document.removeEventListener('touchmove', handleTouchMove);
+      document.removeEventListener('touchend', handleTouchEnd);
     };
-  }, [isDraggingRef.current, handlePointerMove, handlePointerUp]);
+  }, [isDraggingRef.current, handlePointerMove, handlePointerUp, handleTouchMove, handleTouchEnd]);
 
   // Handle item selection (using Zustand to set global state)
   const handleItemClick = useCallback(
@@ -112,52 +231,43 @@ const useGalaGUI = (pointerRotationSpeed, keyboardRotationSpeed, dampingFactor) 
   const applyFrameUpdates = () => {
     if (!groupRef.current) return;
 
-    // Apply key presses to rotation velocity
-    if (inputState.activeKeys.has('w') || inputState.activeKeys.has('arrowup')) {
-      rotationVelocity.current.x -= keyboardRotationSpeed;
-    }
-    if (inputState.activeKeys.has('s') || inputState.activeKeys.has('arrowdown')) {
-      rotationVelocity.current.x += keyboardRotationSpeed;
-    }
-    if (inputState.activeKeys.has('a') || inputState.activeKeys.has('arrowleft')) {
-      rotationVelocity.current.y -= keyboardRotationSpeed;
-    }
-    if (inputState.activeKeys.has('d') || inputState.activeKeys.has('arrowright')) {
-      rotationVelocity.current.y += keyboardRotationSpeed;
-    }
+    // Update arrow for drag visualization
+    updateArrow();
 
-    // Apply pointer dragging to rotation velocity if dragging is active
-    if (isDraggingRef.current) {
-      rotationVelocity.current.y += inputState.deltaX * pointerRotationSpeed;
-      rotationVelocity.current.x += inputState.deltaY * pointerRotationSpeed;
+    // Handle drag influence on rotation
+    if (inputState.isDragging && inputState.startPosition && inputState.currentPosition) {
+      const deltaX = inputState.currentPosition.x - inputState.startPosition.x;
+      const deltaY = inputState.currentPosition.y - inputState.startPosition.y;
 
-      dragMomentum.current.set(
-        inputState.deltaY * pointerRotationSpeed,
-        inputState.deltaX * pointerRotationSpeed,
-        0
+      // Set rotation velocity based on drag input
+      rotationVelocity.current.set(
+        deltaY * pointerRotationSpeed, // Influence Y-axis rotation
+        deltaX * pointerRotationSpeed, // Influence X-axis rotation
+        0 // No Z-axis rotation
       );
+    } else {
+      // Apply damping when not dragging
+      rotationVelocity.current.multiplyScalar(dampingFactor);
     }
 
-    // Apply rotation and damping to the group
+    // Apply the rotation and damping to the GalaGUI group
     applyRotationAndDamping(
-      rotationVelocity.current,
-      quaternion.current,
-      groupRef.current,
-      dampingFactor
+      rotationVelocity.current, // Current rotation velocity
+      quaternion.current, // Quaternion for smooth rotations
+      groupRef.current, // GalaGUI group reference
+      dampingFactor // Damping factor for momentum
     );
-
-    // Apply drag momentum (if any)
-    if (!isDraggingRef.current && dragMomentum.current.length() > 0) {
-      dragMomentum.current.multiplyScalar(dampingFactor);
-    }
   };
 
   return {
     groupRef,
     handlePointerDown,
     applyFrameUpdates,
-    handleItemClick,
-    handleItemHover
+    handlePointerMove,
+    handlePointerUp,
+    handleTouchStart,
+    handleItemClick: setSelectedItem,
+    handleItemHover: setHoveredItem
   };
 };
 

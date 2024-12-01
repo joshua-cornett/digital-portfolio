@@ -43,7 +43,7 @@ const Narrator = ({ isGameMode }) => {
     </div>
   );
 
-  // Conditionally wrap content with Html for 3D context
+  /** @TODO - Conditionally wrap content with Html for 3D context */
   return isGameMode ? { narratorContent } : narratorContent;
 };
 

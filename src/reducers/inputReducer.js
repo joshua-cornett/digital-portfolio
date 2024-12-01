@@ -15,31 +15,22 @@ const inputReducer = (state, action) => {
       return {
         ...state,
         isDragging: true,
-        dragStartX: action.payload.x,
-        dragStartY: action.payload.y
-      };
-    case 'STOP_DRAG':
-      return {
-        ...state,
-        isDragging: false
+        startPosition: { x: action.payload.x, y: action.payload.y }
       };
     case 'UPDATE_DRAG':
       return {
         ...state,
-        deltaX: action.payload.deltaX,
-        deltaY: action.payload.deltaY
+        currentPosition: {
+          x: action.payload.x,
+          y: action.payload.y
+        }
       };
-    case 'KEY_DOWN':
+    case 'STOP_DRAG':
       return {
         ...state,
-        activeKeys: new Set(state.activeKeys).add(action.payload.key)
-      };
-    case 'KEY_UP':
-      const newActiveKeys = new Set(state.activeKeys);
-      newActiveKeys.delete(action.payload.key);
-      return {
-        ...state,
-        activeKeys: newActiveKeys
+        isDragging: false,
+        startPosition: null,
+        currentPosition: null
       };
     default:
       return state;
@@ -49,10 +40,8 @@ const inputReducer = (state, action) => {
 // Initial state for the input reducer
 export const initialInputState = {
   isDragging: false,
-  dragStartX: 0,
-  dragStartY: 0,
-  deltaX: 0,
-  deltaY: 0,
+  startPosition: null,
+  currentPosition: null,
   activeKeys: new Set()
 };
 

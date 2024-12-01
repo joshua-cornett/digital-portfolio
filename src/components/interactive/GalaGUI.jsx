@@ -9,15 +9,18 @@ import { useGalaGUI, useSynchronizedRenderLoop } from '@hooks';
  * @returns {JSX.Element} The rendered GalaGUI component.
  */
 const GalaGUI = () => {
-  // Destructure values from the custom hook
-  const { groupRef, handlePointerDown, applyFrameUpdates } = useGalaGUI(0.002, 0.03, 0.9);
+  const { groupRef, handlePointerDown, applyFrameUpdates } = useGalaGUI({
+    pointerRotationSpeed: 0.0003,
+    keyboardRotationSpeed: 0.03,
+    dampingFactor: 0.97
+  });
 
   // Register GalaGUI's render function with the synchronized render loop
   useSynchronizedRenderLoop(() => {
     groupRef.current?.updateMatrixWorld();
   });
 
-  // Animation loop for rotation, inertia, and damping
+  // Animation loop
   useFrame(() => {
     applyFrameUpdates();
   });
