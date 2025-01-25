@@ -5,6 +5,7 @@ import * as THREE from 'three';
 import { inputReducer, initialInputState } from '@reducers';
 import { applyRotationAndDamping, generateGalaGUI } from '@helpers';
 import { useGalaGUIStore } from '@stores';
+import { getFocusedOption } from '@helpers/getFocusedOption';
 
 /**
  * Custom hook to manage the state and behavior for the GalaGUI component.
@@ -29,6 +30,20 @@ const useGalaGUI = ({ pointerRotationSpeed, keyboardRotationSpeed, dampingFactor
 
   // Arrow helper to visualize drag influence (rotating radially)
   const arrowRef = useRef(null);
+
+  const handleOptionSelect = useCallback(() => {
+    const focusedOption = useGalaGUIStore.getState().hoveredItem;
+    if (!focusedOption) return;
+
+    setSelectedItem(focusedOption);
+
+    // Trigger depopulation of current options
+    groupRef.current.clear();
+
+    // Populate new options based on the selection
+    const newOptions = generateNewOptions(focusedOption); // Define logic for new options
+    generateGalaGUI(groupRef.current, newOptions, radius);
+  }, []);
 
   // Pointer down event handler (start dragging)
   const handlePointerDown = useCallback((event) => {
@@ -257,6 +272,30 @@ const useGalaGUI = ({ pointerRotationSpeed, keyboardRotationSpeed, dampingFactor
       groupRef.current, // GalaGUI group reference
       dampingFactor // Damping factor for momentum
     );
+
+    // Detect the currently focused option
+    const cameraDirection = new THREE.Vector3(0, 0, -1).applyQuaternion(
+      groupRef.current.quaternion
+    );
+    const nodes = groupRef.current.children;
+    const focusedOption = getFocusedOption(nodes, cameraDirection);
+
+    // Update Zustand store with the focused option
+    if (focusedOption) {
+      setHoveredItem(focusedOption.userData.option);
+
+      // Scale focused node
+      nodes.forEach((node) => {
+        if (node === focusedOption) {
+          node.scale.set(1.5, 1.5, 1.5); // Increase size
+        } else {
+          node.scale.set(1, 1, 1); // Reset size for others
+        }
+      });
+    } else {
+      // Reset scale for all nodes if none are focused
+      nodes.forEach((node) => node.scale.set(1, 1, 1));
+    }
   };
 
   return {
