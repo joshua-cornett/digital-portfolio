@@ -15,12 +15,8 @@ import { generateStarPositions } from '@helpers';
  */
 
 const useStars = (width = 1920, height = 1080, density = 0.001) => {
-  console.log('useStars called with:', { width, height, density });
-
   return useMemo(() => {
-    console.log('Calculating star positions...');
     const positions = generateStarPositions(width, height, density);
-    console.log('Memoized positions:', positions);
     return positions;
   }, [width, height, density]); // Recalculates when dependencies change
 };

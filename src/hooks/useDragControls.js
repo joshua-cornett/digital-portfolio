@@ -1,48 +1,47 @@
-import { useRef, useCallback } from 'react';
+import { useReducer, useCallback, useRef } from 'react';
+import inputReducer, { initialInputState } from '../reducers/inputReducer';
 
 /**
- * Custom hook to handle generic drag controls for 2D or 3D elements.
+ * Hook to manage drag interactions for any component.
  *
- * @returns {Object} Contains drag state and pointer event handlers.
+ * @param {number} dragSpeed - Speed multiplier for drag operations.
+ * @returns {Object} Drag state, velocity, and control methods.
  */
-const useDragControls = () => {
-  const isDragging = useRef(false);
-  const dragDelta = useRef({ deltaX: 0, deltaY: 0 }); // Track movement deltas
+const useDragControls = (dragSpeed = 1) => {
+  const [dragState, dispatch] = useReducer(inputReducer, initialInputState);
+  const velocityRef = useRef({ x: 0, y: 0 });
 
-  // Handle pointer down (start drag)
-  const handlePointerDown = useCallback(() => {
-    isDragging.current = true;
-    document.body.style.cursor = 'none';
-
-    // Add mousemove and mouseup listeners to track dragging
-    document.addEventListener('mousemove', handlePointerMove, { passive: false });
-    document.addEventListener('mouseup', handlePointerUp, { passive: false });
+  // Start drag
+  const startDrag = useCallback((position) => {
+    dispatch({ type: 'START_DRAG', payload: position });
   }, []);
 
-  // Handle pointer move (dragging)
-  const handlePointerMove = useCallback((event) => {
-    if (isDragging.current) {
-      dragDelta.current.deltaX = event.movementX || 0;
-      dragDelta.current.deltaY = event.movementY || 0;
+  // Update drag
+  const updateDrag = useCallback(
+    (position) => {
+      if (!dragState.isDragging || !dragState.startPosition) return;
 
-      event.preventDefault();
-    }
+      const deltaX = (position.x - dragState.startPosition.x) * dragSpeed;
+      const deltaY = (position.y - dragState.startPosition.y) * dragSpeed;
+
+      velocityRef.current = { x: deltaY, y: deltaX };
+
+      dispatch({ type: 'UPDATE_DRAG', payload: position });
+    },
+    [dragState.isDragging, dragState.startPosition, dragSpeed]
+  );
+
+  // Stop drag
+  const stopDrag = useCallback(() => {
+    dispatch({ type: 'STOP_DRAG' });
   }, []);
-
-  // Handle pointer up (end drag)
-  const handlePointerUp = useCallback(() => {
-    isDragging.current = false;
-    document.body.style.cursor = 'default';
-
-    // Remove listeners to stop tracking drag movements
-    document.removeEventListener('mousemove', handlePointerMove);
-    document.removeEventListener('mouseup', handlePointerUp);
-  }, [handlePointerMove]);
 
   return {
-    handlePointerDown,
-    isDragging,
-    dragDelta
+    dragState,
+    velocity: velocityRef.current,
+    startDrag,
+    updateDrag,
+    stopDrag
   };
 };
 

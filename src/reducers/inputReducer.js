@@ -1,29 +1,18 @@
-// galaGUIInputReducer.js
+// reducers/inputReducer.js
 
-/**
- * Generic reducer for managing input state across multiple components.
- *
- * Handles keyboard input, dragging, clicking, and other types of user interaction.
- *
- * @param {Object} state - Current state of inputs.
- * @param {Object} action - Action to be handled.
- * @returns {Object} - New state after action is applied.
- */
 const inputReducer = (state, action) => {
   switch (action.type) {
     case 'START_DRAG':
       return {
         ...state,
         isDragging: true,
-        startPosition: { x: action.payload.x, y: action.payload.y }
+        startPosition: action.payload,
+        currentPosition: action.payload
       };
     case 'UPDATE_DRAG':
       return {
         ...state,
-        currentPosition: {
-          x: action.payload.x,
-          y: action.payload.y
-        }
+        currentPosition: action.payload
       };
     case 'STOP_DRAG':
       return {
@@ -32,12 +21,20 @@ const inputReducer = (state, action) => {
         startPosition: null,
         currentPosition: null
       };
+    case 'KEY_PRESS':
+      return {
+        ...state,
+        activeKeys: new Set(state.activeKeys).add(action.payload.key)
+      };
+    case 'KEY_RELEASE':
+      const updatedKeys = new Set(state.activeKeys);
+      updatedKeys.delete(action.payload.key);
+      return { ...state, activeKeys: updatedKeys };
     default:
       return state;
   }
 };
 
-// Initial state for the input reducer
 export const initialInputState = {
   isDragging: false,
   startPosition: null,

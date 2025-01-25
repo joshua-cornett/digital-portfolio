@@ -9,11 +9,12 @@ import { useGalaGUI, useSynchronizedRenderLoop } from '@hooks';
  * @returns {JSX.Element} The rendered GalaGUI component.
  */
 const GalaGUI = () => {
-  const { groupRef, handlePointerDown, applyFrameUpdates } = useGalaGUI({
-    pointerRotationSpeed: 0.0003,
-    keyboardRotationSpeed: 0.03,
-    dampingFactor: 0.97
-  });
+  const { groupRef, handlePointerDown, handlePointerMove, handlePointerUp, applyFrameUpdates } =
+    useGalaGUI({
+      pointerRotationSpeed: 0.0003,
+      keyboardRotationSpeed: 0.03,
+      dampingFactor: 0.97
+    });
 
   // Register GalaGUI's render function with the synchronized render loop
   useSynchronizedRenderLoop(() => {
@@ -25,7 +26,14 @@ const GalaGUI = () => {
     applyFrameUpdates();
   });
 
-  return <group ref={groupRef} position={[0, 0, 0]} onPointerDown={handlePointerDown} />;
+  return (
+    <group
+      ref={groupRef}
+      onPointerDown={handlePointerDown}
+      onPointerMove={handlePointerMove}
+      onPointerUp={handlePointerUp}
+    />
+  );
 };
 
 export default GalaGUI;

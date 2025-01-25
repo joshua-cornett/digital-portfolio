@@ -54,5 +54,3 @@ export const applyRotationAndDamping = (rotationVelocity, quaternion, group, dam
   // Apply damping to the rotation velocity
   rotationVelocity.multiplyScalar(dampingFactor);
 };
-
-// You can add more GalaGUI-specific helpers as needed...
