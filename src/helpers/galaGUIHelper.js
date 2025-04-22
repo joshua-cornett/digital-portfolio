@@ -33,6 +33,27 @@ export const generateGalaGUI = (group, numItems, radius) => {
 };
 
 /**
+ * Generate evenly distributed radial options around a sphere.
+ *
+ * @param {number} count - Number of items to generate
+ * @param {number} radius - Radius of the sphere
+ * @returns {Array<{ id: string, position: [number, number, number] }>}
+ */
+export const generateRadialOptions = (count, radius) => {
+  return Array.from({ length: count }, (_, i) => {
+    const theta = Math.acos(1 - (2 * (i + 1)) / count);
+    const phi = Math.sqrt(count * Math.PI) * theta;
+    const x = radius * Math.sin(theta) * Math.cos(phi);
+    const y = radius * Math.sin(theta) * Math.sin(phi);
+    const z = radius * Math.cos(theta);
+    return {
+      id: `Option-${i}`,
+      position: [x, y, z]
+    };
+  });
+};
+
+/**
  * Apply rotation and damping to a given group.
  *
  * @param {THREE.Vector3} rotationVelocity - The velocity vector for rotation.

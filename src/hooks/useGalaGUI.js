@@ -3,7 +3,7 @@
 import { useRef, useEffect, useReducer, useCallback } from 'react';
 import * as THREE from 'three';
 import { inputReducer, initialInputState } from '@reducers';
-import { applyRotationAndDamping, generateGalaGUI } from '@helpers';
+import { applyRotationAndDamping, generateGalaGUI, generateRadialOptions } from '@helpers';
 import { useGalaGUIStore } from '@stores';
 import { getFocusedOption } from '@helpers/getFocusedOption';
 
@@ -15,7 +15,7 @@ import { getFocusedOption } from '@helpers/getFocusedOption';
  * @param {number} dampingFactor - Factor for smoothing out the momentum.
  * @returns {Object} - Contains the group reference and pointer event handlers.
  */
-const useGalaGUI = ({ pointerRotationSpeed, keyboardRotationSpeed, dampingFactor }) => {
+const useGalaGUI = ({ pointerRotationSpeed, keyboardRotationSpeed, dampingFactor, meshRefs }) => {
   const groupRef = useRef();
   const rotationVelocity = useRef(new THREE.Vector3(0, 0, 0));
   const quaternion = useRef(new THREE.Quaternion());
@@ -26,7 +26,7 @@ const useGalaGUI = ({ pointerRotationSpeed, keyboardRotationSpeed, dampingFactor
   const [inputState, dispatch] = useReducer(inputReducer, initialInputState);
 
   // Zustand store actions and state
-  const { setSelectedItem, setHoveredItem, triggerHyperspeed } = useGalaGUIStore();
+  const { setSelectedItem, setHoveredItem, triggerHyperspeed, setOptions } = useGalaGUIStore();
 
   // Arrow helper to visualize drag influence (rotating radially)
   const arrowRef = useRef(null);
@@ -214,14 +214,14 @@ const useGalaGUI = ({ pointerRotationSpeed, keyboardRotationSpeed, dampingFactor
   }, [isDraggingRef.current, handlePointerMove, handlePointerUp, handleTouchMove, handleTouchEnd]);
 
   // Handle item selection (using Zustand to set global state)
-  const handleItemClick = useCallback(
+  /*const handleItemClick = useCallback(
     (item) => {
       setSelectedItem(item); // Update the selected item globally
-      /** @TODO - Implement hyperspeed animation */
+      /** @TODO - Implement hyperspeed animation
       triggerHyperspeed();
     },
     [setSelectedItem, triggerHyperspeed]
-  );
+  );*/
 
   // Handle hover state (using Zustand)
   const handleItemHover = useCallback(
@@ -234,12 +234,10 @@ const useGalaGUI = ({ pointerRotationSpeed, keyboardRotationSpeed, dampingFactor
 
   // Populate items in a spherical layout
   useEffect(() => {
-    if (!groupRef.current) return;
-
     const radius = 2;
     const numItems = 12;
-
-    generateGalaGUI(groupRef.current, numItems, radius);
+    const options = generateRadialOptions(numItems, radius);
+    setOptions(options);
   }, []);
 
   // Apply rotation and damping in the animation frame loop
@@ -249,10 +247,13 @@ const useGalaGUI = ({ pointerRotationSpeed, keyboardRotationSpeed, dampingFactor
     // Update arrow for drag visualization
     updateArrow();
 
+    console.log('🎯 drag state:', inputState);
+
     // Handle drag influence on rotation
     if (inputState.isDragging && inputState.startPosition && inputState.currentPosition) {
       const deltaX = inputState.currentPosition.x - inputState.startPosition.x;
       const deltaY = inputState.currentPosition.y - inputState.startPosition.y;
+      console.log('🔄 deltaX:', deltaX, 'deltaY:', deltaY);
 
       // Set rotation velocity based on drag input
       rotationVelocity.current.set(
@@ -262,6 +263,8 @@ const useGalaGUI = ({ pointerRotationSpeed, keyboardRotationSpeed, dampingFactor
       );
     } else {
       // Apply damping when not dragging
+      console.log('💤 damping only, not dragging');
+
       rotationVelocity.current.multiplyScalar(dampingFactor);
     }
 
@@ -272,29 +275,18 @@ const useGalaGUI = ({ pointerRotationSpeed, keyboardRotationSpeed, dampingFactor
       groupRef.current, // GalaGUI group reference
       dampingFactor // Damping factor for momentum
     );
+    console.log('🧭 group quaternion:', groupRef.current.quaternion.toArray());
 
     // Detect the currently focused option
     const cameraDirection = new THREE.Vector3(0, 0, -1).applyQuaternion(
       groupRef.current.quaternion
     );
-    const nodes = groupRef.current.children;
+    const nodes = meshRefs.current.filter(Boolean);
     const focusedOption = getFocusedOption(nodes, cameraDirection);
 
     // Update Zustand store with the focused option
     if (focusedOption) {
       setHoveredItem(focusedOption.userData.option);
-
-      // Scale focused node
-      nodes.forEach((node) => {
-        if (node === focusedOption) {
-          node.scale.set(1.5, 1.5, 1.5); // Increase size
-        } else {
-          node.scale.set(1, 1, 1); // Reset size for others
-        }
-      });
-    } else {
-      // Reset scale for all nodes if none are focused
-      nodes.forEach((node) => node.scale.set(1, 1, 1));
     }
   };
 
