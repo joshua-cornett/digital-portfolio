@@ -1,11 +1,12 @@
 // useGalaGUI.js
 
-import { useRef, useEffect, useReducer, useCallback } from 'react';
-import * as THREE from 'three';
-import { inputReducer, initialInputState } from '@reducers';
 import { applyRotationAndDamping, generateGalaGUI, generateRadialOptions } from '@helpers';
-import { useGalaGUIStore } from '@stores';
 import { getFocusedOption } from '@helpers/getFocusedOption';
+import { useThree } from '@react-three/fiber';
+import { initialInputState, inputReducer } from '@reducers';
+import { useGalaGUIStore } from '@stores';
+import { useCallback, useEffect, useReducer, useRef } from 'react';
+import * as THREE from 'three';
 
 /**
  * Custom hook to manage the state and behavior for the GalaGUI component.
@@ -17,6 +18,7 @@ import { getFocusedOption } from '@helpers/getFocusedOption';
  */
 const useGalaGUI = ({ pointerRotationSpeed, keyboardRotationSpeed, dampingFactor, meshRefs }) => {
   const groupRef = useRef();
+  const { camera } = useThree();
   const rotationVelocity = useRef(new THREE.Vector3(0, 0, 0));
   const quaternion = useRef(new THREE.Quaternion());
   const dragMomentum = useRef(new THREE.Vector3(0, 0, 0));
@@ -247,44 +249,33 @@ const useGalaGUI = ({ pointerRotationSpeed, keyboardRotationSpeed, dampingFactor
     // Update arrow for drag visualization
     updateArrow();
 
-    console.log('🎯 drag state:', inputState);
-
     // Handle drag influence on rotation
     if (inputState.isDragging && inputState.startPosition && inputState.currentPosition) {
       const deltaX = inputState.currentPosition.x - inputState.startPosition.x;
       const deltaY = inputState.currentPosition.y - inputState.startPosition.y;
-      console.log('🔄 deltaX:', deltaX, 'deltaY:', deltaY);
 
       // Set rotation velocity based on drag input
-      rotationVelocity.current.set(
-        deltaY * pointerRotationSpeed, // Influence Y-axis rotation
-        deltaX * pointerRotationSpeed, // Influence X-axis rotation
-        0 // No Z-axis rotation
-      );
+      rotationVelocity.current.set(deltaY * pointerRotationSpeed, deltaX * pointerRotationSpeed, 0);
     } else {
       // Apply damping when not dragging
-      console.log('💤 damping only, not dragging');
-
       rotationVelocity.current.multiplyScalar(dampingFactor);
     }
 
     // Apply the rotation and damping to the GalaGUI group
     applyRotationAndDamping(
-      rotationVelocity.current, // Current rotation velocity
+      rotationVelocity.current,
       quaternion.current, // Quaternion for smooth rotations
-      groupRef.current, // GalaGUI group reference
+      groupRef.current,
       dampingFactor // Damping factor for momentum
     );
     console.log('🧭 group quaternion:', groupRef.current.quaternion.toArray());
 
     // Detect the currently focused option
-    const cameraDirection = new THREE.Vector3(0, 0, -1).applyQuaternion(
-      groupRef.current.quaternion
-    );
-    const nodes = meshRefs.current.filter(Boolean);
-    const focusedOption = getFocusedOption(nodes, cameraDirection);
 
-    // Update Zustand store with the focused option
+    const nodes = meshRefs.current.filter(Boolean);
+    const focusedOption = getFocusedOption(nodes, camera);
+
+    // update Zustand
     if (focusedOption) {
       setHoveredItem(focusedOption.userData.option);
     }
