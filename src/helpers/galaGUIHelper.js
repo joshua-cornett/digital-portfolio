@@ -48,7 +48,17 @@ export const generateRadialOptions = (count, radius) => {
     const z = radius * Math.cos(theta);
     return {
       id: `Option-${i}`,
-      position: [x, y, z]
+      position: [x, y, z],
+      title: `Option ${i + 1}`,
+      description: `Description for option ${i + 1}`,
+      icon: '🌟', // You can replace this with actual icon data
+      color: 0x00ff00, // Fixed green color
+      data: {
+        // Add any additional data you want to associate with each node
+        category: i % 3 === 0 ? 'A' : i % 3 === 1 ? 'B' : 'C',
+        value: Math.random() * 100,
+        tags: ['tag1', 'tag2', 'tag3'].slice(0, (i % 3) + 1)
+      }
     };
   });
 };
