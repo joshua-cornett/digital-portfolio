@@ -42,7 +42,6 @@ const GalaGUI = () => {
 
       const distance = camera.position.distanceTo(worldPos);
       const intensity = THREE.MathUtils.clamp(5 / (distance * distance), 0.2, 1.0);
-      console.log(index, '→', distance);
 
       return {
         scale: hoveredItem?.id === options[index]?.id ? 2 : 1,
@@ -56,7 +55,6 @@ const GalaGUI = () => {
   });
 
   useFrame(() => {
-    console.log('🌀 frame tick');
     applyFrameUpdates();
     textRefs.current.forEach((ref, index) => {
       const mesh = meshRefs.current[index];
@@ -89,8 +87,6 @@ const GalaGUI = () => {
 
   return (
     <group ref={groupRef} onPointerDown={handlePointerDown}>
-      <axesHelper args={[3]} />
-
       {springs.map((spring, index) => {
         const pos = new THREE.Vector3(...options[index].position);
         const offset = 0.5;
@@ -100,7 +96,6 @@ const GalaGUI = () => {
         const otherMeshes = meshRefs.current.filter(
           (ref, i) => i !== index && ref && typeof ref === 'object' && ref.isObject3D
         );
-        console.log('otherMeshes for label', options[index].id, otherMeshes);
         return (
           <React.Fragment key={options[index].id}>
             <a.mesh
@@ -131,10 +126,21 @@ const GalaGUI = () => {
                 {options[index].title}
               </Text>
             </a.mesh>
-            <line>
-              <bufferGeometry attach="geometry" setFromPoints={[new THREE.Vector3(0, 0, 0), pos]} />
-              <lineBasicMaterial color="lime" toneMapped={false} />
-            </line>
+            <primitive
+              object={
+                new THREE.Line(
+                  new THREE.BufferGeometry().setFromPoints([
+                    new THREE.Vector3(0, 0, 0),
+                    new THREE.Vector3(...options[index].position)
+                  ]),
+                  new THREE.LineBasicMaterial({
+                    color: 0x00ff00,
+                    toneMapped: false,
+                    linewidth: 1
+                  })
+                )
+              }
+            />
           </React.Fragment>
         );
       })}

@@ -11,7 +11,6 @@ const TestUseStars = () => {
 
   const positions = useStars(width, height, density);
 
-  console.log('useStars returned positions:', positions);
 
   return (
     <div>

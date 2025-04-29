@@ -7,8 +7,6 @@ const height = 1080;
 const density = 0.001;
 
 // Run the function and log the output
-console.log('Testing generateStarPositions...');
 const positions = generateStarPositions(width, height, density);
-console.log('Generated positions:', positions);
 
 export default positions;

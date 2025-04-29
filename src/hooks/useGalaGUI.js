@@ -268,7 +268,6 @@ const useGalaGUI = ({ pointerRotationSpeed, keyboardRotationSpeed, dampingFactor
       groupRef.current,
       dampingFactor // Damping factor for momentum
     );
-    console.log('🧭 group quaternion:', groupRef.current.quaternion.toArray());
 
     // Detect the currently focused option
 
