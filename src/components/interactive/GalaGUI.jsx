@@ -22,7 +22,8 @@ const GalaGUI = () => {
   const [springs, api] = useSprings(options.length, (index) => ({
     scale: 1,
     intensity: 1,
-    config: { mass: 1, tension: 170, friction: 12 }
+    glowOpacity: 0,
+    config: { mass: 0.25, tension: 1000, friction: 10 }
   }));
 
   const { groupRef, handlePointerDown, applyFrameUpdates } = useGalaGUI({
@@ -37,18 +38,14 @@ const GalaGUI = () => {
       const mesh = meshRefs.current[index];
       if (!mesh) return;
 
-      const worldPos = new THREE.Vector3();
-      mesh.getWorldPosition(worldPos);
-
-      const distance = camera.position.distanceTo(worldPos);
-      const intensity = THREE.MathUtils.clamp(5 / (distance * distance), 0.2, 1.0);
-
+      const isHovered = hoveredItem?.id === options[index]?.id;
       return {
-        scale: hoveredItem?.id === options[index]?.id ? 2 : 1,
-        intensity: hoveredItem?.id === options[index]?.id ? intensity * 2 : intensity
+        scale: isHovered ? 2 : 1,
+        intensity: isHovered ? 2 : 1,
+        glowOpacity: isHovered ? 0.4 : 0.1
       };
     });
-  }, [hoveredItem, options, camera, api]);
+  }, [hoveredItem, options, api]);
 
   useSynchronizedRenderLoop(() => {
     groupRef.current?.updateMatrixWorld();
@@ -59,28 +56,16 @@ const GalaGUI = () => {
     textRefs.current.forEach((ref, index) => {
       const mesh = meshRefs.current[index];
       if (ref && mesh) {
-        // Get node's world position
-        const nodeWorldPos = new THREE.Vector3();
-        mesh.getWorldPosition(nodeWorldPos);
+        // Get the parent group of the text (which should be the group we added)
+        const textGroup = ref.parent;
+        if (!textGroup) return;
 
-        // Direction from node to camera in world space
-        const nodeToCamera = camera.position.clone().sub(nodeWorldPos).normalize();
-
-        // Convert this direction to the node's local space
-        const nodeWorldQuat = mesh.getWorldQuaternion(new THREE.Quaternion());
-        const invNodeWorldQuat = nodeWorldQuat.clone().invert();
-        const localDir = nodeToCamera.clone().applyQuaternion(invNodeWorldQuat);
-
-        // Set text's local position to be offset in that direction
-        const offset = 0.5;
-        ref.position.set(localDir.x * offset, localDir.y * offset, localDir.z * offset);
-
-        // Upright billboard
+        // Make the text group face the camera
         const worldPos = new THREE.Vector3();
-        ref.getWorldPosition(worldPos);
+        textGroup.getWorldPosition(worldPos);
         const camPos = camera.position.clone();
-        camPos.y = worldPos.y;
-        ref.lookAt(camPos);
+        camPos.y = worldPos.y; // Keep y-level consistent for upright text
+        textGroup.lookAt(camPos);
       }
     });
   });
@@ -89,15 +74,10 @@ const GalaGUI = () => {
     <group ref={groupRef} onPointerDown={handlePointerDown}>
       {springs.map((spring, index) => {
         const pos = new THREE.Vector3(...options[index].position);
-        const offset = 0.5;
-        const cameraPos = camera.position;
-        const nodeToCamera = cameraPos.clone().sub(pos).normalize();
-        const labelPos = pos.clone().add(nodeToCamera.multiplyScalar(offset));
-        const otherMeshes = meshRefs.current.filter(
-          (ref, i) => i !== index && ref && typeof ref === 'object' && ref.isObject3D
-        );
+
         return (
           <React.Fragment key={options[index].id}>
+            {/* Main interactive node */}
             <a.mesh
               position={pos}
               scale={spring.scale}
@@ -109,23 +89,69 @@ const GalaGUI = () => {
                 }
               }}
             >
-              <sphereGeometry args={[0.15, 32, 32]} />
-              <a.meshBasicMaterial
-                color={spring.intensity.to((i) => `hsl(120, 100%, ${i * 50 + 20}%)`)}
-                toneMapped={false}
-              />
-              <Text
-                position={[0, 0, 0.5]}
-                fontSize={0.05}
-                color="#fff"
-                font="/fonts/PressStart2P-Regular.ttf"
-                anchorX="center"
-                anchorY="middle"
-                ref={(ref) => (textRefs.current[index] = ref)}
-              >
-                {options[index].title}
-              </Text>
+              {/* Node visual elements group */}
+              <group>
+                {/* Outer glow sphere */}
+                <mesh scale={1}>
+                  <sphereGeometry args={[0.15, 32, 32]} />
+                  <meshBasicMaterial
+                    color="#00ff00"
+                    transparent
+                    opacity={hoveredItem?.id === options[index].id ? 0.5 : 0.1}
+                    toneMapped={false}
+                  />
+                </mesh>
+                {/* Main sphere with hover effect */}
+                <mesh>
+                  <sphereGeometry args={[0.15, 32, 32]} />
+                  <meshBasicMaterial
+                    color="#00ff00"
+                    transparent
+                    opacity={hoveredItem?.id === options[index].id ? 0.5 : 0.1}
+                    toneMapped={false}
+                  />
+                </mesh>
+                {/* Inner core sphere */}
+                <mesh scale={0.7}>
+                  <sphereGeometry args={[0.15, 32, 32]} />
+                  <meshBasicMaterial
+                    color="#00ff00"
+                    transparent
+                    opacity={hoveredItem?.id === options[index].id ? 1 : 0.1}
+                    toneMapped={false}
+                  />
+                </mesh>
+              </group>
+              {/* Text label group */}
+              <group>
+                {/* Text background plane */}
+                <mesh position={[0, -0.25, -0.015]} scale={[1.6, 0.6, 1]}>
+                  <planeGeometry args={[0.45, 0.2]} />
+                  <meshBasicMaterial
+                    color="#0a0"
+                    toneMapped={false}
+                    opacity={hoveredItem?.id === options[index].id ? 0.75 : 0}
+                    transparent
+                  />
+                </mesh>
+                {/* Text label */}
+                <Text
+                  position={[0, -0.25, 0]}
+                  toneMapped={false}
+                  fontSize={0.075}
+                  color="#fff"
+                  font="/fonts/PressStart2P-Regular.ttf"
+                  anchorX="center"
+                  anchorY="middle"
+                  ref={(ref) => (textRefs.current[index] = ref)}
+                  transparent
+                  opacity={hoveredItem?.id === options[index].id ? 1 : 0.33}
+                >
+                  {options[index].title}
+                </Text>
+              </group>
             </a.mesh>
+            {/* Connection line to center */}
             <primitive
               object={
                 new THREE.Line(
@@ -136,7 +162,8 @@ const GalaGUI = () => {
                   new THREE.LineBasicMaterial({
                     color: 0x00ff00,
                     toneMapped: false,
-                    linewidth: 1
+                    opacity: hoveredItem?.id === options[index].id ? 1 : 0.15,
+                    transparent: true
                   })
                 )
               }
