@@ -1,77 +1,108 @@
-# Digital Portfolio
-This is a project dedicated to showcasing my skills, experience, and a few of my recent projects.
+# Oortfolio: A 3D, Space-Themed Developer Portfolio Presentation GUI
 
-## Documentation
+The Oortfolio is a developer portfolio interface built as a technical and creative alternative to traditional portfolio interfaces. It presents project walkthroughs, developer narratives, and engineering system overviews through an interactive, 3D radial interface called GalaGUI.
 
-The JSDoc-generated documentation can be viewed from the root directory, in the docs folder.
+Rather than simply listing past work, this interface was designed to structure and guide live presentations. It allows audiences to explore technical projects as modular “nodes,” each anchored in real engineering deliverables.
 
-# Getting Started with Create React App
+---
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Purpose
 
-## Available Scripts
+- Present real-world engineering work in an engaging, structured way
+- Demonstrate architectural and UI depth through the medium itself
+- Deliver a portfolio experience that reflects how I think as both a developer and systems designer
 
-In the project directory, you can run:
+---
 
-### `npm start`
+## Stack Overview
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- **React + Vite** for modular app structure and performance
+- **React Three Fiber / Three.js** for interactive 3D rendering
+- **Zustand** for state management across canvases and interaction layers
+- **React Spring** for animation timing and transitions
+- **SCSS Modules** for themeable, maintainable styling
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+---
 
-### `npm test`
+## How It Works
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### GalaGUI: Radial 3D Presentation Interface
 
-### `npm run build`
+- Built using React Three Fiber and layered canvases
+- Designed to orient users in a spatial map of project topics
+- Supports mouse, touch, and keyboard input with physics-inspired rotation
+- Highlights selected project “nodes” which trigger project slides or interactions
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### Node-Based Project Slides (Presentation Mode)
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+- Each node launches a dedicated slide interface
+- Slides walk through key engineering work with code, architecture, and problem breakdowns
+- Used for both live interviews and async walkthroughs
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+---
 
-### `npm run eject`
+## Technical Architecture
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+- **Two-canvas rendering pipeline** separates animation and UI layers
+- **Custom interaction abstraction** for pointer, drag, scroll, and touch gestures
+- **Decoupled UI state** allows future expansion (game modes, galleries, or docs)
+- **Scene organization tools** for 3D node positioning, camera alignment, and label rendering
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+---
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+## Development Timeline Highlights
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+### Phase 1: Structure & Layout
 
-## Learn More
+- Refactored default CRA boilerplate into component-driven layout
+- Introduced centralized context and hook systems
+- Built core presentation routes and dialogue state manager
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Phase 2: Rendering Pipeline & State Management
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- Migrated to Vite for performance and dev ergonomics
+- Added Zustand to manage global interaction state
+- Implemented dual-canvas layout for independent rendering flows
 
-### Code Splitting
+### Phase 3: GalaGUI System
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+- Created node-based radial 3D GUI with hover and selection math
+- Integrated animated feedback, camera-facing labels, and connecting lines
+- @TODO: Optimize touch and mobile interactions with gesture normalization
 
-### Analyzing the Bundle Size
+### Phase 4: Presentation Layer
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+- Part DOS, part space systems, part retro game aesthetic utilizing the GalaGUI system
+- @TODO: clean node-to-slide presentation of project deep dives
+- @TODO: Modular slide engine that maps directly to real project overviews
+- @TODO: UI polish, loading, and input transitions
 
-### Making a Progressive Web App
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## Archived: Storyfall Prototype
 
-### Advanced Configuration
+_Storyfall_ was to be an early experiment in gamifying developer narration. If implemented, it will feature a pixel-art mini-game where narration transitions into shootable, falling text—intended as a metaphor for building from ideas into action. The concept was ultimately archived in favor of a more presentation-focused approach, but remains in the codebase as a reminder and baseline for potential future development.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+---
 
-### Deployment
+## Reflections
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+> This project became a platform for both storytelling and architecture. While it began as a creative experiment, its direction shifted toward modular clarity and reusable presentation logic. It reflects how I think about frontend systems: not just as visual components, but as structures for guiding interaction, insight, and flow.
 
-### `npm run build` fails to minify
+---
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+## Demo Coming Soon
+
+This project will likely be an ongoing iterative development. A live demo is deployed at:
+
+[joshua-cornett.github.io/digital-portfolio](https://joshua-cornett.github.io/digital-portfolio)
+
+---
+
+## 📬 Contact
+
+**Joshua Cornett**  
+Seattle, WA  
+[joshua.m.cornett@proton.me](mailto:joshua.m.cornett@proton.me)  
+[LinkedIn](https://linkedin.com/in/joshua-cornett)  
+[Portfolio](https://joshua-cornett.github.io/digital-portfolio)
