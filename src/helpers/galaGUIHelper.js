@@ -51,7 +51,7 @@ export const generateRadialOptions = (count, radius) => {
       position: [x, y, z],
       title: `Option ${i + 1}`,
       description: `Description for option ${i + 1}`,
-      icon: '🌟', // You can replace this with actual icon data
+      icon: '',
       color: 0x00ff00, // Fixed green color
       data: {
         // Add any additional data you want to associate with each node

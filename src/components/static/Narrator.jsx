@@ -18,7 +18,8 @@ import { ErrorBoundary } from 'react-error-boundary';
  */
 const Narrator = ({ isGameMode }) => {
   const id = useId();
-  const narratorDialogue = "Heyo! I'm Jash!";
+  const narratorDialogue =
+    "Heyo! I'm Josh! This <b><i>Oort</i></b>folio is still under development. In the meantime, feel free to test out the GUI below by clicking and dragging.";
 
   // Content of the Narrator component
   const narratorContent = (

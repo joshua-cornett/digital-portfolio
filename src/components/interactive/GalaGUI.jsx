@@ -140,7 +140,7 @@ const GalaGUI = () => {
                   toneMapped={false}
                   fontSize={0.075}
                   color="#fff"
-                  font="/fonts/PressStart2P-Regular.ttf"
+                  font="fonts/PressStart2P-Regular.ttf"
                   anchorX="center"
                   anchorY="middle"
                   ref={(ref) => (textRefs.current[index] = ref)}

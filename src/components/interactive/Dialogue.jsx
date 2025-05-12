@@ -1,5 +1,5 @@
 // React imports
-import { useState, useEffect } from 'react';
+import { useEffect, useState } from 'react';
 // Context imports
 import { useDialogueContext } from '@contexts';
 // Style imports
@@ -48,7 +48,7 @@ const Dialogue = ({ id, dialogue }) => {
 
   return (
     <div className={styles.dialogue}>
-      <p className={styles.dialogueText}>{displayedText}</p>
+      <p className={styles.dialogueText} dangerouslySetInnerHTML={{ __html: displayedText }} />
     </div>
   );
 };

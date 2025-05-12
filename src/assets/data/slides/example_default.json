@@ -1,0 +1,35 @@
+{
+  "id": "widget-01",
+  "section": "Context",
+  "label": "Widget Ops Collapse",
+  "base": {
+    "heading": "Widget Ops Collapse",
+    "body": "After our lead dev stepped away, I became the only engineer handling widgets across 3,000+ publisher sites.",
+    "readings": {
+      "A": ["React", "Zustand"],
+      "B": ["Solo development"],
+      "C": ["Accessibility baked-in"],
+      "D": ["1 developer remained"]
+    }
+  },
+  "steps": [
+    {
+      "bodyDelta": {
+        "add": "Traffic remained steady. Tight deadlines, last-minute copy changes, and full accessibility still expected.",
+        "highlight": ["tight deadlines", "last-minute copy changes"]
+      },
+      "readingsDelta": {
+        "C": { "add": ["24-hour turnaround", "Live content updates"] }
+      }
+    },
+    {
+      "bodyDelta": {
+        "add": "There was no backup, no automation support, and no time for onboarding. It wasn’t sustainable.",
+        "highlight": ["no backup", "wasn’t sustainable"]
+      },
+      "readingsDelta": {
+        "B": { "add": ["No fallback", "High urgency"] }
+      }
+    }
+  ]
+}
