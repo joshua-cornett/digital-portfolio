@@ -1,6 +1,5 @@
-import { GalaGUI, LaunchButton, PlayerShip } from '@interactive';
+import { BackButton, GalaGUI, LaunchButton } from '@interactive';
 import { Canvas } from '@react-three/fiber';
-import { Walls } from '@static';
 import React from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import styles from './PlayArea.module.scss';
@@ -21,23 +20,10 @@ const PlayArea = () => {
           <Canvas className={styles.galaGUICanvas}>
             <GalaGUI />
           </Canvas>
-          <LaunchButton />
-        </div>
-      </ErrorBoundary>
-
-      {/* PlayerShip Component */}
-      <ErrorBoundary
-        fallback={<div className={styles.error}>Something went wrong in PlayerShip</div>}
-      >
-        <div className={styles.playerShipContainer}>
-          <PlayerShip />
-        </div>
-      </ErrorBoundary>
-
-      {/* Walls Component */}
-      <ErrorBoundary fallback={<div className={styles.error}>Something went wrong in Walls</div>}>
-        <div className={styles.walls}>
-          <Walls />
+          <div className={styles.buttonContainer}>
+            <BackButton />
+            <LaunchButton />
+          </div>
         </div>
       </ErrorBoundary>
     </div>

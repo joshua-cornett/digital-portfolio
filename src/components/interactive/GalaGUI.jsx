@@ -5,8 +5,10 @@ import { useFrame, useThree } from '@react-three/fiber';
 import React, { useEffect, useRef } from 'react';
 import * as THREE from 'three';
 import useGalaGUIStore from '../../stores/useGalaGUIStore';
+
 /**
  * GalaGUI component creates a 3D radial selection UI with enhanced controls.
+ * Handles both deck selection and section display.
  *
  * @component
  * @returns {JSX.Element} The rendered GalaGUI component.
@@ -18,6 +20,9 @@ const GalaGUI = () => {
 
   const options = useGalaGUIStore((state) => state.options);
   const hoveredItem = useGalaGUIStore((state) => state.hoveredItem);
+  const isInDeckView = useGalaGUIStore((state) => state.isInDeckView);
+  const currentSections = useGalaGUIStore((state) => state.currentSections);
+  const setOptions = useGalaGUIStore((state) => state.setOptions);
 
   const [springs, api] = useSprings(options.length, (index) => ({
     scale: 1,
@@ -32,6 +37,61 @@ const GalaGUI = () => {
     dampingFactor: 0.97,
     meshRefs
   });
+
+  // Update options when switching between deck and section views
+  useEffect(() => {
+    if (isInDeckView) {
+      // Convert sections to options format
+      const sectionOptions = currentSections.map((section, index) => {
+        const theta = Math.acos(1 - (2 * (index + 1)) / currentSections.length);
+        const phi = Math.sqrt(currentSections.length * Math.PI) * theta;
+        const radius = 2;
+        const x = radius * Math.sin(theta) * Math.cos(phi);
+        const y = radius * Math.sin(theta) * Math.sin(phi);
+        const z = radius * Math.cos(theta);
+
+        return {
+          id: section.id,
+          position: [x, y, z],
+          title: section.title,
+          description: `Section ${index + 1}`,
+          icon: '',
+          color: 0x00ff00,
+          data: section
+        };
+      });
+      setOptions(sectionOptions);
+    } else {
+      // Load initial deck options
+      fetch('/data/decks/index.json')
+        .then((response) => response.json())
+        .then((decks) => {
+          const deckOptions = decks.map((deck, index) => {
+            const theta = Math.acos(1 - (2 * (index + 1)) / decks.length);
+            const phi = Math.sqrt(decks.length * Math.PI) * theta;
+            const radius = 2;
+            const x = radius * Math.sin(theta) * Math.cos(phi);
+            const y = radius * Math.sin(theta) * Math.sin(phi);
+            const z = radius * Math.cos(theta);
+
+            return {
+              id: deck.id,
+              position: [x, y, z],
+              title: deck.title,
+              description: `Deck ${index + 1}`,
+              icon: '',
+              color: 0x00ff00,
+              data: deck
+            };
+          });
+          setOptions(deckOptions);
+        })
+        .catch((error) => {
+          console.error('Error loading decks:', error);
+          // Handle error appropriately
+        });
+    }
+  }, [isInDeckView, currentSections, setOptions]);
 
   useEffect(() => {
     api.start((index) => {
@@ -56,15 +116,13 @@ const GalaGUI = () => {
     textRefs.current.forEach((ref, index) => {
       const mesh = meshRefs.current[index];
       if (ref && mesh) {
-        // Get the parent group of the text (which should be the group we added)
         const textGroup = ref.parent;
         if (!textGroup) return;
 
-        // Make the text group face the camera
         const worldPos = new THREE.Vector3();
         textGroup.getWorldPosition(worldPos);
         const camPos = camera.position.clone();
-        camPos.y = worldPos.y; // Keep y-level consistent for upright text
+        camPos.y = worldPos.y;
         textGroup.lookAt(camPos);
       }
     });

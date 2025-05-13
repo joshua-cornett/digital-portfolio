@@ -1,0 +1,13 @@
+[
+    {
+      "id": "deck-alpha",
+      "title": "Alpha Deck",
+      "nodeId": "Option-0"
+    },
+    {
+      "id": "deck-beta",
+      "title": "Beta Deck",
+      "nodeId": "Option-1"
+    }
+  ]
+  

@@ -1,9 +1,10 @@
 import { useGalaGUIStore } from '@stores';
-import React from 'react';
+import React, { useEffect } from 'react';
 import styles from './LaunchButton.module.scss';
 
 /**
  * LaunchButton component that appears below the GalaGUI and becomes active when a node is hovered.
+ * Handles both deck and section selection based on current view.
  *
  * @component
  * @returns {JSX.Element} The rendered LaunchButton component.
@@ -11,18 +12,34 @@ import styles from './LaunchButton.module.scss';
 const LaunchButton = () => {
   const hoveredItem = useGalaGUIStore((state) => state.hoveredItem);
   const setSelectedItem = useGalaGUIStore((state) => state.setSelectedItem);
+  const setCurrentDeck = useGalaGUIStore((state) => state.setCurrentDeck);
+  const isInDeckView = useGalaGUIStore((state) => state.isInDeckView);
   const [animationKey, setAnimationKey] = React.useState(0);
 
   // Update animation key when hovered item changes
-  React.useEffect(() => {
+  useEffect(() => {
     if (hoveredItem) {
       setAnimationKey((prev) => prev + 1);
     }
-  }, [hoveredItem?.id]); // Only trigger on ID change
+  }, [hoveredItem?.id]);
 
-  const handleLaunch = () => {
-    if (hoveredItem) {
+  const handleLaunch = async () => {
+    if (!hoveredItem) return;
+
+    if (isInDeckView) {
+      // In deck view, just select the section
       setSelectedItem(hoveredItem);
+    } else {
+      // In root view, load the deck data
+      try {
+        const response = await fetch(`/data/decks/${hoveredItem.id}.json`);
+        if (!response.ok) throw new Error('Failed to load deck');
+        const deckData = await response.json();
+        setCurrentDeck(deckData);
+      } catch (error) {
+        console.error('Error loading deck:', error);
+        // Handle error appropriately
+      }
     }
   };
 
@@ -33,7 +50,7 @@ const LaunchButton = () => {
   };
 
   // Add global keypress listener for Enter key
-  React.useEffect(() => {
+  useEffect(() => {
     window.addEventListener('keypress', handleKeyPress);
     return () => {
       window.removeEventListener('keypress', handleKeyPress);
@@ -42,7 +59,7 @@ const LaunchButton = () => {
 
   return (
     <button
-      key={animationKey} // Force re-render when hovered item changes
+      key={animationKey}
       className={`${styles.launchButton} ${hoveredItem ? styles.active : ''}`}
       onClick={handleLaunch}
       disabled={!hoveredItem}

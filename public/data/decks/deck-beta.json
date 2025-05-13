@@ -1,0 +1,35 @@
+{
+  "id": "deck-beta",
+  "title": "Beta Deck",
+  "sections": [
+    {
+      "id": "overview",
+      "title": "Overview Section",
+      "slides": [
+        {
+          "id": "beta-01",
+          "label": "Beta Begins",
+          "type": "narrative",
+          "base": {
+            "heading": "Start of Beta",
+            "body": "Beta deck launches here.",
+            "readings": {
+              "B": { "label": "Focus", "content": ["Main idea"] }
+            }
+          },
+          "steps": [
+            {
+              "body": { "add": ["Second sentence for beta."] },
+              "readings": {
+                "B": { "add": ["Deeper detail"] }
+              }
+            },
+            {
+              "body": { "add": ["Final step in this slide."] }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
