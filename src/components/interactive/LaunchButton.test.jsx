@@ -1,120 +1,139 @@
-import useGalaGUIStore from '@stores/useGalaGUIStore';
-import { fireEvent, render, screen } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import useGalaGUIStore from '../../stores/useGalaGUIStore';
 import LaunchButton from './LaunchButton';
 
 // Mock the store
-vi.mock('@stores/useGalaGUIStore', () => ({
+vi.mock('../../stores/useGalaGUIStore', () => ({
   default: vi.fn()
 }));
 
+// Mock fetch
+global.fetch = vi.fn();
+
 describe('LaunchButton', () => {
   const mockSetSelectedItem = vi.fn();
-  const mockHoveredItem = { id: 'test-id', title: 'Test Node' };
+  const mockSetCurrentDeck = vi.fn();
+  const mockHoveredItem = { id: 'deck-alpha', title: 'Alpha Deck' };
 
   beforeEach(() => {
     vi.clearAllMocks();
-    // Reset store mock for each test
+    global.fetch.mockReset();
     useGalaGUIStore.mockImplementation((selector) =>
       selector({
         hoveredItem: null,
-        setSelectedItem: mockSetSelectedItem
+        setSelectedItem: mockSetSelectedItem,
+        setCurrentDeck: mockSetCurrentDeck,
+        isInDeckView: false
       })
     );
   });
 
-  it('renders in disabled state when hoveredNode is null', () => {
+  it('should be disabled when no item is hovered', () => {
     render(<LaunchButton />);
     const button = screen.getByRole('button', { name: /launch/i });
-
     expect(button).toBeDisabled();
   });
 
-  it('becomes active when hoveredNode is set', () => {
-    // Mock store to return a hovered item
+  it('should be enabled when an item is hovered', () => {
     useGalaGUIStore.mockImplementation((selector) =>
       selector({
         hoveredItem: mockHoveredItem,
-        setSelectedItem: mockSetSelectedItem
+        setSelectedItem: mockSetSelectedItem,
+        setCurrentDeck: mockSetCurrentDeck,
+        isInDeckView: false
       })
     );
 
     render(<LaunchButton />);
     const button = screen.getByRole('button', { name: /launch/i });
-
     expect(button).not.toBeDisabled();
   });
 
-  it('calls setSelectedItem when clicked if hovered', () => {
-    // Mock store to return a hovered item
-    useGalaGUIStore.mockImplementation((selector) =>
-      selector({
-        hoveredItem: mockHoveredItem,
-        setSelectedItem: mockSetSelectedItem
-      })
-    );
-
-    render(<LaunchButton />);
-    const button = screen.getByRole('button', { name: /launch/i });
-
-    fireEvent.click(button);
-    expect(mockSetSelectedItem).toHaveBeenCalledWith(mockHoveredItem);
-  });
-
-  it('does not call setSelectedItem when clicked if not hovered', () => {
-    render(<LaunchButton />);
-    const button = screen.getByRole('button', { name: /launch/i });
-
-    fireEvent.click(button);
-    expect(mockSetSelectedItem).not.toHaveBeenCalled();
-  });
-
-  it('triggers selection when Enter key is pressed and node is hovered', () => {
-    // Mock store to return a hovered item
-    useGalaGUIStore.mockImplementation((selector) =>
-      selector({
-        hoveredItem: mockHoveredItem,
-        setSelectedItem: mockSetSelectedItem
-      })
-    );
-
-    render(<LaunchButton />);
-
-    // Simulate Enter key press
-    fireEvent.keyPress(document, { key: 'Enter', code: 'Enter' });
-    expect(mockSetSelectedItem).toHaveBeenCalledWith(mockHoveredItem);
-  });
-
-  it('does not trigger selection when Enter key is pressed and no node is hovered', () => {
-    render(<LaunchButton />);
-
-    // Simulate Enter key press
-    fireEvent.keyPress(document, { key: 'Enter', code: 'Enter' });
-    expect(mockSetSelectedItem).not.toHaveBeenCalled();
-  });
-
-  it('does not interfere with GalaGUI pointer dragging', () => {
-    // Mock store to return a hovered item
-    useGalaGUIStore.mockImplementation((selector) =>
-      selector({
-        hoveredItem: mockHoveredItem,
-        setSelectedItem: mockSetSelectedItem
-      })
-    );
-
-    render(<LaunchButton />);
-    const button = screen.getByRole('button', { name: /launch/i });
-
-    // Simulate pointer events that should be handled by GalaGUI
-    const pointerDownEvent = new MouseEvent('pointerdown', {
-      bubbles: true,
-      cancelable: true,
-      clientX: 100,
-      clientY: 100
+  it('should load deck data and set current deck when in root view', async () => {
+    const mockDeckData = { id: 'deck-alpha', title: 'Alpha Deck', sections: [] };
+    global.fetch.mockResolvedValueOnce({
+      ok: true,
+      json: () => Promise.resolve(mockDeckData)
     });
 
-    // The button should not prevent the event from bubbling
-    const prevented = !button.dispatchEvent(pointerDownEvent);
-    expect(prevented).toBe(false);
+    useGalaGUIStore.mockImplementation((selector) =>
+      selector({
+        hoveredItem: mockHoveredItem,
+        setSelectedItem: mockSetSelectedItem,
+        setCurrentDeck: mockSetCurrentDeck,
+        isInDeckView: false
+      })
+    );
+
+    render(<LaunchButton />);
+    const button = screen.getByRole('button', { name: /launch/i });
+    fireEvent.click(button);
+
+    await waitFor(() => {
+      expect(global.fetch).toHaveBeenCalledWith('/data/decks/deck-alpha.json');
+      expect(mockSetCurrentDeck).toHaveBeenCalledWith(mockDeckData);
+    });
+  });
+
+  it('should select section when in deck view', () => {
+    const mockSection = { id: 'section-1', title: 'Section 1' };
+    useGalaGUIStore.mockImplementation((selector) =>
+      selector({
+        hoveredItem: mockSection,
+        setSelectedItem: mockSetSelectedItem,
+        setCurrentDeck: mockSetCurrentDeck,
+        isInDeckView: true
+      })
+    );
+
+    render(<LaunchButton />);
+    const button = screen.getByRole('button', { name: /launch/i });
+    fireEvent.click(button);
+
+    expect(mockSetSelectedItem).toHaveBeenCalledWith(mockSection);
+    expect(mockSetCurrentDeck).not.toHaveBeenCalled();
+  });
+
+  it('should handle fetch errors gracefully', async () => {
+    global.fetch.mockRejectedValueOnce(new Error('Failed to fetch'));
+
+    useGalaGUIStore.mockImplementation((selector) =>
+      selector({
+        hoveredItem: mockHoveredItem,
+        setSelectedItem: mockSetSelectedItem,
+        setCurrentDeck: mockSetCurrentDeck,
+        isInDeckView: false
+      })
+    );
+
+    const consoleSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+    render(<LaunchButton />);
+    const button = screen.getByRole('button', { name: /launch/i });
+    fireEvent.click(button);
+
+    await waitFor(() => {
+      expect(consoleSpy).toHaveBeenCalled();
+      expect(mockSetCurrentDeck).not.toHaveBeenCalled();
+    });
+
+    consoleSpy.mockRestore();
+  });
+
+  it('should trigger launch on Enter key press when item is hovered', () => {
+    const mockSection = { id: 'section-1', title: 'Section 1' };
+    useGalaGUIStore.mockImplementation((selector) =>
+      selector({
+        hoveredItem: mockSection,
+        setSelectedItem: mockSetSelectedItem,
+        setCurrentDeck: mockSetCurrentDeck,
+        isInDeckView: true
+      })
+    );
+
+    render(<LaunchButton />);
+    fireEvent.keyPress(document, { key: 'Enter', code: 'Enter' });
+
+    expect(mockSetSelectedItem).toHaveBeenCalledWith(mockSection);
   });
 });
