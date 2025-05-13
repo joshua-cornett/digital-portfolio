@@ -1,0 +1,198 @@
+{
+  "id": "deck-gamma",
+  "title": "Skills & Experience",
+  "sections": [
+    {
+      "id": "skills",
+      "title": "Technical Skills",
+      "slides": [
+        {
+          "id": "gamma-01",
+          "label": "Frontend Mastery",
+          "type": "narrative",
+          "base": {
+            "heading": "Frontend Development",
+            "body": "Deep expertise in modern frontend technologies and frameworks, with a focus on React, TypeScript, and performance optimization.",
+            "readings": {
+              "A": {
+                "label": "React Ecosystem",
+                "content": [
+                  "React, React Router, Redux/Zustand",
+                  "Custom hooks and context patterns",
+                  "Performance optimization techniques"
+                ]
+              },
+              "B": {
+                "label": "TypeScript",
+                "content": [
+                  "Advanced type systems",
+                  "Generic types and utility types",
+                  "Type-safe API integration"
+                ]
+              },
+              "C": {
+                "label": "CSS & Animation",
+                "content": [
+                  "CSS Grid, Flexbox, and custom properties",
+                  "CSS animations and transitions",
+                  "Responsive design patterns"
+                ]
+              },
+              "D": {
+                "label": "Testing & Quality",
+                "content": [
+                  "Jest, React Testing Library",
+                  "E2E testing with Cypress",
+                  "Accessibility testing and compliance"
+                ]
+              }
+            }
+          },
+          "steps": [
+            {
+              "body": {
+                "add": [
+                  "Each technology choice is backed by real-world experience and a focus on maintainability."
+                ]
+              },
+              "readings": {
+                "A": {
+                  "add": ["Experience with large-scale React applications and state management."]
+                },
+                "B": {
+                  "add": ["TypeScript adoption from early versions, with focus on type safety."]
+                },
+                "C": { "add": ["Modern CSS techniques for complex layouts and animations."] },
+                "D": { "add": ["Comprehensive testing strategies for reliable applications."] }
+              }
+            }
+          ]
+        },
+        {
+          "id": "gamma-02",
+          "label": "Backend & DevOps",
+          "type": "narrative",
+          "base": {
+            "heading": "Backend & Infrastructure",
+            "body": "Full-stack capabilities with Node.js, cloud services, and modern DevOps practices.",
+            "readings": {
+              "A": {
+                "label": "Node.js & APIs",
+                "content": [
+                  "Express, Fastify, and custom servers",
+                  "RESTful and GraphQL APIs",
+                  "WebSocket and real-time systems"
+                ]
+              },
+              "B": {
+                "label": "Cloud & DevOps",
+                "content": [
+                  "AWS, Azure, and GCP services",
+                  "Docker and containerization",
+                  "CI/CD pipelines and automation"
+                ]
+              },
+              "C": {
+                "label": "Databases",
+                "content": [
+                  "SQL and NoSQL databases",
+                  "Database design and optimization",
+                  "Caching strategies"
+                ]
+              },
+              "D": {
+                "label": "Security",
+                "content": [
+                  "Authentication and authorization",
+                  "API security best practices",
+                  "Data protection and privacy"
+                ]
+              }
+            }
+          },
+          "steps": [
+            {
+              "body": {
+                "add": ["Experience spans from development to deployment and maintenance."]
+              },
+              "readings": {
+                "A": { "add": ["Built scalable APIs for enterprise applications."] },
+                "B": { "add": ["Implemented automated deployment pipelines."] },
+                "C": { "add": ["Optimized database performance for high-traffic applications."] },
+                "D": { "add": ["Implemented security measures for sensitive data."] }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "experience",
+      "title": "Professional Experience",
+      "slides": [
+        {
+          "id": "gamma-03",
+          "label": "Recent Projects",
+          "type": "narrative",
+          "base": {
+            "heading": "Notable Projects",
+            "body": "A selection of significant projects that showcase technical expertise and problem-solving abilities.",
+            "readings": {
+              "A": {
+                "label": "Enterprise Apps",
+                "content": [
+                  "Large-scale React applications",
+                  "Microservices architecture",
+                  "Performance optimization"
+                ]
+              },
+              "B": {
+                "label": "E-commerce",
+                "content": [
+                  "High-traffic online stores",
+                  "Payment integration",
+                  "Inventory management"
+                ]
+              },
+              "C": {
+                "label": "Real-time Systems",
+                "content": [
+                  "WebSocket applications",
+                  "Live data visualization",
+                  "Collaborative features"
+                ]
+              },
+              "D": {
+                "label": "Open Source",
+                "content": [
+                  "Contributions to major projects",
+                  "Personal open-source libraries",
+                  "Community engagement"
+                ]
+              }
+            }
+          },
+          "steps": [
+            {
+              "body": {
+                "add": [
+                  "Each project demonstrates a unique combination of technical skills and business value."
+                ]
+              },
+              "readings": {
+                "A": {
+                  "add": ["Successfully delivered enterprise solutions with complex requirements."]
+                },
+                "B": {
+                  "add": ["Built scalable e-commerce platforms handling millions of transactions."]
+                },
+                "C": { "add": ["Implemented real-time features for collaborative applications."] },
+                "D": { "add": ["Active contributor to the open-source community."] }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
