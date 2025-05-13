@@ -10,12 +10,23 @@ import styles from './BackButton.module.scss';
  */
 const BackButton = () => {
   const isInDeckView = useGalaGUIStore((state) => state.isInDeckView);
+  const selectedItem = useGalaGUIStore((state) => state.selectedItem);
   const goBack = useGalaGUIStore((state) => state.goBack);
+  const goToSectionSelect = useGalaGUIStore((state) => state.goToSectionSelect);
 
   if (!isInDeckView) return null;
 
+  // If a section is selected (i.e., in slide view), go to section select; otherwise, goBack
+  const handleBack = () => {
+    if (selectedItem && selectedItem.slides) {
+      goToSectionSelect();
+    } else {
+      goBack();
+    }
+  };
+
   return (
-    <button className={styles.backButton} onClick={goBack}>
+    <button className={styles.backButton} onClick={handleBack}>
       BACK
     </button>
   );

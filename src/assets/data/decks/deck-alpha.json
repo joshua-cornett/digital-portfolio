@@ -14,14 +14,87 @@
             "heading": "Welcome to Alpha",
             "body": "This is the first slide in the Alpha deck.",
             "readings": {
-              "A": { "label": "Note", "content": ["Initial context"] }
+              "A": { "label": "Note A", "content": ["Alpha A content."] },
+              "B": { "label": "Note B", "content": ["Alpha B content."] },
+              "C": { "label": "Note C", "content": ["Alpha C content."] },
+              "D": { "label": "Note D", "content": ["Alpha D content."] }
             }
           },
           "steps": [
             {
-              "body": { "add": ["Here's a follow-up sentence."] },
+              "body": { "add": ["Step 1: More details for Alpha."] },
               "readings": {
-                "A": { "add": ["Expanded note"] }
+                "A": { "add": ["Step 1: A panel update."] },
+                "B": { "add": ["Step 1: B panel update."] },
+                "C": { "add": ["Step 1: C panel update."] },
+                "D": { "add": ["Step 1: D panel update."] }
+              }
+            },
+            {
+              "body": { "add": ["Step 2: Even more info."] },
+              "readings": {
+                "A": { "add": ["Step 2: A panel extra."] },
+                "B": { "add": ["Step 2: B panel extra."] },
+                "C": { "add": ["Step 2: C panel extra."] },
+                "D": { "add": ["Step 2: D panel extra."] }
+              }
+            }
+          ]
+        },
+        {
+          "id": "alpha-02",
+          "label": "Second Slide",
+          "type": "narrative",
+          "base": {
+            "heading": "Alpha Continues",
+            "body": "Second slide body for Alpha.",
+            "readings": {
+              "A": { "label": "Alpha A2", "content": ["Alpha A2 content."] },
+              "B": { "label": "Alpha B2", "content": ["Alpha B2 content."] },
+              "C": { "label": "Alpha C2", "content": ["Alpha C2 content."] },
+              "D": { "label": "Alpha D2", "content": ["Alpha D2 content."] }
+            }
+          },
+          "steps": [
+            {
+              "body": { "add": ["Step 1: Alpha 2 details."] },
+              "readings": {
+                "A": { "add": ["Step 1: A2 panel update."] },
+                "B": { "add": ["Step 1: B2 panel update."] },
+                "C": { "add": ["Step 1: C2 panel update."] },
+                "D": { "add": ["Step 1: D2 panel update."] }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "details",
+      "title": "Details Section",
+      "slides": [
+        {
+          "id": "alpha-03",
+          "label": "Details Slide",
+          "type": "narrative",
+          "base": {
+            "heading": "Alpha Details",
+            "body": "Details about Alpha.",
+            "readings": {
+              "A": { "label": "Details A", "content": ["Details A content."] },
+              "B": { "label": "Details B", "content": ["Details B content."] },
+              "C": { "label": "Details C", "content": ["Details C content."] },
+              "D": { "label": "Details D", "content": ["Details D content."] }
+            }
+          },
+          "steps": [
+            {
+              "body": { "add": ["Step 1: More Alpha details."] },
+              "readings": {
+                "A": { "add": ["Step 1: Details A update."] },
+                "B": { "add": ["Step 1: Details B update."] },
+                "C": { "add": ["Step 1: Details C update."] },
+                "D": { "add": ["Step 1: Details D update."] }
               }
             }
           ]

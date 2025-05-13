@@ -32,8 +32,8 @@ const GalaGUI = () => {
   }));
 
   const { groupRef, handlePointerDown, applyFrameUpdates } = useGalaGUI({
-    pointerRotationSpeed: 0.0003,
-    keyboardRotationSpeed: 0.03,
+    pointerRotationSpeed: 0.0006,
+    keyboardRotationSpeed: 0.06,
     dampingFactor: 0.97,
     meshRefs
   });
@@ -41,20 +41,31 @@ const GalaGUI = () => {
   // Update options when switching between deck and section views
   useEffect(() => {
     if (isInDeckView) {
-      // Convert sections to options format
-      const sectionOptions = currentSections.map((section, index) => {
-        const theta = Math.acos(1 - (2 * (index + 1)) / currentSections.length);
-        const phi = Math.sqrt(currentSections.length * Math.PI) * theta;
-        const radius = 2;
-        const x = radius * Math.sin(theta) * Math.cos(phi);
-        const y = radius * Math.sin(theta) * Math.sin(phi);
-        const z = radius * Math.cos(theta);
-
+      // Convert sections to options format using Fibonacci sphere for uniform distribution
+      const N = currentSections.length;
+      const radius = 1;
+      const sectionOptions = currentSections.map((section, i) => {
+        if (N === 1) {
+          return {
+            id: section.id,
+            position: [0, 0, radius],
+            title: section.title,
+            description: `Section 1`,
+            icon: '',
+            color: 0x00ff00,
+            data: section
+          };
+        }
+        const y = 1 - (i / (N - 1)) * 2; // y goes from 1 to -1
+        const r = Math.sqrt(1 - y * y);
+        const phi = Math.PI * (3 - Math.sqrt(5)) * i; // golden angle
+        const x = Math.cos(phi) * r;
+        const z = Math.sin(phi) * r;
         return {
           id: section.id,
-          position: [x, y, z],
+          position: [x * radius, y * radius, z * radius],
           title: section.title,
-          description: `Section ${index + 1}`,
+          description: `Section ${i + 1}`,
           icon: '',
           color: 0x00ff00,
           data: section
@@ -69,7 +80,7 @@ const GalaGUI = () => {
           const deckOptions = decks.map((deck, index) => {
             const theta = Math.acos(1 - (2 * (index + 1)) / decks.length);
             const phi = Math.sqrt(decks.length * Math.PI) * theta;
-            const radius = 2;
+            const radius = 1;
             const x = radius * Math.sin(theta) * Math.cos(phi);
             const y = radius * Math.sin(theta) * Math.sin(phi);
             const z = radius * Math.cos(theta);

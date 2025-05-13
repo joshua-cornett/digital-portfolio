@@ -1,0 +1,17 @@
+{
+  "deckSelect": ["Welcome to the Deck Selector.", "Click a glowing node to explore a deck."],
+  "sectionSelect": [
+    "These are the sections in this deck.",
+    "Select a section node to view its slides."
+  ],
+  "slideView": [
+    "You're now viewing a slide.",
+    "Use the arrows below to step through the content.",
+    "Back returns you to section select."
+  ],
+  "stepNav": ["Use the green arrows to move through steps.", "Each step reveals more details."],
+  "default": [
+    "Welcome to the digital portfolio.",
+    "Explore, click, and enjoy the sci-fi interface!"
+  ]
+}

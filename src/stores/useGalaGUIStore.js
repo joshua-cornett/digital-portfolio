@@ -16,6 +16,7 @@ const useGalaGUIStore = create((set) => ({
 
   setSelectedItem: (item) =>
     set((state) => {
+      console.log('[setSelectedItem] item:', item);
       // If we're in deck view, handle section selection
       if (state.isInDeckView) {
         return {
@@ -57,12 +58,17 @@ const useGalaGUIStore = create((set) => ({
   setOptions: (options) => set({ options }),
 
   setCurrentDeck: (deck) =>
-    set((state) => ({
-      currentDeck: deck,
-      currentSections: deck?.sections || [],
-      isInDeckView: true,
-      navigationHistory: [...state.navigationHistory, { type: 'deck', deck }]
-    })),
+    set((state) => {
+      console.log('[setCurrentDeck] deck:', deck);
+      const result = {
+        currentDeck: deck,
+        currentSections: deck?.sections || [],
+        isInDeckView: true,
+        navigationHistory: [...state.navigationHistory, { type: 'deck', deck }]
+      };
+      console.log('[setCurrentDeck] result.currentSections:', result.currentSections);
+      return result;
+    }),
 
   goBack: () =>
     set((state) => {
@@ -94,7 +100,16 @@ const useGalaGUIStore = create((set) => ({
     }),
 
   triggerAnimation: false,
-  triggerHyperspeed: () => set((state) => ({ triggerAnimation: !state.triggerAnimation }))
+  triggerHyperspeed: () => set((state) => ({ triggerAnimation: !state.triggerAnimation })),
+
+  setIsInDeckView: (value) => set({ isInDeckView: value }),
+
+  goToSectionSelect: () =>
+    set((state) => ({
+      isInDeckView: true,
+      selectedItem: null
+      // Keep currentDeck and currentSections as-is
+    }))
 }));
 
 export default useGalaGUIStore;

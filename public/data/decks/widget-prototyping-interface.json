@@ -1,0 +1,374 @@
+{
+  "id": "deck-widget-prototyping",
+  "title": "Widget Prototyping Interface",
+  "sections": [
+    {
+      "id": "chapter-1",
+      "title": "Mission Context",
+      "slides": [
+        {
+          "id": "widget-01",
+          "label": "Widget Ops Collapse",
+          "type": "narrative",
+          "base": {
+            "heading": "Widget Ops Collapse",
+            "body": "After our lead dev stepped away, I became the sole developer maintaining thousands of bespoke widgets across 3,000 publisher sites. The system was under strain, but the SLA never slipped.",
+            "readings": {
+              "A": {
+                "label": "Scale",
+                "content": [
+                  "1 developer",
+                  "3,000+ sites"
+                ]
+              },
+              "B": {
+                "label": "Workflow",
+                "content": [
+                  "Custom builds",
+                  "Manual QA",
+                  "High variation"
+                ]
+              },
+              "C": {
+                "label": "Delivery",
+                "content": [
+                  "24-hour SLA",
+                  "Unbroken throughput"
+                ]
+              },
+              "D": {
+                "label": "Challenge",
+                "content": [
+                  "No new hires",
+                  "No automation"
+                ]
+              }
+            }
+          },
+          "steps": [
+            {
+              "body": {
+                "add": [
+                  "Sustained delivery under high demand required an entirely new approach."
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "chapter-2",
+      "title": "Early Insight & Tradeoffs",
+      "slides": [
+        {
+          "id": "widget-02",
+          "label": "Scaling Myself, Not Templates",
+          "type": "narrative",
+          "base": {
+            "heading": "Scaling Myself, Not Templates",
+            "body": "Templates helped but couldn\u2019t keep up with the custom nature of widget work. I needed to scale my own workflow\u2014dynamically.",
+            "readings": {
+              "A": {
+                "label": "Insight",
+                "content": [
+                  "Templates \u2260 Systems",
+                  "Custom logic everywhere"
+                ]
+              },
+              "B": {
+                "label": "Tradeoffs",
+                "content": [
+                  "No time for buy-in",
+                  "Needed self-sufficiency"
+                ]
+              },
+              "C": {
+                "label": "Decision",
+                "content": [
+                  "Tool must support solo throughput"
+                ]
+              },
+              "D": {
+                "label": "Vision",
+                "content": [
+                  "Config-driven logic",
+                  "Preview-first design"
+                ]
+              }
+            }
+          },
+          "steps": [
+            {
+              "body": {
+                "add": [
+                  "Systemization was the only path to sustainability."
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "chapter-3",
+      "title": "System Design & MVP",
+      "slides": [
+        {
+          "id": "widget-03",
+          "label": "From Schema to Shippable",
+          "type": "narrative",
+          "base": {
+            "heading": "From Schema to Shippable",
+            "body": "Built in React + TypeScript, the tool accepted config inputs, assembled component variants, and output ready-to-ship markup and styles.",
+            "readings": {
+              "A": {
+                "label": "Core Loop",
+                "content": [
+                  "Schema \u2192 Compile \u2192 Export"
+                ]
+              },
+              "B": {
+                "label": "Tooling",
+                "content": [
+                  "Zustand for state",
+                  "Spring for animations"
+                ]
+              },
+              "C": {
+                "label": "UI Goals",
+                "content": [
+                  "Preview-first",
+                  "Instant feedback"
+                ]
+              },
+              "D": {
+                "label": "Accessibility",
+                "content": [
+                  "ARIA, landmarks, responsive by default"
+                ]
+              }
+            }
+          },
+          "steps": [
+            {
+              "body": {
+                "add": [
+                  "First-class UX and performance were built into the interface itself."
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "chapter-4",
+      "title": "Validation & Iteration",
+      "slides": [
+        {
+          "id": "widget-04",
+          "label": "Testing by Deployment",
+          "type": "narrative",
+          "base": {
+            "heading": "Testing by Deployment",
+            "body": "Without time for traditional QA, production itself became my testbed\u2014every widget was both a delivery and a live validation cycle.",
+            "readings": {
+              "A": {
+                "label": "A/B Logic",
+                "content": [
+                  "UI delta testing",
+                  "CTR observation"
+                ]
+              },
+              "B": {
+                "label": "Feedback Loop",
+                "content": [
+                  "Promote high-performing patterns"
+                ]
+              },
+              "C": {
+                "label": "Default Evolution",
+                "content": [
+                  "Smarter components over time"
+                ]
+              },
+              "D": {
+                "label": "Tool Learning",
+                "content": [
+                  "Output improved with every iteration"
+                ]
+              }
+            }
+          },
+          "steps": [
+            {
+              "body": {
+                "add": [
+                  "Each release taught me something new about users and the system."
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "chapter-5",
+      "title": "Tradeoffs & Constraints",
+      "slides": [
+        {
+          "id": "widget-05",
+          "label": "The Invisible Tool Problem",
+          "type": "narrative",
+          "base": {
+            "heading": "The Invisible Tool Problem",
+            "body": "I never formally pitched the tool\u2014it worked so well that no one realized it existed. That invisibility came with both power and limitations.",
+            "readings": {
+              "A": {
+                "label": "Solo Impact",
+                "content": [
+                  "No onboarding needed",
+                  "No one else used it"
+                ]
+              },
+              "B": {
+                "label": "Constraints",
+                "content": [
+                  "No time for docs",
+                  "Tool remained internal"
+                ]
+              },
+              "C": {
+                "label": "Tradeoffs",
+                "content": [
+                  "Saved my bandwidth",
+                  "No visibility"
+                ]
+              },
+              "D": {
+                "label": "What I Learned",
+                "content": [
+                  "Surface internal wins early"
+                ]
+              }
+            }
+          },
+          "steps": [
+            {
+              "body": {
+                "add": [
+                  "A powerful internal system isn\u2019t useful if no one else can see it."
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "chapter-6",
+      "title": "Impact & Evolution",
+      "slides": [
+        {
+          "id": "widget-06",
+          "label": "Scaling Without Headcount",
+          "type": "narrative",
+          "base": {
+            "heading": "Scaling Without Headcount",
+            "body": "This tool let me double output, maintain quality, and support business needs without requiring another frontend hire for two years.",
+            "readings": {
+              "A": {
+                "label": "Impact",
+                "content": [
+                  "+50% output",
+                  "0 missed deadlines"
+                ]
+              },
+              "B": {
+                "label": "Longevity",
+                "content": [
+                  "Used over multiple years",
+                  "Maintained solo"
+                ]
+              },
+              "C": {
+                "label": "Handoff Blocked",
+                "content": [
+                  "Layoff was sudden",
+                  "Told to wipe and retain laptop"
+                ]
+              },
+              "D": {
+                "label": "Lesson",
+                "content": [
+                  "Prepare for visibility even in high output scenarios"
+                ]
+              }
+            }
+          },
+          "steps": [
+            {
+              "body": {
+                "add": [
+                  "This system worked because it was invisible. That\u2019s also why it didn\u2019t last."
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "chapter-7",
+      "title": "Wrap & Invite",
+      "slides": [
+        {
+          "id": "widget-07",
+          "label": "What This Taught Me",
+          "type": "narrative",
+          "base": {
+            "heading": "What This Taught Me About Systems",
+            "body": "The right tool at the right time can replace an entire team\u2014but the best internal systems are the ones that elevate others, too.",
+            "readings": {
+              "A": {
+                "label": "Autonomy",
+                "content": [
+                  "Built without approval",
+                  "Scaled a solo workflow"
+                ]
+              },
+              "B": {
+                "label": "Vision",
+                "content": [
+                  "Designed for eventual onboarding"
+                ]
+              },
+              "C": {
+                "label": "Lesson",
+                "content": [
+                  "Show your work, even when it\u2019s invisible"
+                ]
+              },
+              "D": {
+                "label": "Open Floor",
+                "content": [
+                  "What else would you like to know?"
+                ]
+              }
+            }
+          },
+          "steps": [
+            {
+              "body": {
+                "add": [
+                  "This project shaped how I think about internal tooling forever."
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

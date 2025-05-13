@@ -1,5 +1,5 @@
 // React imports
-import { useId } from 'react';
+import { useEffect, useId, useState } from 'react';
 
 // Style imports
 import styles from './Narrator.module.scss';
@@ -14,12 +14,26 @@ import { ErrorBoundary } from 'react-error-boundary';
  *
  * @component
  * @param {boolean} isGameMode - Determines the rendering context.
+ * @param {string} context - The context for fetching dialogue.
  * @returns {JSX.Element} The rendered narrator component.
  */
-const Narrator = ({ isGameMode }) => {
+const Narrator = ({ isGameMode, context = 'default' }) => {
   const id = useId();
-  const narratorDialogue =
-    "Heyo! I'm Josh! This <b><i>Oort</i></b>folio is still under development. In the meantime, feel free to test out the GUI below by clicking and dragging.";
+  const [dialogueLines, setDialogueLines] = useState([]);
+
+  useEffect(() => {
+    fetch('/data/dialogue.json')
+      .then((res) => res.json())
+      .then((data) => {
+        setDialogueLines(data[context] || data.default || []);
+      })
+      .catch(() => {
+        setDialogueLines(['Welcome to the digital portfolio.']);
+      });
+  }, [context]);
+
+  // Join lines for Dialogue component
+  const narratorDialogue = dialogueLines.join(' ');
 
   // Content of the Narrator component
   const narratorContent = (

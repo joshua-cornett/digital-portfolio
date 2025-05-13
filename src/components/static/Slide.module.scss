@@ -1,7 +1,7 @@
 .slideGrid {
   display: grid;
-  grid-template-columns: 1fr 2.5fr 2.5fr 1fr;
-  grid-template-rows: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-rows: repeat(2, minmax(max-content, 1fr));
   grid-template-areas:
     'panelA panelMain panelMain panelB'
     'panelC panelMain panelMain panelD';
@@ -36,6 +36,12 @@
 
 .socials {
   grid-area: socials;
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-start;
+  padding: 0.5em;
+  z-index: 10;
+  background: transparent;
 }
 .portrait {
   grid-area: portrait;

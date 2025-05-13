@@ -1,9 +1,12 @@
 import { useSynchronizedRenderLoop } from '@hooks';
 import { Html } from '@react-three/drei';
 import { Canvas } from '@react-three/fiber';
-import { Narrator, OortCloud, PlayArea, Socials } from '@static';
+import { Narrator, OortCloud, PlayArea } from '@static';
+import React, { useState } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
-import Slide from './components/static/Slide';
+import BackButton from './components/interactive/BackButton';
+import SlideWithSteps from './components/static/SlideWithSteps';
+import Socials from './components/static/Socials';
 import useGalaGUIStore from './stores/useGalaGUIStore';
 import styles from './styles/App.module.scss';
 
@@ -21,19 +24,36 @@ const App = () => {
   const selectedItem = useGalaGUIStore((state) => state.selectedItem);
   const isInDeckView = useGalaGUIStore((state) => state.isInDeckView);
   const currentDeck = useGalaGUIStore((state) => state.currentDeck);
+  const setIsInDeckView = useGalaGUIStore((state) => state.setIsInDeckView);
 
   // Determine if a section is selected (in deck view, selectedItem is a section)
   const isSectionSelected =
     isInDeckView && selectedItem && selectedItem.slides && selectedItem.slides.length > 0;
-  const firstSlide = isSectionSelected ? selectedItem.slides[0].base : null;
-  const firstSlideReadings = isSectionSelected ? selectedItem.slides[0].base.readings : null;
+
+  // Slide navigation state
+  const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
+  const slides = isSectionSelected ? selectedItem.slides : [];
+  const currentSlide = slides[currentSlideIndex];
 
   // Debug log
   // eslint-disable-next-line no-console
-  console.log('App rendering', { isSectionSelected, firstSlide });
+  console.log('App rendering', { isSectionSelected, currentSlideIndex, currentSlide });
+
+  // Determine Narrator context
+  let narratorContext = 'default';
+  if (!isInDeckView) {
+    narratorContext = 'deckSelect';
+  } else if (isInDeckView && !isSectionSelected) {
+    narratorContext = 'sectionSelect';
+  } else if (isSectionSelected && currentSlide) {
+    narratorContext = 'slideView';
+  }
 
   return (
     <div className={styles.app}>
+      <div className={styles.socialsArea}>
+        <Socials />
+      </div>
       {/* Canvas for OortCloud */}
       <div className={styles.canvas}>
         <Canvas>
@@ -56,7 +76,7 @@ const App = () => {
       {!isGameMode && (
         <div className={`${styles.narrator} ${styles.domMode}`}>
           <ErrorBoundary fallback={<div className={styles.error}>Narrator failed to load</div>}>
-            <Narrator isGameMode={isGameMode} />
+            <Narrator isGameMode={isGameMode} context={narratorContext} />
           </ErrorBoundary>
         </div>
       )}
@@ -64,20 +84,43 @@ const App = () => {
       {/* PlayArea or Slide Section */}
       <div className={styles.playArea}>
         <ErrorBoundary fallback={<div className={styles.error}>PlayArea failed to load</div>}>
-          {isSectionSelected && firstSlide ? (
-            <Slide slide={{ ...firstSlide, readings: firstSlideReadings }} />
+          {isSectionSelected && currentSlide ? (
+            <>
+              <div
+                style={{
+                  display: 'flex',
+                  flexDirection: 'column',
+                  alignItems: 'center',
+                  marginBottom: 16
+                }}
+              >
+                <BackButton />
+                <div
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'row',
+                    alignItems: 'center',
+                    gap: 16,
+                    marginTop: 32
+                  }}
+                >
+                  <SlideWithSteps
+                    slide={currentSlide}
+                    onPrevSlide={() => setCurrentSlideIndex((i) => Math.max(0, i - 1))}
+                    onNextSlide={() =>
+                      setCurrentSlideIndex((i) => Math.min(slides.length - 1, i + 1))
+                    }
+                    isFirstSlide={currentSlideIndex === 0}
+                    isLastSlide={currentSlideIndex === slides.length - 1}
+                  />
+                </div>
+              </div>
+            </>
           ) : (
             <PlayArea />
           )}
         </ErrorBoundary>
       </div>
-
-      {/* Socials Section */}
-      <footer className={styles.socialsContainer}>
-        <ErrorBoundary fallback={<div className={styles.error}>Socials failed to load</div>}>
-          <Socials />
-        </ErrorBoundary>
-      </footer>
     </div>
   );
 };

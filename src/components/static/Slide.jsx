@@ -1,6 +1,7 @@
 import React from 'react';
 import Panel from './Panel';
 import styles from './Slide.module.scss';
+import Socials from './Socials';
 
 /**
  * Slide component renders a slide's heading, body, and readings in a sci-fi HUD layout.
@@ -11,6 +12,9 @@ const Slide = ({ slide }) => {
   const readings = slide.readings || {};
   return (
     <div className={styles.slideGrid}>
+      <div className={styles.socials}>
+        <Socials />
+      </div>
       <div className={styles.panelA}>
         <Panel type="A" label={readings.A?.label}>
           {readings.A?.content?.join(' ')}

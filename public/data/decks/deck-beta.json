@@ -1,31 +1,154 @@
 {
   "id": "deck-beta",
-  "title": "Beta Deck",
+  "title": "Project Showcase",
   "sections": [
     {
-      "id": "overview",
-      "title": "Overview Section",
+      "id": "featured",
+      "title": "Featured Projects",
       "slides": [
         {
           "id": "beta-01",
-          "label": "Beta Begins",
+          "label": "Enterprise Solutions",
           "type": "narrative",
           "base": {
-            "heading": "Start of Beta",
-            "body": "Beta deck launches here.",
+            "heading": "Enterprise Applications",
+            "body": "Showcase of large-scale enterprise applications built with modern web technologies and best practices.",
             "readings": {
-              "B": { "label": "Focus", "content": ["Main idea"] }
+              "A": {
+                "label": "Project A",
+                "content": [
+                  "React-based dashboard",
+                  "Real-time data visualization",
+                  "Role-based access control"
+                ]
+              },
+              "B": {
+                "label": "Project B",
+                "content": [
+                  "Microservices architecture",
+                  "API gateway implementation",
+                  "Scalable data processing"
+                ]
+              },
+              "C": {
+                "label": "Project C",
+                "content": [
+                  "Legacy system modernization",
+                  "Performance optimization",
+                  "User experience improvements"
+                ]
+              },
+              "D": {
+                "label": "Project D",
+                "content": ["Cloud migration", "DevOps automation", "Security enhancements"]
+              }
             }
           },
           "steps": [
             {
-              "body": { "add": ["Second sentence for beta."] },
+              "body": {
+                "add": [
+                  "Each project demonstrates different aspects of enterprise software development."
+                ]
+              },
               "readings": {
-                "B": { "add": ["Deeper detail"] }
+                "A": { "add": ["Built for high performance and user satisfaction."] },
+                "B": { "add": ["Scalable architecture for growing user base."] },
+                "C": { "add": ["Successfully modernized while maintaining functionality."] },
+                "D": { "add": ["Improved reliability and security posture."] }
               }
-            },
+            }
+          ]
+        },
+        {
+          "id": "beta-02",
+          "label": "Web Applications",
+          "type": "narrative",
+          "base": {
+            "heading": "Web Applications",
+            "body": "A collection of modern web applications showcasing different technologies and approaches.",
+            "readings": {
+              "A": {
+                "label": "E-commerce",
+                "content": ["Next.js storefront", "Payment integration", "Inventory management"]
+              },
+              "B": {
+                "label": "Social Platform",
+                "content": ["Real-time features", "User interactions", "Content management"]
+              },
+              "C": {
+                "label": "Data Dashboard",
+                "content": ["Data visualization", "Interactive charts", "Export capabilities"]
+              },
+              "D": {
+                "label": "Collaboration Tool",
+                "content": ["Real-time editing", "User presence", "Document sharing"]
+              }
+            }
+          },
+          "steps": [
             {
-              "body": { "add": ["Final step in this slide."] }
+              "body": {
+                "add": ["Each application focuses on specific user needs and technical challenges."]
+              },
+              "readings": {
+                "A": { "add": ["Built for performance and conversion optimization."] },
+                "B": { "add": ["Scalable real-time features for user engagement."] },
+                "C": { "add": ["Interactive data exploration and analysis."] },
+                "D": { "add": ["Seamless collaboration and document management."] }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "case-studies",
+      "title": "Case Studies",
+      "slides": [
+        {
+          "id": "beta-03",
+          "label": "Success Stories",
+          "type": "narrative",
+          "base": {
+            "heading": "Project Case Studies",
+            "body": "Detailed case studies of successful projects, including challenges, solutions, and outcomes.",
+            "readings": {
+              "A": {
+                "label": "Challenge",
+                "content": ["Initial requirements", "Technical constraints", "Business goals"]
+              },
+              "B": {
+                "label": "Solution",
+                "content": [
+                  "Technical approach",
+                  "Architecture decisions",
+                  "Implementation strategy"
+                ]
+              },
+              "C": {
+                "label": "Results",
+                "content": ["Performance improvements", "User satisfaction", "Business impact"]
+              },
+              "D": {
+                "label": "Lessons",
+                "content": ["Key learnings", "Best practices", "Future improvements"]
+              }
+            }
+          },
+          "steps": [
+            {
+              "body": {
+                "add": [
+                  "Each case study provides valuable insights into real-world project execution."
+                ]
+              },
+              "readings": {
+                "A": { "add": ["Understanding the problem space is crucial."] },
+                "B": { "add": ["Technical decisions must align with business goals."] },
+                "C": { "add": ["Measurable improvements in key metrics."] },
+                "D": { "add": ["Continuous learning and improvement."] }
+              }
             }
           ]
         }
