@@ -1,9 +1,9 @@
-import React from 'react';
-import { GalaGUI, PlayerShip } from '@interactive';
+import { GalaGUI, LaunchButton, PlayerShip } from '@interactive';
+import { Canvas } from '@react-three/fiber';
 import { Walls } from '@static';
+import React from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
 import styles from './PlayArea.module.scss';
-import { Canvas } from '@react-three/fiber';
 
 /**
  * PlayArea component that hosts the GalaGUI, PlayerShip, and Walls.
@@ -21,6 +21,7 @@ const PlayArea = () => {
           <Canvas className={styles.galaGUICanvas}>
             <GalaGUI />
           </Canvas>
+          <LaunchButton />
         </div>
       </ErrorBoundary>
 
