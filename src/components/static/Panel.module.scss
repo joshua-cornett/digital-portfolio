@@ -1,0 +1,108 @@
+.panel {
+  position: relative;
+  background: rgba(0, 0, 0, 0.92);
+  border: 2px solid #00ff00;
+  border-radius: 8px;
+  color: #00ff00;
+  font-family: 'Press Start 2P', monospace, 'Fira Mono', 'Consolas', monospace;
+  box-shadow:
+    0 0 16px #0f08,
+    0 0 2px #0f0;
+  margin: 0;
+  padding: 24px 18px 18px 18px;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  min-width: 0;
+  width: 100%;
+  height: 100%;
+  flex: 1 1 auto;
+  overflow: hidden;
+  text-shadow:
+    0 0 2px #0f0,
+    0 0 8px #0f0a;
+  box-sizing: border-box;
+}
+
+/* 3D cockpit effect */
+/*
+.panelA,
+.panelC {
+  transform: rotateX(-15deg) rotateY(15deg);
+}
+
+.panelB,
+.panelD {
+  transform: rotateX(15deg) rotateY(15deg);
+}*/
+
+.scanlines {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent,
+    transparent 2px,
+    rgba(0, 255, 0, 0.08) 2.5px,
+    transparent 3.5px
+  );
+  mix-blend-mode: lighten;
+}
+
+.panelA,
+.panelB,
+.panelC,
+.panelD {
+  @extend .panel;
+  font-size: 3rem;
+  min-height: 0;
+  min-width: 0;
+  width: 100%;
+  height: 100%;
+  flex: 1 1 auto;
+  align-items: flex-start;
+  justify-content: flex-start;
+  box-sizing: border-box;
+}
+
+.panelMain {
+  @extend .panel;
+  font-size: 2.1rem;
+  min-height: 0;
+  min-width: 0;
+  width: 100%;
+  height: 100%;
+  flex: 1 1 auto;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 48px 32px 32px 32px;
+  box-sizing: border-box;
+}
+
+.panelLabel {
+  color: #00ff00;
+  font-size: 1.2em;
+  font-weight: bold;
+  margin-bottom: 0.7em;
+  letter-spacing: 1px;
+  text-shadow:
+    0 0 2px #0f0,
+    0 0 8px #0f0a;
+  z-index: 3;
+}
+
+.panelContent {
+  font-size: 1em;
+  color: #00ff00;
+  word-break: break-word;
+  white-space: pre-line;
+  overflow: hidden;
+  overflow-wrap: break-word;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+  z-index: 3;
+}

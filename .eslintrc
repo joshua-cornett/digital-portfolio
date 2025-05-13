@@ -53,7 +53,14 @@
           ["@contexts", "./src/contexts"],
           ["@utils", "./src/utils"],
           ["@components", "./src/components"],
-          ["@constants", "./src/constants"]
+          ["@helpers", "./src/helpers"],
+          ["@assets", "./src/assets"],
+          ["@images", "./src/assets/images"],
+          ["@data", "./src/assets/data"],
+          ["@static", "./src/components/static"],
+          ["@interactive", "./src/components/interactive"],
+          ["@stores", "./src/stores"],
+          ["@reducers", "/src/reducers"]
         ]
       }
     }

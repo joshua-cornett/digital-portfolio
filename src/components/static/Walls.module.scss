@@ -1,0 +1,10 @@
+.walls {
+  display: flex;
+  justify-content: space-between;
+  .wall {
+    border: green 5px double;
+    height: 100%;
+    color: white;
+    padding: 3px;
+  }
+}

@@ -1,0 +1,32 @@
+{
+  "id": "deck-alpha",
+  "title": "Alpha Deck",
+  "sections": [
+    {
+      "id": "intro",
+      "title": "Intro Section",
+      "slides": [
+        {
+          "id": "alpha-01",
+          "label": "Intro Slide",
+          "type": "narrative",
+          "base": {
+            "heading": "Welcome to Alpha",
+            "body": "This is the first slide in the Alpha deck.",
+            "readings": {
+              "A": { "label": "Note", "content": ["Initial context"] }
+            }
+          },
+          "steps": [
+            {
+              "body": { "add": ["Here's a follow-up sentence."] },
+              "readings": {
+                "A": { "add": ["Expanded note"] }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

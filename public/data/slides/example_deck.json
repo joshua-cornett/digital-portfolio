@@ -1,0 +1,105 @@
+[
+  {
+    "id": "widget-01",
+    "section": "Context",
+    "label": "Widget Ops Collapse",
+    "type": "narrative",
+    "base": {
+      "heading": "A Sudden Change",
+      "body": "After our lead dev stepped away, I became the only engineer maintaining widgets across 3,000+ publisher sites.",
+      "readings": {
+        "A": {
+          "label": "Tech Stack",
+          "content": ["React", "Zustand"]
+        },
+        "B": {
+          "label": "Challenges",
+          "content": ["Solo development"]
+        },
+        "C": {
+          "label": "Constraints",
+          "content": ["Accessibility baked-in"]
+        },
+        "D": {
+          "label": "Team Context",
+          "content": ["Lead stepped away"]
+        }
+      }
+    },
+    "steps": [
+      {
+        "bodyDelta": {
+          "add": "Traffic and deadlines remained unchanged. I had to maintain quality without support.",
+          "highlight": ["deadlines", "without support"]
+        },
+        "readingsDelta": {
+          "B": {
+            "add": ["High urgency"]
+          },
+          "C": {
+            "add": ["24hr SLA"]
+          }
+        }
+      },
+      {
+        "bodyDelta": {
+          "add": "There was no backup. The system had to keep running, and I had to adapt quickly."
+        },
+        "readingsDelta": {
+          "D": {
+            "add": ["No backup, no ramp time"]
+          }
+        }
+      }
+    ]
+  },
+  {
+    "id": "widget-02",
+    "section": "System",
+    "label": "The Tool, at a Glance",
+    "type": "diagram",
+    "layout": "side-by-side",
+    "base": {
+      "heading": "Architecture Flow",
+      "diagram": {
+        "type": "ascii",
+        "id": "schema-to-ui"
+      },
+      "bullets": [
+        "Schema input defines layout and content",
+        "Parsed into component tree on the fly",
+        "Live preview mirrors actual rendering"
+      ],
+      "readings": {
+        "A": {
+          "label": "Tech Stack",
+          "content": ["React", "Vite"]
+        },
+        "B": {
+          "label": "Decisions",
+          "content": ["Schema-first design"]
+        },
+        "C": {
+          "label": "Outcomes",
+          "content": ["50% output gain"]
+        },
+        "D": {
+          "label": "Role",
+          "content": ["Solo dev, tool creator"]
+        }
+      }
+    },
+    "steps": [
+      {
+        "bulletsDelta": {
+          "add": ["Markup was exportable for production use"]
+        },
+        "readingsDelta": {
+          "C": {
+            "add": ["Reduced QA time by 40%"]
+          }
+        }
+      }
+    ]
+  }
+]

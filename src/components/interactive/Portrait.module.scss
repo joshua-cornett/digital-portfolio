@@ -1,0 +1,27 @@
+.portraitContainer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100px; /* Set a fixed width for consistency */
+  height: 100px; /* Matches width for a square container */
+  background-color: rgba(0, 0, 0, 0.8); /* Retro-style background */
+  border: 1px solid #00ff00; /* Retro green border */
+  border-radius: 8px; /* Rounds the container slightly */
+  overflow: hidden; /* Ensures image stays within bounds */
+}
+
+.pixelBorder {
+  position: relative;
+  width: 90px; /* Slight padding from the container */
+  height: 90px;
+  background-color: black; /* Frame color */
+  border: 4px solid #00ff00; /* Pixelated green border effect */
+  box-shadow: 0 0 8px #00ff00; /* Glowing pixel effect */
+}
+
+.portrait {
+  width: 100%; /* Ensures image scales within the border */
+  height: 100%;
+  object-fit: cover; /* Crops and scales the image while maintaining its aspect ratio */
+  image-rendering: pixelated; /* Ensures the image keeps its pixel-art style */
+}

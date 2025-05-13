@@ -1,0 +1,42 @@
+.playArea {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  .galaGUICanvasContainer {
+    height: 100%;
+    .galaGUICanvas {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .projectionEffect {
+    clip-path: polygon(50% 0, 0% 100%, 100% 100%);
+  }
+
+  .playerShip {
+    width: 60px;
+    height: 20px;
+    background-color: #0f0;
+    border-radius: 4px;
+  }
+
+  .walls {
+  }
+}
+
+.buttonContainer {
+  position: absolute;
+  bottom: 20px;
+  left: 0;
+  right: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none; // Allow clicks to pass through to canvas
+  z-index: 10;
+
+  > * {
+    pointer-events: auto; // Re-enable clicks for buttons
+  }
+}
