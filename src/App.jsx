@@ -1,8 +1,10 @@
-import { Canvas } from '@react-three/fiber';
-import { Html } from '@react-three/drei';
-import { ErrorBoundary } from 'react-error-boundary';
-import { OortCloud, PlayArea, Narrator, Socials } from '@static';
 import { useSynchronizedRenderLoop } from '@hooks';
+import { Html } from '@react-three/drei';
+import { Canvas } from '@react-three/fiber';
+import { Narrator, OortCloud, PlayArea, Socials } from '@static';
+import { ErrorBoundary } from 'react-error-boundary';
+import Slide from './components/static/Slide';
+import useGalaGUIStore from './stores/useGalaGUIStore';
 import styles from './styles/App.module.scss';
 
 /**
@@ -14,6 +16,21 @@ import styles from './styles/App.module.scss';
 const App = () => {
   const isGameMode = false; // Replace with Zustand state when integrated
   useSynchronizedRenderLoop();
+
+  // Get selected section and its first slide
+  const selectedItem = useGalaGUIStore((state) => state.selectedItem);
+  const isInDeckView = useGalaGUIStore((state) => state.isInDeckView);
+  const currentDeck = useGalaGUIStore((state) => state.currentDeck);
+
+  // Determine if a section is selected (in deck view, selectedItem is a section)
+  const isSectionSelected =
+    isInDeckView && selectedItem && selectedItem.slides && selectedItem.slides.length > 0;
+  const firstSlide = isSectionSelected ? selectedItem.slides[0].base : null;
+  const firstSlideReadings = isSectionSelected ? selectedItem.slides[0].base.readings : null;
+
+  // Debug log
+  // eslint-disable-next-line no-console
+  console.log('App rendering', { isSectionSelected, firstSlide });
 
   return (
     <div className={styles.app}>
@@ -44,10 +61,14 @@ const App = () => {
         </div>
       )}
 
-      {/* PlayArea Section */}
+      {/* PlayArea or Slide Section */}
       <div className={styles.playArea}>
         <ErrorBoundary fallback={<div className={styles.error}>PlayArea failed to load</div>}>
-          <PlayArea />
+          {isSectionSelected && firstSlide ? (
+            <Slide slide={{ ...firstSlide, readings: firstSlideReadings }} />
+          ) : (
+            <PlayArea />
+          )}
         </ErrorBoundary>
       </div>
 

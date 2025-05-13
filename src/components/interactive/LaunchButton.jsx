@@ -14,6 +14,7 @@ const LaunchButton = () => {
   const setSelectedItem = useGalaGUIStore((state) => state.setSelectedItem);
   const setCurrentDeck = useGalaGUIStore((state) => state.setCurrentDeck);
   const isInDeckView = useGalaGUIStore((state) => state.isInDeckView);
+  const currentDeck = useGalaGUIStore((state) => state.currentDeck);
   const [animationKey, setAnimationKey] = React.useState(0);
 
   // Update animation key when hovered item changes
@@ -27,8 +28,16 @@ const LaunchButton = () => {
     if (!hoveredItem) return;
 
     if (isInDeckView) {
-      // In deck view, just select the section
-      setSelectedItem(hoveredItem);
+      // In deck view, find the full section object from currentDeck
+      let section = hoveredItem;
+      if (currentDeck && currentDeck.sections) {
+        const found = currentDeck.sections.find((s) => s.id === hoveredItem.id);
+        if (found) section = found;
+      }
+      // Debug log
+      // eslint-disable-next-line no-console
+      console.log('[LaunchButton] setSelectedItem (section):', section);
+      setSelectedItem(section);
     } else {
       // In root view, load the deck data
       try {
