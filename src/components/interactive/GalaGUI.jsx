@@ -50,7 +50,7 @@ const GalaGUI = () => {
             id: section.id,
             position: [0, 0, radius],
             title: section.title,
-            description: `Section 1`,
+            description: `Section ${i + 1}`,
             icon: '',
             color: 0x00ff00,
             data: section
@@ -74,10 +74,19 @@ const GalaGUI = () => {
       setOptions(sectionOptions);
     } else {
       // Load initial deck options
-      fetch('/data/decks/index.json')
-        .then((response) => response.json())
+      fetch('data/decks/index.json')
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(`Failed to load decks: ${response.status} ${response.statusText}`);
+          }
+          return response.json();
+        })
         .then((decks) => {
+          if (!Array.isArray(decks)) {
+            throw new Error('Invalid deck data format');
+          }
           const deckOptions = decks.map((deck, index) => {
+            // Use Fibonacci sphere distribution for even spacing
             const theta = Math.acos(1 - (2 * (index + 1)) / decks.length);
             const phi = Math.sqrt(decks.length * Math.PI) * theta;
             const radius = 1;
@@ -99,7 +108,18 @@ const GalaGUI = () => {
         })
         .catch((error) => {
           console.error('Error loading decks:', error);
-          // Handle error appropriately
+          // Set a fallback option to show error state
+          setOptions([
+            {
+              id: 'error',
+              position: [0, 0, 1],
+              title: 'Error Loading Decks',
+              description: 'Please try refreshing the page',
+              icon: '',
+              color: 0xff0000,
+              data: { error: true }
+            }
+          ]);
         });
     }
   }, [isInDeckView, currentSections, setOptions]);

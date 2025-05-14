@@ -1,0 +1,192 @@
+{
+  "id": "deck-delta",
+  "title": "Blog & Thoughts",
+  "sections": [
+    {
+      "id": "tech-insights",
+      "title": "Technical Insights",
+      "slides": [
+        {
+          "id": "delta-01",
+          "label": "Modern Web Development",
+          "type": "narrative",
+          "base": {
+            "heading": "The State of Web Development",
+            "body": "Thoughts on modern web development practices, frameworks, and the future of the web platform.",
+            "readings": {
+              "A": {
+                "label": "Framework Evolution",
+                "content": [
+                  "React's evolution and the future of component libraries",
+                  "The rise of meta-frameworks like Next.js and Remix",
+                  "Server Components and their impact"
+                ]
+              },
+              "B": {
+                "label": "Performance",
+                "content": [
+                  "Core Web Vitals and user experience",
+                  "Optimization techniques and tools",
+                  "The importance of metrics"
+                ]
+              },
+              "C": {
+                "label": "Developer Experience",
+                "content": [
+                  "TypeScript's growing importance",
+                  "Build tools and bundlers",
+                  "Testing strategies and tools"
+                ]
+              },
+              "D": {
+                "label": "Future Trends",
+                "content": [
+                  "WebAssembly and its potential",
+                  "Edge computing and serverless",
+                  "AI in web development"
+                ]
+              }
+            }
+          },
+          "steps": [
+            {
+              "body": {
+                "add": [
+                  "The web platform continues to evolve rapidly, presenting both challenges and opportunities."
+                ]
+              },
+              "readings": {
+                "A": {
+                  "add": ["Personal experience with framework adoption and migration strategies."]
+                },
+                "B": { "add": ["Real-world performance optimization case studies."] },
+                "C": { "add": ["Thoughts on improving developer productivity and code quality."] },
+                "D": { "add": ["Predictions and hopes for the future of web development."] }
+              }
+            }
+          ]
+        },
+        {
+          "id": "delta-02",
+          "label": "Architecture Patterns",
+          "type": "narrative",
+          "base": {
+            "heading": "Software Architecture",
+            "body": "Deep dives into software architecture patterns, design decisions, and their practical applications.",
+            "readings": {
+              "A": {
+                "label": "State Management",
+                "content": [
+                  "Comparing state management solutions",
+                  "When to use what and why",
+                  "Custom state management patterns"
+                ]
+              },
+              "B": {
+                "label": "API Design",
+                "content": [
+                  "REST vs GraphQL considerations",
+                  "API versioning strategies",
+                  "Error handling and validation"
+                ]
+              },
+              "C": {
+                "label": "Testing Architecture",
+                "content": [
+                  "Testing strategies at different levels",
+                  "Mocking and test data management",
+                  "Continuous testing practices"
+                ]
+              },
+              "D": {
+                "label": "Security Patterns",
+                "content": [
+                  "Authentication and authorization",
+                  "Data protection strategies",
+                  "Security best practices"
+                ]
+              }
+            }
+          },
+          "steps": [
+            {
+              "body": {
+                "add": [
+                  "Architecture decisions have long-lasting impacts on project success and maintainability."
+                ]
+              },
+              "readings": {
+                "A": {
+                  "add": ["Lessons learned from implementing various state management solutions."]
+                },
+                "B": { "add": ["Real-world API design challenges and solutions."] },
+                "C": {
+                  "add": ["Experience with different testing approaches and their trade-offs."]
+                },
+                "D": { "add": ["Security considerations in modern web applications."] }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "project-stories",
+      "title": "Project Stories",
+      "slides": [
+        {
+          "id": "delta-03",
+          "label": "Oortfolio Journey",
+          "type": "narrative",
+          "base": {
+            "heading": "Building Oortfolio",
+            "body": "The story behind Oortfolio's development, including design decisions, challenges, and lessons learned.",
+            "readings": {
+              "A": {
+                "label": "Design Process",
+                "content": [
+                  "Initial concept and inspiration",
+                  "UI/UX design decisions",
+                  "Accessibility considerations"
+                ]
+              },
+              "B": {
+                "label": "Technical Choices",
+                "content": [
+                  "Why React and Three.js",
+                  "CSS Grid vs other layouts",
+                  "State management with Zustand"
+                ]
+              },
+              "C": {
+                "label": "Challenges",
+                "content": [
+                  "Performance optimization",
+                  "3D navigation complexity",
+                  "Content management"
+                ]
+              },
+              "D": {
+                "label": "Future Plans",
+                "content": ["Planned features", "Potential improvements", "Community involvement"]
+              }
+            }
+          },
+          "steps": [
+            {
+              "body": {
+                "add": ["Every project has its unique challenges and learning opportunities."]
+              },
+              "readings": {
+                "A": { "add": ["How the sci-fi theme influenced design decisions."] },
+                "B": { "add": ["The reasoning behind each technical choice."] },
+                "C": { "add": ["How challenges were overcome and what was learned."] },
+                "D": { "add": ["Vision for Oortfolio's future development."] }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

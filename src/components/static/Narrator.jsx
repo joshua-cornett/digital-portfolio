@@ -22,7 +22,7 @@ const Narrator = ({ isGameMode, context = 'default' }) => {
   const [dialogueLines, setDialogueLines] = useState([]);
 
   useEffect(() => {
-    fetch('/data/dialogue.json')
+    fetch('data/dialogue.json')
       .then((res) => res.json())
       .then((data) => {
         setDialogueLines(data[context] || data.default || []);

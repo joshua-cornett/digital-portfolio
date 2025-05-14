@@ -1,0 +1,232 @@
+{
+  "id": "deck-oortfolio-presentation",
+  "title": "Oortfolio Presentation",
+  "sections": [
+    {
+      "id": "intro",
+      "title": "Welcome & Overview",
+      "slides": [
+        {
+          "id": "oortfolio-01",
+          "label": "Welcome",
+          "type": "narrative",
+          "base": {
+            "heading": "Welcome to Oortfolio",
+            "body": "A sci-fi digital portfolio that blends retro aesthetics with modern web development. Oortfolio is not just a showcase, it's an experience.",
+            "readings": {
+              "A": {
+                "label": "What It Is",
+                "content": ["A green-on-black dashboard inspired by CRTs, arcades, and the cosmos."]
+              },
+              "B": {
+                "label": "Purpose",
+                "content": ["A medium to explore and present projects interactively."]
+              },
+              "C": {
+                "label": "Style",
+                "content": ["Retro space UI meets modern web performance."]
+              },
+              "D": {
+                "label": "Experience",
+                "content": ["You\u2019re not just browsing \u2013 you\u2019re piloting a cockpit."]
+              }
+            }
+          },
+          "steps": [
+            {
+              "body": {
+                "add": ["Oortfolio is both portfolio and presentation engine."]
+              },
+              "readings": {
+                "A": {
+                  "add": ["It makes first impressions unforgettable."]
+                },
+                "B": {
+                  "add": ["Built for interviews, demos, and portfolio reviews."]
+                },
+                "C": {
+                  "add": ["Design nods to sci-fi while adhering to accessibility standards."]
+                },
+                "D": {
+                  "add": ["You explore the interface spatially via 3D interaction."]
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "philosophy",
+      "title": "Design Philosophy",
+      "slides": [
+        {
+          "id": "oortfolio-02",
+          "label": "Core Values",
+          "type": "narrative",
+          "base": {
+            "heading": "Principles Behind the Interface",
+            "body": "Oortfolio emphasizes clarity, accessibility, performance, and flair. Every design choice serves both form and function.",
+            "readings": {
+              "A": {
+                "label": "Clarity",
+                "content": ["Information is organized and easy to scan."]
+              },
+              "B": {
+                "label": "Modularity",
+                "content": ["Components and panels are reused across contexts."]
+              },
+              "C": {
+                "label": "Performance",
+                "content": ["Minimal re-renders and optimized rendering pipelines."]
+              },
+              "D": {
+                "label": "Accessibility",
+                "content": ["Keyboard, screen reader, and reduced motion support."]
+              }
+            }
+          },
+          "steps": [
+            {
+              "body": {
+                "add": ["Oortfolio was designed to impress without overwhelming."]
+              },
+              "readings": {
+                "A": {
+                  "add": ["Cockpit-style grid keeps layout intuitive."]
+                },
+                "B": {
+                  "add": ["Each system is reusable, maintainable, and flexible."]
+                },
+                "C": {
+                  "add": ["3D effects never compromise UX."]
+                },
+                "D": {
+                  "add": ["Inclusivity isn't a feature\u2014it's the default."]
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "tech",
+      "title": "Technical Architecture",
+      "slides": [
+        {
+          "id": "oortfolio-03",
+          "label": "Stack & Systems",
+          "type": "narrative",
+          "base": {
+            "heading": "Oortfolio's Tech Stack",
+            "body": "Built with React, Three.js, Zustand, CSS Grid, and a JSON-driven content engine. Each choice balances power and simplicity.",
+            "readings": {
+              "A": {
+                "label": "Frontend",
+                "content": [
+                  "React + CSS Grid for UI",
+                  "R3F + Three.js for 3D",
+                  "Spring for animation"
+                ]
+              },
+              "B": {
+                "label": "State",
+                "content": [
+                  "Zustand for lean state management",
+                  "Separation of UI logic from app data"
+                ]
+              },
+              "C": {
+                "label": "3D Engine",
+                "content": ["Three.js with custom camera and input handling"]
+              },
+              "D": {
+                "label": "Content",
+                "content": ["JSON-based deck/section/slide/step model for dynamic rendering"]
+              }
+            }
+          },
+          "steps": [
+            {
+              "body": {
+                "add": ["The architecture supports expansion, theming, and realtime interaction."]
+              },
+              "readings": {
+                "A": {
+                  "add": ["UI systems are fast and fully testable."]
+                },
+                "B": {
+                  "add": ["Zustand makes store logic scalable without boilerplate."]
+                },
+                "C": {
+                  "add": ["GalaGUI handles input with drag, touch, and keyboard."]
+                },
+                "D": {
+                  "add": ["Every screen is driven by structured data."]
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "nav",
+      "title": "Navigation System",
+      "slides": [
+        {
+          "id": "oortfolio-04",
+          "label": "GalaGUI",
+          "type": "narrative",
+          "base": {
+            "heading": "GalaGUI: Your Dashboard",
+            "body": "A radial, 3D selector inspired by Galaga and Metroid Prime. Nodes are spaced using a Fibonacci sphere algorithm for beauty and function.",
+            "readings": {
+              "A": {
+                "label": "3D Placement",
+                "content": ["Even node distribution", "Fibonacci sphere math", "Visual coherence"]
+              },
+              "B": {
+                "label": "Input",
+                "content": [
+                  "Pointer, keyboard, and touch controls",
+                  "Arrow helper for drag gestures"
+                ]
+              },
+              "C": {
+                "label": "Rendering",
+                "content": ["Custom glow & scaling on focus", "Smooth camera-aligned labels"]
+              },
+              "D": {
+                "label": "Performance",
+                "content": ["Frame-synced updates", "Minimal draw calls", "No lag"]
+              }
+            }
+          },
+          "steps": [
+            {
+              "body": {
+                "add": ["The GalaGUI is equal parts interface and narrative."]
+              },
+              "readings": {
+                "A": {
+                  "add": ["Layout prevents node overlap, no matter the count."]
+                },
+                "B": {
+                  "add": ["Dragging rotates the system like a spaceship nav console."]
+                },
+                "C": {
+                  "add": ["Focused node scales, glows, and tracks camera."]
+                },
+                "D": {
+                  "add": ["Even on low-power devices, interaction is smooth."]
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

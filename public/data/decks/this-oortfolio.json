@@ -16,57 +16,39 @@
             "readings": {
               "A": {
                 "label": "What It Is",
-                "content": [
-                  "A green-on-black dashboard inspired by CRTs, arcades, and the cosmos."
-                ]
+                "content": ["A green-on-black dashboard inspired by CRTs, arcades, and the cosmos."]
               },
               "B": {
                 "label": "Purpose",
-                "content": [
-                  "A medium to explore and present projects interactively."
-                ]
+                "content": ["A medium to explore and present projects interactively."]
               },
               "C": {
                 "label": "Style",
-                "content": [
-                  "Retro space UI meets modern web performance."
-                ]
+                "content": ["Retro space UI meets modern web performance."]
               },
               "D": {
                 "label": "Experience",
-                "content": [
-                  "You\u2019re not just browsing \u2013 you\u2019re piloting a cockpit."
-                ]
+                "content": ["You\u2019re not just browsing \u2013 you\u2019re piloting a cockpit."]
               }
             }
           },
           "steps": [
             {
               "body": {
-                "add": [
-                  "Oortfolio is both portfolio and presentation engine."
-                ]
+                "add": ["Oortfolio is both portfolio and presentation engine."]
               },
               "readings": {
                 "A": {
-                  "add": [
-                    "It makes first impressions unforgettable."
-                  ]
+                  "add": ["It makes first impressions unforgettable."]
                 },
                 "B": {
-                  "add": [
-                    "Built for interviews, demos, and portfolio reviews."
-                  ]
+                  "add": ["Built for interviews, demos, and portfolio reviews."]
                 },
                 "C": {
-                  "add": [
-                    "Design nods to sci-fi while adhering to accessibility standards."
-                  ]
+                  "add": ["Design nods to sci-fi while adhering to accessibility standards."]
                 },
                 "D": {
-                  "add": [
-                    "You explore the interface spatially via 3D interaction."
-                  ]
+                  "add": ["You explore the interface spatially via 3D interaction."]
                 }
               }
             }
@@ -88,57 +70,39 @@
             "readings": {
               "A": {
                 "label": "Clarity",
-                "content": [
-                  "Information is organized and easy to scan."
-                ]
+                "content": ["Information is organized and easy to scan."]
               },
               "B": {
                 "label": "Modularity",
-                "content": [
-                  "Components and panels are reused across contexts."
-                ]
+                "content": ["Components and panels are reused across contexts."]
               },
               "C": {
                 "label": "Performance",
-                "content": [
-                  "Minimal re-renders and optimized rendering pipelines."
-                ]
+                "content": ["Minimal re-renders and optimized rendering pipelines."]
               },
               "D": {
                 "label": "Accessibility",
-                "content": [
-                  "Keyboard, screen reader, and reduced motion support."
-                ]
+                "content": ["Keyboard, screen reader, and reduced motion support."]
               }
             }
           },
           "steps": [
             {
               "body": {
-                "add": [
-                  "Oortfolio was designed to impress without overwhelming."
-                ]
+                "add": ["Oortfolio was designed to impress without overwhelming."]
               },
               "readings": {
                 "A": {
-                  "add": [
-                    "Cockpit-style grid keeps layout intuitive."
-                  ]
+                  "add": ["Cockpit-style grid keeps layout intuitive."]
                 },
                 "B": {
-                  "add": [
-                    "Each system is reusable, maintainable, and flexible."
-                  ]
+                  "add": ["Each system is reusable, maintainable, and flexible."]
                 },
                 "C": {
-                  "add": [
-                    "3D effects never compromise UX."
-                  ]
+                  "add": ["3D effects never compromise UX."]
                 },
                 "D": {
-                  "add": [
-                    "Inclusivity isn't a feature\u2014it's the default."
-                  ]
+                  "add": ["Inclusivity isn't a feature\u2014it's the default."]
                 }
               }
             }
@@ -175,45 +139,31 @@
               },
               "C": {
                 "label": "3D Engine",
-                "content": [
-                  "Three.js with custom camera and input handling"
-                ]
+                "content": ["Three.js with custom camera and input handling"]
               },
               "D": {
                 "label": "Content",
-                "content": [
-                  "JSON-based deck/section/slide/step model for dynamic rendering"
-                ]
+                "content": ["JSON-based deck/section/slide/step model for dynamic rendering"]
               }
             }
           },
           "steps": [
             {
               "body": {
-                "add": [
-                  "The architecture supports expansion, theming, and realtime interaction."
-                ]
+                "add": ["The architecture supports expansion, theming, and realtime interaction."]
               },
               "readings": {
                 "A": {
-                  "add": [
-                    "UI systems are fast and fully testable."
-                  ]
+                  "add": ["UI systems are fast and fully testable."]
                 },
                 "B": {
-                  "add": [
-                    "Zustand makes store logic scalable without boilerplate."
-                  ]
+                  "add": ["Zustand makes store logic scalable without boilerplate."]
                 },
                 "C": {
-                  "add": [
-                    "GalaGUI handles input with drag, touch, and keyboard."
-                  ]
+                  "add": ["GalaGUI handles input with drag, touch, and keyboard."]
                 },
                 "D": {
-                  "add": [
-                    "Every screen is driven by structured data."
-                  ]
+                  "add": ["Every screen is driven by structured data."]
                 }
               }
             }
@@ -235,11 +185,7 @@
             "readings": {
               "A": {
                 "label": "3D Placement",
-                "content": [
-                  "Even node distribution",
-                  "Fibonacci sphere math",
-                  "Visual coherence"
-                ]
+                "content": ["Even node distribution", "Fibonacci sphere math", "Visual coherence"]
               },
               "B": {
                 "label": "Input",
@@ -250,48 +196,31 @@
               },
               "C": {
                 "label": "Rendering",
-                "content": [
-                  "Custom glow & scaling on focus",
-                  "Smooth camera-aligned labels"
-                ]
+                "content": ["Custom glow & scaling on focus", "Smooth camera-aligned labels"]
               },
               "D": {
                 "label": "Performance",
-                "content": [
-                  "Frame-synced updates",
-                  "Minimal draw calls",
-                  "No lag"
-                ]
+                "content": ["Frame-synced updates", "Minimal draw calls", "No lag"]
               }
             }
           },
           "steps": [
             {
               "body": {
-                "add": [
-                  "The GalaGUI is equal parts interface and narrative."
-                ]
+                "add": ["The GalaGUI is equal parts interface and narrative."]
               },
               "readings": {
                 "A": {
-                  "add": [
-                    "Layout prevents node overlap, no matter the count."
-                  ]
+                  "add": ["Layout prevents node overlap, no matter the count."]
                 },
                 "B": {
-                  "add": [
-                    "Dragging rotates the system like a spaceship nav console."
-                  ]
+                  "add": ["Dragging rotates the system like a spaceship nav console."]
                 },
                 "C": {
-                  "add": [
-                    "Focused node scales, glows, and tracks camera."
-                  ]
+                  "add": ["Focused node scales, glows, and tracks camera."]
                 },
                 "D": {
-                  "add": [
-                    "Even on low-power devices, interaction is smooth."
-                  ]
+                  "add": ["Even on low-power devices, interaction is smooth."]
                 }
               }
             }
