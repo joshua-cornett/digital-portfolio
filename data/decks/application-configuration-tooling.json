@@ -1,0 +1,286 @@
+{
+  "id": "deck-act",
+  "title": "Application Configuration Tooling (ACT)",
+  "sections": [
+    {
+      "id": "chapter-1",
+      "title": "Mission Context",
+      "slides": [
+        {
+          "id": "act-01",
+          "label": "The Billing Bottleneck",
+          "type": "narrative",
+          "base": {
+            "heading": "The Billing Bottleneck",
+            "body": "Before ACT, billing configuration was manual, slow, and required developer intervention for every change. Teams relied on SQL-heavy workflows, limiting scale and responsiveness.",
+            "readings": {
+              "A": {
+                "label": "Problem Scope",
+                "content": ["Verizon Product Factory (VPF) - BillMedia", "Manual SQL processes"]
+              },
+              "B": {
+                "label": "Impact",
+                "content": ["Developer bottleneck", "Slow report turnaround"]
+              },
+              "C": {
+                "label": "Opportunity",
+                "content": ["Automate workflows", "Empower non-dev users"]
+              },
+              "D": {
+                "label": "Challenge",
+                "content": ["Dynamic, error-prone queries", "Lack of self-service tooling"]
+              }
+            }
+          },
+          "steps": [
+            {
+              "body": {
+                "add": [
+                  "A new approach was needed to unblock the business without compromising data integrity."
+                ]
+              },
+              "readings": {
+                "A": {
+                  "add": ["Millions of customers served across VPF operations"]
+                },
+                "B": {
+                  "add": ["Developers manually applied billing configurations daily"]
+                },
+                "C": {
+                  "add": ["Billing teams requested faster turnaround"]
+                },
+                "D": {
+                  "add": ["Risks of query misuse or data leakage without tooling"]
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "chapter-2",
+      "title": "Initial Breakthrough",
+      "slides": [
+        {
+          "id": "act-02",
+          "label": "Internship Phase",
+          "type": "narrative",
+          "base": {
+            "heading": "Internship Phase \u2013 Automation Breakthrough",
+            "body": "As an intern, I built the first version of ACT using C# and SQL. It dynamically generated and executed stored procedures for billing reports, allowing non-devs to safely generate them on demand.",
+            "readings": {
+              "A": {
+                "label": "Tech Stack",
+                "content": ["C# .NET backend", "Dynamic SQL stored procedures"]
+              },
+              "B": {
+                "label": "Outcome",
+                "content": ["Reduced dev dependency", "Enabled self-service workflows"]
+              },
+              "C": {
+                "label": "Design Focus",
+                "content": ["Parameterized execution", "Safe and auditable"]
+              },
+              "D": {
+                "label": "User Base",
+                "content": ["Operations", "Customer service teams"]
+              }
+            }
+          },
+          "steps": [
+            {
+              "body": {
+                "add": [
+                  "ACT proved an intern-led solution could scale\u2014by empowering non-devs, it saved hours of engineering time weekly."
+                ]
+              },
+              "readings": {
+                "A": {
+                  "add": ["Parameterized inputs enabled safer stored procedure execution"]
+                },
+                "B": {
+                  "add": ["Reduced dev assist from daily to weekly"]
+                },
+                "C": {
+                  "add": ["Built CLI wrapper to test procedure outputs before UI was built"]
+                },
+                "D": {
+                  "add": ["Tool adopted by 2 non-technical departments within a month"]
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "chapter-3",
+      "title": "System Expansion",
+      "slides": [
+        {
+          "id": "act-03",
+          "label": "From Tool to Platform",
+          "type": "narrative",
+          "base": {
+            "heading": "From Tool to Platform",
+            "body": "After returning full-time, I evolved ACT into a complete data management platform with an AngularJS frontend, lazy XML parsing, and performance caching.",
+            "readings": {
+              "A": {
+                "label": "Frontend Layer",
+                "content": ["AngularJS UI", "Live configuration panels"]
+              },
+              "B": {
+                "label": "Backend Optimizations",
+                "content": ["Lazy XML parsing", "Caching layers"]
+              },
+              "C": {
+                "label": "Developer Enhancements",
+                "content": ["API reuse", "Custom API endpoints"]
+              },
+              "D": {
+                "label": "Testing",
+                "content": ["jUnit test coverage", "Safe data operations"]
+              }
+            }
+          },
+          "steps": [
+            {
+              "body": {
+                "add": [
+                  "The result was a fast, resilient, and intuitive system used across multiple teams."
+                ]
+              },
+              "readings": {
+                "A": {
+                  "add": ["Used AngularJS's form controls for live preview of report queries"]
+                },
+                "B": {
+                  "add": ["Avoided full reloads using XML DOM fragment parsing"]
+                },
+                "C": {
+                  "add": ["Built and documented 2 custom API endpoints"]
+                },
+                "D": {
+                  "add": ["Regression suite ensured cached data didn't return stale results"]
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "chapter-4",
+      "title": "Performance & Stability",
+      "slides": [
+        {
+          "id": "act-04",
+          "label": "System Impact",
+          "type": "narrative",
+          "base": {
+            "heading": "System Impact",
+            "body": "ACT reduced API overhead, improved report times, and enabled stateless, scalable workflows. It showed how infrastructure work drives real business outcomes.",
+            "readings": {
+              "A": {
+                "label": "Performance Gains",
+                "content": ["40% fewer redundant calls", "50%+ report speedup"]
+              },
+              "B": {
+                "label": "Architecture",
+                "content": [".NET backend", "AngularJS frontend"]
+              },
+              "C": {
+                "label": "Workflow Evolution",
+                "content": ["Stateless execution", "Reusable config modules"]
+              },
+              "D": {
+                "label": "Validation",
+                "content": ["jUnit regression tests", "Live user monitoring"]
+              }
+            }
+          },
+          "steps": [
+            {
+              "body": {
+                "add": [
+                  "What began as a simple report tool matured into a platform that scaled across workflows and roles."
+                ]
+              },
+              "readings": {
+                "A": {
+                  "add": ["Optimized endpoints reduced monthly report runtime by 200+ hours"]
+                },
+                "B": {
+                  "add": ["Split frontend/backend deployment for scalability"]
+                },
+                "C": {
+                  "add": ["Enabled fallback for failed report attempts to maintain SLA"]
+                },
+                "D": {
+                  "add": ["Live dashboard flagged broken reports early with minimal manual QA"]
+                }
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "chapter-5",
+      "title": "Lessons & Legacy",
+      "slides": [
+        {
+          "id": "act-05",
+          "label": "What It Taught Me",
+          "type": "narrative",
+          "base": {
+            "heading": "What It Taught Me About Building Tools",
+            "body": "ACT shaped how I think about systems today\u2014tools should empower others, reduce friction, and scale not just technically, but operationally.",
+            "readings": {
+              "A": {
+                "label": "Lessons Learned",
+                "content": ["Surface wins early", "User experience matters, even for dev tools"]
+              },
+              "B": {
+                "label": "What Worked",
+                "content": ["Early automation insight", "User empathy"]
+              },
+              "C": {
+                "label": "What I'd Do Differently",
+                "content": ["Formalize onboarding", "Track usage metrics"]
+              },
+              "D": {
+                "label": "Open Floor",
+                "content": ["What else would you want to know?"]
+              }
+            }
+          },
+          "steps": [
+            {
+              "body": {
+                "add": [
+                  "This was my first platform build. It still shapes how I design systems meant to scale with people."
+                ]
+              },
+              "readings": {
+                "A": {
+                  "add": ["Documentation would\u2019ve helped in succession planning"]
+                },
+                "B": {
+                  "add": ["User experience directly affected adoption and efficiency"]
+                },
+                "C": {
+                  "add": ["Analytics would have clarified most-used features"]
+                },
+                "D": {
+                  "add": ["Ask: Where would you have taken it next?"]
+                }
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

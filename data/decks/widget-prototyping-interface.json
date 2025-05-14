@@ -1,5 +1,5 @@
 {
-  "id": "deck-widget-prototyping",
+  "id": "deck-widget-prototyping-v2",
   "title": "Widget Prototyping Interface",
   "sections": [
     {
@@ -7,41 +7,28 @@
       "title": "Mission Context",
       "slides": [
         {
-          "id": "widget-01",
-          "label": "Widget Ops Collapse",
+          "id": "wpi-01",
+          "label": "Widget Overload",
           "type": "narrative",
           "base": {
-            "heading": "Widget Ops Collapse",
-            "body": "After our lead dev stepped away, I became the sole developer maintaining thousands of bespoke widgets across 3,000 publisher sites. The system was under strain, but the SLA never slipped.",
+            "heading": "Widget Overload",
+            "body": "As our widget demand scaled into the thousands, I became the sole developer responsible for maintaining and creating bespoke sponsored content widgets across a vast publisher network.",
             "readings": {
               "A": {
                 "label": "Scale",
-                "content": [
-                  "1 developer",
-                  "3,000+ sites"
-                ]
+                "content": ["Thousands of widgets", "20/day at peak"]
               },
               "B": {
-                "label": "Workflow",
-                "content": [
-                  "Custom builds",
-                  "Manual QA",
-                  "High variation"
-                ]
+                "label": "Constraints",
+                "content": ["Proprietary editors", "Manual workflows"]
               },
               "C": {
-                "label": "Delivery",
-                "content": [
-                  "24-hour SLA",
-                  "Unbroken throughput"
-                ]
+                "label": "Workload Shift",
+                "content": ["Lead dev phased out", "No replacements"]
               },
               "D": {
-                "label": "Challenge",
-                "content": [
-                  "No new hires",
-                  "No automation"
-                ]
+                "label": "SLA",
+                "content": ["24-hour turnaround", "Unbroken delivery"]
               }
             }
           },
@@ -49,8 +36,22 @@
             {
               "body": {
                 "add": [
-                  "Sustained delivery under high demand required an entirely new approach."
+                  "Meeting deadlines wasn't optional\u2014without intervention, burnout or failure was inevitable."
                 ]
+              },
+              "readings": {
+                "A": {
+                  "add": ["Custom work per publisher required per-widget solutions"]
+                },
+                "B": {
+                  "add": ["No live preview, no HTML/CSS templates"]
+                },
+                "C": {
+                  "add": ["Responsibility drifted to me without formal transition"]
+                },
+                "D": {
+                  "add": ["Widgets were a key monetization surface for Static Media"]
+                }
               }
             }
           ]
@@ -62,39 +63,28 @@
       "title": "Early Insight & Tradeoffs",
       "slides": [
         {
-          "id": "widget-02",
-          "label": "Scaling Myself, Not Templates",
+          "id": "wpi-02",
+          "label": "The Template Trap",
           "type": "narrative",
           "base": {
-            "heading": "Scaling Myself, Not Templates",
-            "body": "Templates helped but couldn\u2019t keep up with the custom nature of widget work. I needed to scale my own workflow\u2014dynamically.",
+            "heading": "The Template Trap",
+            "body": "Basic templates were no longer enough. Widgets required constant customization, but our proprietary editor offered no support for componentization or iteration.",
             "readings": {
               "A": {
-                "label": "Insight",
-                "content": [
-                  "Templates \u2260 Systems",
-                  "Custom logic everywhere"
-                ]
+                "label": "Template Limitations",
+                "content": ["Static HTML only", "No dynamic layout support"]
               },
               "B": {
-                "label": "Tradeoffs",
-                "content": [
-                  "No time for buy-in",
-                  "Needed self-sufficiency"
-                ]
+                "label": "Editor Issues",
+                "content": ["No live preview", "No component reuse"]
               },
               "C": {
-                "label": "Decision",
-                "content": [
-                  "Tool must support solo throughput"
-                ]
+                "label": "Developer Bottleneck",
+                "content": ["Manual edits for every change"]
               },
               "D": {
-                "label": "Vision",
-                "content": [
-                  "Config-driven logic",
-                  "Preview-first design"
-                ]
+                "label": "Organizational Inertia",
+                "content": ["No appetite for tool migration"]
               }
             }
           },
@@ -102,8 +92,22 @@
             {
               "body": {
                 "add": [
-                  "Systemization was the only path to sustainability."
+                  "This pushed me to quietly invest in tooling for myself. Scaling required systemization, not shortcuts."
                 ]
+              },
+              "readings": {
+                "A": {
+                  "add": ["Templates didn\u2019t support responsive logic or dynamic styling"]
+                },
+                "B": {
+                  "add": ["Couldn\u2019t safely preview accessibility or layout issues"]
+                },
+                "C": {
+                  "add": ["No JS, no conditionals\u2014every fix was brute force"]
+                },
+                "D": {
+                  "add": ["Tooling outside the system had to be invisible to be accepted"]
+                }
               }
             }
           ]
@@ -115,38 +119,28 @@
       "title": "System Design & MVP",
       "slides": [
         {
-          "id": "widget-03",
-          "label": "From Schema to Shippable",
+          "id": "wpi-03",
+          "label": "From UI to Markup",
           "type": "narrative",
           "base": {
-            "heading": "From Schema to Shippable",
-            "body": "Built in React + TypeScript, the tool accepted config inputs, assembled component variants, and output ready-to-ship markup and styles.",
+            "heading": "From UI to Markup",
+            "body": "Originally built in React with plain JavaScript, the tool was incrementally converted to TypeScript to ensure scalability, maintainability, and adherence to best practices. The interface allowed me to visually configure widgets using reusable components, then export raw HTML/CSS into Static Media's proprietary editor format.",
             "readings": {
               "A": {
-                "label": "Core Loop",
-                "content": [
-                  "Schema \u2192 Compile \u2192 Export"
-                ]
+                "label": "Stack",
+                "content": ["React + Vite", "Zustand for state", "Gradual TypeScript migration"]
               },
               "B": {
-                "label": "Tooling",
-                "content": [
-                  "Zustand for state",
-                  "Spring for animations"
-                ]
+                "label": "Component System",
+                "content": ["Configurable props", "Accessibility baked in"]
               },
               "C": {
-                "label": "UI Goals",
-                "content": [
-                  "Preview-first",
-                  "Instant feedback"
-                ]
+                "label": "Live Preview",
+                "content": ["Mobile + Desktop modes", "ARIA & responsive rules tested"]
               },
               "D": {
-                "label": "Accessibility",
-                "content": [
-                  "ARIA, landmarks, responsive by default"
-                ]
+                "label": "Output",
+                "content": ["Raw HTML/CSS", "Fully editor-compatible"]
               }
             }
           },
@@ -154,8 +148,23 @@
             {
               "body": {
                 "add": [
-                  "First-class UX and performance were built into the interface itself."
+                  "By using React to simulate the output environment, I could iterate with near-zero latency and never break the proprietary system.",
+                  "Migrating to TypeScript was a strategic move to future-proof the tool and keep my skills sharp in real-world production use."
                 ]
+              },
+              "readings": {
+                "A": {
+                  "add": ["Vite hot module reload accelerated my flow"]
+                },
+                "B": {
+                  "add": ["Each component had fallback content and alt tags"]
+                },
+                "C": {
+                  "add": ["Preview toggled breakpoints and widget states"]
+                },
+                "D": {
+                  "add": ["One-click copy-paste for pasting into live editor"]
+                }
               }
             }
           ]
@@ -164,40 +173,31 @@
     },
     {
       "id": "chapter-4",
-      "title": "Validation & Iteration",
+      "title": "Validation & Feedback Loops",
       "slides": [
         {
-          "id": "widget-04",
-          "label": "Testing by Deployment",
+          "id": "wpi-04",
+          "label": "Self-Correcting System",
           "type": "narrative",
           "base": {
-            "heading": "Testing by Deployment",
-            "body": "Without time for traditional QA, production itself became my testbed\u2014every widget was both a delivery and a live validation cycle.",
+            "heading": "Self-Correcting System",
+            "body": "By linking my component config system to real CTR data via A/B testing, I created a feedback loop that helped the tool recommend optimal variants automatically.",
             "readings": {
               "A": {
-                "label": "A/B Logic",
-                "content": [
-                  "UI delta testing",
-                  "CTR observation"
-                ]
+                "label": "Performance Metric",
+                "content": ["CTR (Click-Through-Rate)"]
               },
               "B": {
-                "label": "Feedback Loop",
-                "content": [
-                  "Promote high-performing patterns"
-                ]
+                "label": "Testing Method",
+                "content": ["50/50 render split", "Strategic UI deltas"]
               },
               "C": {
-                "label": "Default Evolution",
-                "content": [
-                  "Smarter components over time"
-                ]
+                "label": "Feedback Loop",
+                "content": ["Promote high-performing defaults"]
               },
               "D": {
-                "label": "Tool Learning",
-                "content": [
-                  "Output improved with every iteration"
-                ]
+                "label": "Database",
+                "content": ["Locally persisted JSON or SQLite", "Linked to library index"]
               }
             }
           },
@@ -205,8 +205,22 @@
             {
               "body": {
                 "add": [
-                  "Each release taught me something new about users and the system."
+                  "It was no longer just a tool\u2014it became a system that learned with me and improved delivery and outcomes."
                 ]
+              },
+              "readings": {
+                "A": {
+                  "add": ["CTR = clicks / impressions"]
+                },
+                "B": {
+                  "add": ["No backend needed\u2014JS-based toggling for A/B logic"]
+                },
+                "C": {
+                  "add": ["High performers moved to top of dropdowns"]
+                },
+                "D": {
+                  "add": ["Historical data shaped smarter defaults"]
+                }
               }
             }
           ]
@@ -218,39 +232,28 @@
       "title": "Tradeoffs & Constraints",
       "slides": [
         {
-          "id": "widget-05",
-          "label": "The Invisible Tool Problem",
+          "id": "wpi-05",
+          "label": "Invisible Power",
           "type": "narrative",
           "base": {
-            "heading": "The Invisible Tool Problem",
-            "body": "I never formally pitched the tool\u2014it worked so well that no one realized it existed. That invisibility came with both power and limitations.",
+            "heading": "Invisible Power",
+            "body": "Because it was an internal tool only I used, no one asked how I hit my deadlines. I saved enormous time but created no visibility\u2014good for autonomy, bad for succession.",
             "readings": {
               "A": {
-                "label": "Solo Impact",
-                "content": [
-                  "No onboarding needed",
-                  "No one else used it"
-                ]
+                "label": "Solo Use",
+                "content": ["No one else needed training", "No one knew it existed"]
               },
               "B": {
-                "label": "Constraints",
-                "content": [
-                  "No time for docs",
-                  "Tool remained internal"
-                ]
+                "label": "Missing Docs",
+                "content": ["No onboarding guide", "CLI only for backup"]
               },
               "C": {
-                "label": "Tradeoffs",
-                "content": [
-                  "Saved my bandwidth",
-                  "No visibility"
-                ]
+                "label": "Autonomy vs Visibility",
+                "content": ["High output, low awareness"]
               },
               "D": {
-                "label": "What I Learned",
-                "content": [
-                  "Surface internal wins early"
-                ]
+                "label": "Lesson",
+                "content": ["Internal success still needs storytelling"]
               }
             }
           },
@@ -258,8 +261,22 @@
             {
               "body": {
                 "add": [
-                  "A powerful internal system isn\u2019t useful if no one else can see it."
+                  "I built a system that let me do the work of a small team\u2014but in hiding its brilliance, I limited its lifespan."
                 ]
+              },
+              "readings": {
+                "A": {
+                  "add": ["Solo systems die without context sharing"]
+                },
+                "B": {
+                  "add": ["No one else could pick up where I left off"]
+                },
+                "C": {
+                  "add": ["Visibility might\u2019ve saved the tool post-layoff"]
+                },
+                "D": {
+                  "add": ["Success needs evangelism to outlive its creator"]
+                }
               }
             }
           ]
@@ -271,39 +288,28 @@
       "title": "Impact & Evolution",
       "slides": [
         {
-          "id": "widget-06",
-          "label": "Scaling Without Headcount",
+          "id": "wpi-06",
+          "label": "Lasting Impact",
           "type": "narrative",
           "base": {
-            "heading": "Scaling Without Headcount",
-            "body": "This tool let me double output, maintain quality, and support business needs without requiring another frontend hire for two years.",
+            "heading": "Lasting Impact",
+            "body": "WPI boosted my throughput by 50%, improved load times by 30%, and increased CTR by 20%\u2014all while keeping pace with aggressive SLAs for thousands of widgets.",
             "readings": {
               "A": {
-                "label": "Impact",
-                "content": [
-                  "+50% output",
-                  "0 missed deadlines"
-                ]
+                "label": "Performance Wins",
+                "content": ["30% faster loads", "20% more clicks"]
               },
               "B": {
-                "label": "Longevity",
-                "content": [
-                  "Used over multiple years",
-                  "Maintained solo"
-                ]
+                "label": "Efficiency Gains",
+                "content": ["50% more output", "Sustained 24-hour SLA"]
               },
               "C": {
-                "label": "Handoff Blocked",
-                "content": [
-                  "Layoff was sudden",
-                  "Told to wipe and retain laptop"
-                ]
+                "label": "Tech Longevity",
+                "content": ["Tool used for 2 years", "Unmaintained post-layoff"]
               },
               "D": {
-                "label": "Lesson",
-                "content": [
-                  "Prepare for visibility even in high output scenarios"
-                ]
+                "label": "Handoff",
+                "content": ["Laptop wiped per policy", "No formal transfer"]
               }
             }
           },
@@ -311,8 +317,22 @@
             {
               "body": {
                 "add": [
-                  "This system worked because it was invisible. That\u2019s also why it didn\u2019t last."
+                  "Its legacy lives in the lessons it taught me: build for others, even when you\u2019re the only one using it."
                 ]
+              },
+              "readings": {
+                "A": {
+                  "add": ["Performance was measured live across campaigns"]
+                },
+                "B": {
+                  "add": ["Never missed a deadline"]
+                },
+                "C": {
+                  "add": ["Tool's design held stable for over 1000 widgets"]
+                },
+                "D": {
+                  "add": ["A great tool without transition is a short-lived one"]
+                }
               }
             }
           ]
@@ -324,37 +344,28 @@
       "title": "Wrap & Invite",
       "slides": [
         {
-          "id": "widget-07",
+          "id": "wpi-07",
           "label": "What This Taught Me",
           "type": "narrative",
           "base": {
-            "heading": "What This Taught Me About Systems",
-            "body": "The right tool at the right time can replace an entire team\u2014but the best internal systems are the ones that elevate others, too.",
+            "heading": "What This Taught Me About Tools",
+            "body": "A tool is successful not when it works for one developer, but when it scales, evolves, and inspires others. WPI taught me to code with users in mind\u2014even when the user is just me.",
             "readings": {
               "A": {
                 "label": "Autonomy",
-                "content": [
-                  "Built without approval",
-                  "Scaled a solo workflow"
-                ]
+                "content": ["Built solo", "Used exclusively in production"]
               },
               "B": {
                 "label": "Vision",
-                "content": [
-                  "Designed for eventual onboarding"
-                ]
+                "content": ["Planned for scale", "Built for speed"]
               },
               "C": {
                 "label": "Lesson",
-                "content": [
-                  "Show your work, even when it\u2019s invisible"
-                ]
+                "content": ["Tell your tool\u2019s story before it\u2019s too late"]
               },
               "D": {
                 "label": "Open Floor",
-                "content": [
-                  "What else would you like to know?"
-                ]
+                "content": ["What else would you like to know?"]
               }
             }
           },
@@ -362,8 +373,22 @@
             {
               "body": {
                 "add": [
-                  "This project shaped how I think about internal tooling forever."
+                  "WPI changed how I think about building internal systems\u2014for speed, for empathy, for the long run."
                 ]
+              },
+              "readings": {
+                "A": {
+                  "add": ["Internal tooling is real engineering"]
+                },
+                "B": {
+                  "add": ["Even self-facing tools need UX"]
+                },
+                "C": {
+                  "add": ["Scaling yourself is a valid form of scale"]
+                },
+                "D": {
+                  "add": ["Curious what part you'd want to dig into deeper?"]
+                }
               }
             }
           ]

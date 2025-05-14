@@ -1,32 +1,27 @@
 [
   {
-    "id": "deck-alpha",
-    "title": "Technical Showcase",
+    "id": "this-oortfolio",
+    "title": "Oortfolio Tour",
     "nodeId": "Option-0"
   },
   {
-    "id": "deck-beta",
-    "title": "Project Showcase",
+    "id": "application-configuration-tooling",
+    "title": "Technical Showcase",
     "nodeId": "Option-1"
   },
   {
-    "id": "deck-gamma",
+    "id": "skills-and-experience",
     "title": "Skills & Experience",
     "nodeId": "Option-2"
   },
   {
-    "id": "deck-delta",
+    "id": "blogs-and-thoughts",
     "title": "Blog & Thoughts",
     "nodeId": "Option-3"
   },
   {
-    "id": "oortfolio",
-    "title": "Oortfolio Tour",
-    "nodeId": "Option-4"
-  },
-  {
     "id": "widget-prototyping-interface",
     "title": "Widget Prototyping",
-    "nodeId": "Option-5"
+    "nodeId": "Option-4"
   }
 ]
